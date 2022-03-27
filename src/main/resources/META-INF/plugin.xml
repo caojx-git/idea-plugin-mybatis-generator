@@ -1,0 +1,27 @@
+<idea-plugin>
+    <id>com.caojx.MybatisGenerator</id>
+    <name>MybatisGenerator</name>
+    <vendor email="caojx_wy@163.com" url="">caojx</vendor>
+
+    <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+    ]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <!--持久化-->
+        <projectService serviceImplementation="com.caojx.idea.plugin.infrastructure.persistent.PersistentStateService"></projectService>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action id="GeneratorActionId" class="com.caojx.idea.plugin.action.GeneratorAction" text="GeneratorActionName" description="生成代码">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>
