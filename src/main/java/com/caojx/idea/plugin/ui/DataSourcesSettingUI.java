@@ -1,14 +1,11 @@
 package com.caojx.idea.plugin.ui;
 
-import com.caojx.idea.plugin.infrastructure.persistent.PersistentState;
-import com.caojx.idea.plugin.infrastructure.persistent.PersistentStateService;
-import com.caojx.idea.plugin.infrastructure.po.Database;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
+import com.caojx.idea.plugin.common.pojo.persistent.PersistentState;
+import com.caojx.idea.plugin.generator.PersistentStateService;
+import com.caojx.idea.plugin.common.pojo.db.Database;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.NlsContexts;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +27,6 @@ public class DataSourcesSettingUI extends DialogWrapper {
     private JButton deleteBtn;
     private JButton editBtn;
 
-    private Project project;
     private GeneratorSettingUI generatorSettingUI;
     private PersistentState persistentState;
 
@@ -44,7 +40,6 @@ public class DataSourcesSettingUI extends DialogWrapper {
         super(true);
         init();
 
-        this.project = project;
         this.generatorSettingUI = generatorSettingUI;
 
         this.persistentState = PersistentStateService.getInstance(project).getState();
@@ -86,7 +81,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
             }
 
             Database database = getDatabaseByName(persistentState.getDatabases(), selectDatabaseName);
-            EditDatabaseSettingUI editDatabaseSettingUI = new EditDatabaseSettingUI(this.project, database, this);
+            EditDatabaseSettingUI editDatabaseSettingUI = new EditDatabaseSettingUI(project, database, this);
             editDatabaseSettingUI.show();
 
             selectDatabaseName = "";
@@ -94,7 +89,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
 
         // 添加数据库
         addBtn.addActionListener(e -> {
-            EditDatabaseSettingUI editDatabaseSettingUI = new EditDatabaseSettingUI(this.project, null, this);
+            EditDatabaseSettingUI editDatabaseSettingUI = new EditDatabaseSettingUI(project, null, this);
             editDatabaseSettingUI.show();
         });
     }

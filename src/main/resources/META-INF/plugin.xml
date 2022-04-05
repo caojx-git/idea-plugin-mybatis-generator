@@ -15,7 +15,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <!--持久化-->
-        <projectService serviceImplementation="com.caojx.idea.plugin.infrastructure.persistent.PersistentStateService"></projectService>
+        <projectService serviceImplementation="com.caojx.idea.plugin.generator.PersistentStateService"></projectService>
     </extensions>
 
     <actions>

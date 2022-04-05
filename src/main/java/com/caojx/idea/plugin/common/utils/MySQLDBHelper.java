@@ -1,0 +1,217 @@
+package com.caojx.idea.plugin.common.utils;
+
+import com.caojx.idea.plugin.common.pojo.db.Column;
+import com.caojx.idea.plugin.common.pojo.db.Database;
+import com.caojx.idea.plugin.common.pojo.db.Table;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Properties;
+
+/**
+ * MySQL数据库工具类
+ */
+public class MySQLDBHelper {
+
+    /**
+     * 数据库
+     */
+    private Database database;
+
+    /**
+     * 数据库连接属性
+     */
+    private Properties properties;
+
+
+    /**
+     * 构造器
+     *
+     * @param database 数据库
+     */
+    public MySQLDBHelper(Database database) {
+        this.database = database;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+
+        properties = new Properties();
+        properties.put("user", this.database.getUserName());
+        properties.put("password", this.database.getPassword());
+        properties.setProperty("remarks", "true");
+        properties.put("useInformationSchema", "true");
+    }
+
+
+    /**
+     * 获取连接对象
+     *
+     * @return 连接对象
+     */
+    public Connection getConnection() {
+        try {
+            return DriverManager.getConnection("jdbc:mysql://" + this.database.getHost() + ":" + this.database.getPort() + "/?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false", properties);
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 获取指定数据库连接对象
+     *
+     * @return 连接对象
+     */
+    private Connection getConnection(String database) {
+        try {
+            return DriverManager.getConnection("jdbc:mysql://" + this.database.getHost() + ":" + this.database.getPort() + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false", properties);
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 关闭连接
+     *
+     * @param conn 连接对象
+     */
+    private void closeConnection(Connection conn) {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException ignored) {
+            }
+        }
+    }
+
+    /**
+     * 获取数据库中所有的表名
+     *
+     * @param databaseName 数据库名
+     * @return 表名列表
+     */
+    public List<String> getAllTableName(String databaseName) {
+        return getTableName(databaseName, "%");
+    }
+
+    /**
+     * 获取数据库表明
+     *
+     * @param databaseName     数据库名
+     * @param tableNamePattern 表明表达式
+     * @return 表名列表
+     */
+    public List<String> getTableName(String databaseName, String tableNamePattern) {
+        Connection connection = this.getConnection(databaseName);
+        try {
+            DatabaseMetaData metaData = connection.getMetaData();
+            ResultSet resultSet = metaData.getTables(null, null, tableNamePattern, new String[]{"TABLE"});
+            List<String> tableNames = new ArrayList<>();
+            while (resultSet.next()) {
+                if(resultSet.getString(4) != null  && resultSet.getString(4).equalsIgnoreCase("TABLE") ){
+                    String tableName = resultSet.getString(3).toLowerCase();
+                    tableNames.add(tableName);
+                }
+            }
+            return tableNames;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            closeConnection(connection);
+        }
+    }
+
+    /**
+     * 获取表信息
+     *
+     * @param tableName 表名
+     * @return 表信息
+     */
+    public Table getTable(String tableName) {
+        Connection conn = getConnection(this.database.getDatabaseName());
+        try {
+            DatabaseMetaData metaData = conn.getMetaData();
+            ResultSet rs = metaData.getTables(null, "", tableName, new String[]{"TABLE"});
+            if (rs.next()) {
+                // 列列表
+                List<Column> columns = getAllColumn(tableName, conn);
+                // 表备注
+                String remarks = rs.getString("REMARKS");
+
+                // 返回表
+                return new Table(tableName, columns, remarks);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            closeConnection(conn);
+        }
+        return null;
+    }
+
+    /**
+     * 获取所有的列名
+     *
+     * @param tableName  表名
+     * @param connection 连接
+     * @return 列列表
+     */
+    public List<Column> getAllColumn(String tableName, Connection connection) {
+        try {
+            DatabaseMetaData metaData = connection.getMetaData();
+
+            // 主键
+            String primaryKey = null;
+            ResultSet primaryKeys = metaData.getPrimaryKeys(null, null, tableName);
+            while (primaryKeys.next()) {
+                primaryKey = primaryKeys.getString("COLUMN_NAME");
+            }
+
+            // 获取表中的所有列名
+            ResultSet rs = metaData.getColumns(null, "%", tableName, "%");
+            List<Column> columns = new ArrayList<>();
+            while (rs.next()) {
+                // 列名
+                String columnName = rs.getString("COLUMN_NAME");
+                // 字段注释
+                String remarks = rs.getString("REMARKS");
+                // 字段类型
+                int dataType = rs.getInt("DATA_TYPE");
+                Column column = new Column(columnName, remarks, dataType);
+                if (Objects.nonNull(primaryKey) && columnName.endsWith(primaryKey)) {
+                    column.setId(true);
+                }
+                columns.add(column);
+            }
+            return columns;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 测试数据库连接
+     *
+     * @return 连接结果
+     */
+    public String testDatabase() {
+        Connection conn = getConnection();
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT VERSION() AS MYSQL_VERSION");
+            ResultSet resultSet = null;
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getString("MYSQL_VERSION");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return "Err";
+    }
+
+}

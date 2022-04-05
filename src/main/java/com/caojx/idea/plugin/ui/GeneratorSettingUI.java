@@ -1,12 +1,14 @@
 package com.caojx.idea.plugin.ui;
 
-import com.caojx.idea.plugin.domain.model.GeneratorConfigContext;
-import com.caojx.idea.plugin.domain.model.MyBatisGeneratorConfig;
-import com.caojx.idea.plugin.domain.service.IGeneratorService;
-import com.caojx.idea.plugin.infrastructure.persistent.PersistentState;
-import com.caojx.idea.plugin.infrastructure.persistent.PersistentStateService;
-import com.caojx.idea.plugin.infrastructure.po.Database;
-import com.caojx.idea.plugin.infrastructure.utils.MySQLDBHelper;
+import com.caojx.idea.plugin.common.pojo.db.Database;
+import com.caojx.idea.plugin.common.pojo.db.Table;
+import com.caojx.idea.plugin.common.pojo.persistent.PersistentState;
+import com.caojx.idea.plugin.common.properties.BaseGeneratorProperties;
+import com.caojx.idea.plugin.common.properties.GeneratorConfigContext;
+import com.caojx.idea.plugin.common.utils.MySQLDBHelper;
+import com.caojx.idea.plugin.generator.IGeneratorService;
+import com.caojx.idea.plugin.generator.PersistentStateService;
+import com.caojx.idea.plugin.generator.mybatis.MyBatisGeneratorServiceImpl;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.options.Configurable;
@@ -40,18 +42,15 @@ public class GeneratorSettingUI implements Configurable {
     private JTextField tableNameRegex;
     private JButton selectTableBtn;
     private JTextField projectBasePath;
-    private JComboBox moduleComboBox;
-    private JTextField modelPath;
-    private JButton modelPathBtn;
-    private JTextField modelPackage;
-    private JButton modelPackageBtn;
+    private JTextField entityPath;
+    private JButton entityPathBtn;
+    private JTextField entityPackage;
     private JTextField mapperPath;
     private JTextField mapperXmlPath;
     private JTextField mapperPackage;
     private JButton mapperPathBtn;
-    private JButton mapperPackageBtn;
     private JButton mapperXmlPathBtn;
-    private JTextField modelNamePattern;
+    private JTextField entityNamePattern;
     private JTextField mapperNamePattern;
     private JTextField mapperXmlNamePattern;
     private JButton configDataBaseBtn;
@@ -68,21 +67,24 @@ public class GeneratorSettingUI implements Configurable {
     private Database currentDatabase;
 
     /**
-     * 表明列表
+     * 选中需要生成代码的表名列表
      */
-    private List<String> tableNames = new ArrayList<>();
+    private List<String> selectTableNames = new ArrayList<>();
 
     /**
      * 项目
      */
     private Project project;
 
+    /**
+     * 持久化数据
+     */
     private PersistentState persistentState;
 
     /**
      * 生成代码业务接口
      */
-    private IGeneratorService generatorService;
+    private IGeneratorService generatorService = new MyBatisGeneratorServiceImpl();
 
 
     public GeneratorSettingUI(Project project) {
@@ -94,16 +96,14 @@ public class GeneratorSettingUI implements Configurable {
         // 初始化界面数据
         initGeneratorSettingUIData(project, persistentState);
 
-        // 项目模块（todo）
 
         // model生成路径选择
-        modelPathBtn.addActionListener(e -> {
+        entityPathBtn.addActionListener(e -> {
             VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
             if (virtualFile != null) {
-                modelPath.setText(virtualFile.getPath());
+                entityPath.setText(virtualFile.getPath());
             }
         });
-        // model包名 todo
 
         // mapper生成路径选择
         mapperPathBtn.addActionListener(e -> {
@@ -112,8 +112,6 @@ public class GeneratorSettingUI implements Configurable {
                 mapperPath.setText(virtualFile.getPath());
             }
         });
-
-        // mapper包名 todo
 
         // mapperXml生成路径选择
         mapperXmlPathBtn.addActionListener(e -> {
@@ -127,6 +125,7 @@ public class GeneratorSettingUI implements Configurable {
         databaseComBox.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 this.currentDatabase = persistentState.getDatabases().stream().filter(database -> database.getDatabaseName().equals(e.getItem().toString())).findFirst().get();
+                persistentState.setCurrentDatabase(this.currentDatabase);
             }
         });
 
@@ -139,18 +138,18 @@ public class GeneratorSettingUI implements Configurable {
         // 查询表
         selectTableBtn.addActionListener(e -> {
             try {
-                MySQLDBHelper dbHelper = new MySQLDBHelper(currentDatabase.getHost(), currentDatabase.getPort(), currentDatabase.getUserName(), currentDatabase.getPassword(), currentDatabase.getDatabaseName());
+                MySQLDBHelper dbHelper = new MySQLDBHelper(this.currentDatabase);
 
                 // 获取表明列表
                 String tableNamePattern = StringUtils.isBlank(tableNameRegex.getText()) ? "%" : tableNameRegex.getText();
-                this.tableNames = dbHelper.getTableName(currentDatabase.getDatabaseName(), tableNamePattern);
+                List<String> tableNames = dbHelper.getTableName(currentDatabase.getDatabaseName(), tableNamePattern);
 
                 // 显示表明列表
                 String[] title = {"", "表名"};
                 // 行index,列index
-                Object[][] data = new Object[this.tableNames.size()][2];
-                for (int i = 0; i < this.tableNames.size(); i++) {
-                    data[i][1] = this.tableNames.get(i);
+                Object[][] data = new Object[tableNames.size()][2];
+                for (int i = 0; i < tableNames.size(); i++) {
+                    data[i][1] = tableNames.get(i);
                 }
 
                 table.setModel(new DefaultTableModel(data, title));
@@ -174,9 +173,9 @@ public class GeneratorSettingUI implements Configurable {
                     int rowIdx = table.rowAtPoint(e.getPoint());
                     Boolean flag = (Boolean) table.getValueAt(rowIdx, 0);
                     if (Objects.nonNull(flag) && flag) {
-                        tableNames.add(table.getValueAt(rowIdx, 1).toString());
+                        selectTableNames.add(table.getValueAt(rowIdx, 1).toString());
                     } else {
-                        tableNames.remove(table.getValueAt(rowIdx, 1).toString());
+                        selectTableNames.remove(table.getValueAt(rowIdx, 1).toString());
                     }
                 }
             }
@@ -203,18 +202,27 @@ public class GeneratorSettingUI implements Configurable {
     @Override
     public void apply() throws ConfigurationException {
         // 设置代码生成配置
-        MyBatisGeneratorConfig myBatisGeneratorConfig = this.generatorConfigContext.getMyBatisGeneratorConfig();
-        myBatisGeneratorConfig.setModelPath(this.modelPath.getText());
-        myBatisGeneratorConfig.setModelPackage(this.modelPackage.getText());
-        myBatisGeneratorConfig.setModelNamePattern(this.modelNamePattern.getText());
+        BaseGeneratorProperties baseGeneratorProperties = this.generatorConfigContext.getBaseGeneratorProperties();
+        baseGeneratorProperties.setEntityPath(this.entityPath.getText());
+        baseGeneratorProperties.setEntityPackage(this.entityPackage.getText());
+        baseGeneratorProperties.setEntityNamePattern(this.entityNamePattern.getText());
 
-        myBatisGeneratorConfig.setMapperPath(this.mapperPath.getText());
-        myBatisGeneratorConfig.setMapperPackage(this.mapperPackage.getText());
-        myBatisGeneratorConfig.setMapperNamePattern(this.mapperNamePattern.getText());
+        baseGeneratorProperties.setMapperPath(this.mapperPath.getText());
+        baseGeneratorProperties.setMapperPackage(this.mapperPackage.getText());
+        baseGeneratorProperties.setMapperNamePattern(this.mapperNamePattern.getText());
 
-        myBatisGeneratorConfig.setMapperXmlPath(this.mapperXmlPath.getText());
-        myBatisGeneratorConfig.setMapperXmlNamePattern(this.mapperXmlNamePattern.getText());
+        baseGeneratorProperties.setMapperXmlPath(this.mapperXmlPath.getText());
+        baseGeneratorProperties.setMapperXmlNamePattern(this.mapperXmlNamePattern.getText());
 
+
+        this.persistentState.setGeneratorConfigContext(this.generatorConfigContext);
+        // 设置表
+        MySQLDBHelper mySQLDBHelper = new MySQLDBHelper(this.currentDatabase);
+        List<Table> tables = new ArrayList<>();
+        for (String tableName : selectTableNames) {
+            tables.add(mySQLDBHelper.getTable(tableName));
+        }
+        this.generatorConfigContext.setTables(tables);
 
         // 生成代码
         generatorService.doGenerator(project, this.generatorConfigContext);
@@ -232,17 +240,17 @@ public class GeneratorSettingUI implements Configurable {
 
         // 项目路径
         this.projectBasePath.setText(project.getBasePath());
-        MyBatisGeneratorConfig myBatisGeneratorConfig = generatorConfigContext.getMyBatisGeneratorConfig();
-        this.modelPath.setText(myBatisGeneratorConfig.getModelPath());
-        this.modelPackage.setText(myBatisGeneratorConfig.getModelPackage());
-        this.modelNamePattern.setText(myBatisGeneratorConfig.getModelNamePattern());
+        BaseGeneratorProperties baseGeneratorProperties = generatorConfigContext.getBaseGeneratorProperties();
+        this.entityPath.setText(baseGeneratorProperties.getEntityPath());
+        this.entityPackage.setText(baseGeneratorProperties.getEntityPackage());
+        this.entityNamePattern.setText(baseGeneratorProperties.getEntityNamePattern());
 
-        this.mapperPath.setText(myBatisGeneratorConfig.getMapperPath());
-        this.mapperPackage.setText(myBatisGeneratorConfig.getMapperPackage());
-        this.mapperNamePattern.setText(myBatisGeneratorConfig.getMapperNamePattern());
+        this.mapperPath.setText(baseGeneratorProperties.getMapperPath());
+        this.mapperPackage.setText(baseGeneratorProperties.getMapperPackage());
+        this.mapperNamePattern.setText(baseGeneratorProperties.getMapperNamePattern());
 
-        this.mapperXmlPath.setText(myBatisGeneratorConfig.getMapperXmlPath());
-        this.mapperXmlNamePattern.setText(myBatisGeneratorConfig.getMapperNamePattern());
+        this.mapperXmlPath.setText(baseGeneratorProperties.getMapperXmlPath());
+        this.mapperXmlNamePattern.setText(baseGeneratorProperties.getMapperNamePattern());
 
 
         // 数据库下拉框
@@ -251,6 +259,10 @@ public class GeneratorSettingUI implements Configurable {
             databases.forEach(database -> databaseComBox.addItem(database.getDatabaseName()));
         }
         // 默认选中
+        this.currentDatabase = persistentState.getCurrentDatabase();
+        if(Objects.isNull(this.currentDatabase)){
+            this.currentDatabase = persistentState.getDatabases().get(0);
+        }
         if (Objects.nonNull(currentDatabase)) {
             databaseComBox.setSelectedItem(currentDatabase.getDatabaseName());
         }

@@ -1,9 +1,9 @@
 package com.caojx.idea.plugin.ui;
 
-import com.caojx.idea.plugin.infrastructure.persistent.PersistentState;
-import com.caojx.idea.plugin.infrastructure.persistent.PersistentStateService;
-import com.caojx.idea.plugin.infrastructure.po.Database;
-import com.caojx.idea.plugin.infrastructure.utils.MySQLDBHelper;
+import com.caojx.idea.plugin.common.pojo.persistent.PersistentState;
+import com.caojx.idea.plugin.generator.PersistentStateService;
+import com.caojx.idea.plugin.common.pojo.db.Database;
+import com.caojx.idea.plugin.common.utils.MySQLDBHelper;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
@@ -25,21 +25,14 @@ public class EditDatabaseSettingUI extends DialogWrapper {
     private JButton testBtn;
 
     private Project project;
-    private Database database;
-
-    private DataSourcesSettingUI dataSourcesSettingUI;
 
     public EditDatabaseSettingUI(Project project, Database database, DataSourcesSettingUI dataSourcesSettingUI) {
         super(true);
         init();
 
         this.project = project;
-        this.database = database;
-        this.dataSourcesSettingUI = dataSourcesSettingUI;
-
         this.databaseType.addItem("MySQL");
         this.databaseType.addItem("Oracle");
-
         // 初始化数据
         if (Objects.nonNull(database)) {
             databaseType.setSelectedItem(database.getDatabaseName());
@@ -60,9 +53,7 @@ public class EditDatabaseSettingUI extends DialogWrapper {
         });
 
         saveBtn.addActionListener(e -> {
-            if (Objects.isNull(this.database)) {
-                this.database = new Database();
-            }
+            Database formDatabase = getFormDatabase();
 
             // 连接数据库测试
             if (!testConnectionDB()) {
@@ -70,24 +61,16 @@ public class EditDatabaseSettingUI extends DialogWrapper {
                 return;
             }
 
-            // 保存db
-            this.database.setDatabaseType(databaseType.getSelectedItem().toString());
-            this.database.setHost(host.getText());
-            this.database.setPort(Integer.valueOf(port.getText()));
-            this.database.setDatabaseName(databaseName.getText());
-            this.database.setUserName(userName.getText());
-            this.database.setPassword(password.getText());
-
             // 持久化
             PersistentState persistentState = PersistentStateService.getInstance(this.project).getState();
             Iterator<Database> iterator = persistentState.getDatabases().iterator();
             while (iterator.hasNext()) {
                 Database next = iterator.next();
-                if (next.getDatabaseName().equals(this.database.getDatabaseName())) {
+                if (next.getDatabaseName().equals(formDatabase.getDatabaseName())) {
                     iterator.remove();
                 }
             }
-            persistentState.getDatabases().add(this.database);
+            persistentState.getDatabases().add(formDatabase);
 
             // 刷新列表
             dataSourcesSettingUI.refreshDatabaseTable(persistentState.getDatabases());
@@ -98,11 +81,28 @@ public class EditDatabaseSettingUI extends DialogWrapper {
     }
 
     /**
+     * 获取表单数据库配置信息
+     *
+     * @return 数据库
+     */
+    private Database getFormDatabase() {
+        Database database = new Database();
+        database.setDatabaseType(databaseType.getSelectedItem().toString());
+        database.setHost(host.getText());
+        database.setPort(Integer.valueOf(port.getText()));
+        database.setDatabaseName(databaseName.getText());
+        database.setUserName(userName.getText());
+        database.setPassword(password.getText());
+        return database;
+    }
+
+    /**
      * 测试连接数据库
      */
     private boolean testConnectionDB() {
         try {
-            MySQLDBHelper dbHelper = new MySQLDBHelper(host.getText(), Integer.valueOf(port.getText()), userName.getText(), password.getText(), databaseName.getText());
+            Database formDatabase = getFormDatabase();
+            MySQLDBHelper dbHelper = new MySQLDBHelper(formDatabase);
             dbHelper.testDatabase();
             return true;
         } catch (Exception ex) {
