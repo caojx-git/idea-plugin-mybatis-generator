@@ -54,7 +54,40 @@ public class GeneratorSettingUI implements Configurable {
     private JTextField mapperNamePattern;
     private JTextField mapperXmlNamePattern;
     private JButton configDataBaseBtn;
-    private JPanel customPanel;
+    private JCheckBox lombokData;
+    private JCheckBox lombokBuilder;
+    private JCheckBox lombokAllArgsConstructor;
+    private JCheckBox lombokNoArgsConstructor;
+    private JCheckBox selectByExampleWithBLOBs;
+    private JCheckBox selectByExample;
+    private JCheckBox selectByPrimaryKey;
+    private JCheckBox deleteByPrimaryKey;
+    private JCheckBox insert;
+    private JCheckBox insertSelective;
+    private JCheckBox countByExample;
+    private JCheckBox updateByExampleSelective;
+    private JCheckBox deleteByExample;
+    private JCheckBox updateByExampleWithBLOBs;
+    private JCheckBox updateByExample;
+    private JCheckBox updateByPrimaryKeySelective;
+    private JCheckBox updateByPrimaryKeyWithBLOBs;
+    private JCheckBox updateByPrimaryKey;
+    private JTextField superMapperClass;
+    private JTextField servicePath;
+    private JButton servicePathBtn;
+    private JTextField servicePackage;
+    private JTextField serviceNamePattern;
+    private JTextField superServiceClass;
+    private JTextField controllerPath;
+    private JTextField controllerPackage;
+    private JTextField controllerNamePattern;
+    private JCheckBox controllerSwagger;
+    private JTextField serviceImplPath;
+    private JTextField serviceImplPackage;
+    private JTextField serviceImplNamePattern;
+    private JTextField supperServiceImplClass;
+    private JButton serviceImplPathBtn;
+    private JButton controllerPathBtn;
 
     /**
      * 代码生成上下文
