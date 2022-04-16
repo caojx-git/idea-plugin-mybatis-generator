@@ -1,122 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.caojx.idea.plugin.ui.GeneratorSettingUI">
-  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="997" height="630"/>
+      <xy x="20" y="20" width="842" height="746"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="644a8" layout-manager="GridLayoutManager" row-count="6" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="a7a75" layout-manager="GridLayoutManager" row-count="8" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none" title="基础配置"/>
         <children>
-          <component id="666e1" class="javax.swing.JLabel">
+          <component id="4c510" class="javax.swing.JLabel">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="33" height="16"/>
-              </grid>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="框架类型"/>
+            </properties>
+          </component>
+          <component id="1f31d" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="项目路径"/>
             </properties>
           </component>
-          <component id="28c68" class="javax.swing.JLabel">
+          <component id="cb03b" class="javax.swing.JLabel">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="33" height="16"/>
-              </grid>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="entity 路径"/>
+              <text value="entity路径"/>
             </properties>
           </component>
-          <component id="90e49" class="javax.swing.JTextField" binding="entityPath">
+          <component id="fa866" class="javax.swing.JLabel">
             <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="777" height="30"/>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="entity包名"/>
+            </properties>
+          </component>
+          <component id="54a6" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="mapper路径"/>
+            </properties>
+          </component>
+          <component id="5f2a8" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="mapper包名"/>
+            </properties>
+          </component>
+          <component id="3a0e1" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="mapperXml路径"/>
+            </properties>
+          </component>
+          <component id="29a9f" class="javax.swing.JTextField" binding="projectPathTf">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
             <properties/>
           </component>
-          <component id="5dca8" class="javax.swing.JLabel">
+          <component id="4d7bf" class="javax.swing.JTextField" binding="entityPathTf">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="33" height="16"/>
-              </grid>
-            </constraints>
-            <properties>
-              <text value="entity 包名"/>
-            </properties>
-          </component>
-          <component id="2b2f0" class="javax.swing.JTextField" binding="entityPackage">
-            <constraints>
-              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="777" height="30"/>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
             <properties/>
           </component>
-          <component id="78c1f" class="javax.swing.JLabel">
+          <component id="2c5aa" class="javax.swing.JTextField" binding="entityPackageTf">
             <constraints>
-              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="33" height="16"/>
-              </grid>
-            </constraints>
-            <properties>
-              <text value="mapper 路径"/>
-            </properties>
-          </component>
-          <component id="a03d5" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="33" height="16"/>
-              </grid>
-            </constraints>
-            <properties>
-              <text value="mapper 包名"/>
-            </properties>
-          </component>
-          <component id="98e53" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="33" height="16"/>
-              </grid>
-            </constraints>
-            <properties>
-              <text value="mapperXml 路径"/>
-            </properties>
-          </component>
-          <component id="a8ff9" class="javax.swing.JTextField" binding="mapperPath">
-            <constraints>
-              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="777" height="30"/>
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
             <properties/>
           </component>
-          <component id="c2871" class="javax.swing.JTextField" binding="mapperXmlPath">
+          <component id="70fc9" class="javax.swing.JTextField" binding="mapperPathTf">
             <constraints>
-              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="777" height="30"/>
+              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
             <properties/>
           </component>
-          <component id="fe5b5" class="javax.swing.JTextField" binding="mapperPackage">
+          <component id="f0100" class="javax.swing.JTextField" binding="mapperPackageTf">
             <constraints>
-              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="777" height="30"/>
+              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
             <properties/>
           </component>
-          <component id="8cfc7" class="javax.swing.JButton" binding="mapperPathBtn">
+          <component id="4a0b5" class="javax.swing.JTextField" binding="mapperXmlPathTf">
+            <constraints>
+              <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="259bd" class="javax.swing.JButton" binding="entityPathBtn">
             <constraints>
               <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -124,15 +130,7 @@
               <text value="..."/>
             </properties>
           </component>
-          <component id="6d42" class="javax.swing.JButton" binding="entityPathBtn">
-            <constraints>
-              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="..."/>
-            </properties>
-          </component>
-          <component id="251d5" class="javax.swing.JButton" binding="mapperXmlPathBtn">
+          <component id="87fe4" class="javax.swing.JButton" binding="mapperPathBtn">
             <constraints>
               <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -140,78 +138,29 @@
               <text value="..."/>
             </properties>
           </component>
-          <component id="4b039" class="javax.swing.JTextField" binding="projectBasePath">
+          <component id="8d38e" class="javax.swing.JButton" binding="mapperXmlPathBtn">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="777" height="30"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-        </children>
-      </grid>
-      <grid id="23891" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
-        <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties/>
-        <border type="none" title="数据库"/>
-        <children>
-          <grid id="225b1" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <scrollpane id="1faa6">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties/>
-                <border type="none"/>
-                <children>
-                  <component id="2226e" class="javax.swing.JTable" binding="table">
-                    <constraints/>
-                    <properties/>
-                  </component>
-                </children>
-              </scrollpane>
-            </children>
-          </grid>
-          <component id="2477f" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="数据库"/>
+              <text value="..."/>
             </properties>
           </component>
-          <component id="7a0d7" class="javax.swing.JComboBox" binding="databaseComBox">
+          <component id="f575b" class="javax.swing.JComboBox" binding="frameworkTypeComboBox">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
           </component>
-          <component id="366a9" class="javax.swing.JButton" binding="configDataBaseBtn">
-            <constraints>
-              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="配置数据库"/>
-            </properties>
-          </component>
-          <component id="7db84" class="javax.swing.JLabel">
+          <component id="8e1cb" class="javax.swing.JLabel">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="表"/>
+              <text value="生成作者"/>
             </properties>
           </component>
-          <component id="b8dfe" class="javax.swing.JTextField" binding="tableNameRegex">
+          <component id="31699" class="javax.swing.JTextField" binding="authorTf">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -219,244 +168,213 @@
             </constraints>
             <properties/>
           </component>
-          <component id="9ffdd" class="javax.swing.JButton" binding="selectTableBtn">
-            <constraints>
-              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="查询表名"/>
-            </properties>
-          </component>
         </children>
       </grid>
-      <tabbedpane id="4612c">
+      <tabbedpane id="b569b" binding="tabbedPanel">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="200" height="212"/>
+            <preferred-size width="200" height="200"/>
           </grid>
         </constraints>
         <properties/>
         <border type="none" title="扩展配置"/>
         <children>
-          <grid id="1f918" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="fb88b" layout-manager="GridLayoutManager" row-count="4" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Entity"/>
+              <tabbedpane title="entity"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <component id="dcb46" class="javax.swing.JLabel">
+              <component id="11bfc" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="entity命名格式"/>
                 </properties>
               </component>
-              <component id="f0ec4" class="javax.swing.JTextField" binding="entityNamePattern">
+              <vspacer id="6d826">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="1e6b4" class="javax.swing.JTextField" binding="entityNamePatternTf">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
                 <properties/>
               </component>
-              <component id="4e51b" class="javax.swing.JCheckBox" binding="lombokData">
+              <component id="c4eea" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="269" height="21"/>
-                  </grid>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="lombok 注解"/>
+                </properties>
+              </component>
+              <component id="88f5" class="javax.swing.JCheckBox" binding="dataCheckBox">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Data"/>
                 </properties>
               </component>
-              <component id="df225" class="javax.swing.JCheckBox" binding="lombokBuilder">
+              <component id="866ae" class="javax.swing.JCheckBox" binding="builderCheckBox">
                 <constraints>
-                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="234" height="21"/>
-                  </grid>
+                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Builder"/>
                 </properties>
               </component>
-              <component id="13502" class="javax.swing.JLabel">
+              <component id="3b0ab" class="javax.swing.JCheckBox" binding="noArgsConstructorCheckBox">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Lombok"/>
-                </properties>
-              </component>
-              <component id="1135f" class="javax.swing.JCheckBox" binding="lombokNoArgsConstructor">
-                <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="269" height="21"/>
-                  </grid>
+                  <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="NoArgsConstructor"/>
                 </properties>
               </component>
-              <component id="65f4" class="javax.swing.JCheckBox" binding="lombokAllArgsConstructor">
+              <component id="81b6d" class="javax.swing.JCheckBox" binding="allArgsConstructorCheckBox">
                 <constraints>
-                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="234" height="21"/>
-                  </grid>
+                  <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="AllArgsConstructor"/>
                 </properties>
               </component>
-            </children>
-          </grid>
-          <grid id="dcb97" layout-manager="GridLayoutManager" row-count="7" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <tabbedpane title="Mapper"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="3db11" class="javax.swing.JLabel">
+              <component id="e2837" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="mapper 命名格式"/>
+                  <text value="entity是否生成"/>
                 </properties>
               </component>
-              <component id="d5f0e" class="javax.swing.JTextField" binding="mapperNamePattern">
+              <component id="76949" class="javax.swing.JCheckBox" binding="entityGenerateCheckBox">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="12b4d" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="生成方法"/>
+                  <text value="生成"/>
                 </properties>
               </component>
-              <component id="51d61" class="javax.swing.JCheckBox" binding="selectByExampleWithBLOBs">
-                <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="selectByExampleWithBLOBs"/>
-                </properties>
-              </component>
-              <component id="419b5" class="javax.swing.JCheckBox" binding="insert">
-                <constraints>
-                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="insert"/>
-                </properties>
-              </component>
-              <component id="c5d1" class="javax.swing.JCheckBox" binding="updateByExample">
-                <constraints>
-                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="updateByExample"/>
-                </properties>
-              </component>
-              <component id="1d956" class="javax.swing.JLabel">
+            </children>
+          </grid>
+          <grid id="9415f" layout-manager="GridLayoutManager" row-count="8" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="mapper"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="62cdb" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="superMapperClass"/>
+                  <text value="mapper命名格式"/>
                 </properties>
               </component>
-              <component id="c1fc5" class="javax.swing.JTextField" binding="superMapperClass">
+              <component id="e3f41" class="javax.swing.JTextField" binding="mapperNamePatternTf">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value=""/>
+                </properties>
               </component>
-              <component id="2ddf9" class="javax.swing.JCheckBox" binding="selectByExample">
+              <component id="e5334" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="superMapperClass"/>
+                </properties>
+              </component>
+              <component id="bfd1e" class="javax.swing.JTextField" binding="superMapperClassTf">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="ab3de" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="mapper生成方法"/>
+                </properties>
+              </component>
+              <component id="b4a94" class="javax.swing.JCheckBox" binding="selectByExampleWithBLOBsCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="selectByExampleWithBLOBs"/>
+                </properties>
+              </component>
+              <component id="4765f" class="javax.swing.JCheckBox" binding="selectByExampleCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="selectByExample"/>
                 </properties>
               </component>
-              <component id="4fb31" class="javax.swing.JCheckBox" binding="insertSelective">
+              <component id="be9a2" class="javax.swing.JCheckBox" binding="selectByPrimaryKeyCheckBox" default-binding="true">
                 <constraints>
-                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="insertSelective"/>
-                </properties>
-              </component>
-              <component id="865f" class="javax.swing.JCheckBox" binding="updateByPrimaryKeySelective">
-                <constraints>
-                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="updateByPrimaryKeySelective"/>
-                </properties>
-              </component>
-              <component id="837d6" class="javax.swing.JCheckBox" binding="selectByPrimaryKey">
-                <constraints>
-                  <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="selectByPrimaryKey"/>
                 </properties>
               </component>
-              <component id="b5d0" class="javax.swing.JCheckBox" binding="countByExample">
+              <component id="ab85e" class="javax.swing.JCheckBox" binding="insertCheckBox" default-binding="true">
                 <constraints>
-                  <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="insert"/>
+                </properties>
+              </component>
+              <component id="282d9" class="javax.swing.JCheckBox" binding="insertSelectiveCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="insertSelective"/>
+                </properties>
+              </component>
+              <component id="78163" class="javax.swing.JCheckBox" binding="countByExampleCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="countByExample"/>
                 </properties>
               </component>
-              <component id="298e8" class="javax.swing.JCheckBox" binding="updateByPrimaryKey">
-                <constraints>
-                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="updateByPrimaryKey"/>
-                </properties>
-              </component>
-              <component id="9b93c" class="javax.swing.JCheckBox" binding="updateByExampleWithBLOBs">
-                <constraints>
-                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="updateByExampleWithBLOBs"/>
-                </properties>
-              </component>
-              <component id="507a4" class="javax.swing.JCheckBox" binding="updateByPrimaryKeyWithBLOBs">
-                <constraints>
-                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="updateByPrimaryKeyWithBLOBs"/>
-                </properties>
-              </component>
-              <component id="13254" class="javax.swing.JCheckBox" binding="deleteByExample">
+              <component id="a25" class="javax.swing.JCheckBox" binding="updateByExampleCheckBox" default-binding="true">
                 <constraints>
                   <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="deleteByExample"/>
+                  <text value="updateByExample"/>
                 </properties>
               </component>
-              <component id="22bfb" class="javax.swing.JCheckBox" binding="updateByExampleSelective">
+              <component id="c5015" class="javax.swing.JCheckBox" binding="updateByExampleSelectiveCheckBox" default-binding="true">
                 <constraints>
                   <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -464,93 +382,149 @@
                   <text value="updateByExampleSelective"/>
                 </properties>
               </component>
-              <component id="94ef7" class="javax.swing.JCheckBox" binding="deleteByPrimaryKey">
+              <component id="5d63e" class="javax.swing.JCheckBox" binding="updateByPrimaryKeyCheckBox" default-binding="true">
                 <constraints>
                   <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="updateByPrimaryKey"/>
+                </properties>
+              </component>
+              <component id="976c5" class="javax.swing.JCheckBox" binding="updateByPrimaryKeySelectiveCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="updateByPrimaryKeySelective"/>
+                </properties>
+              </component>
+              <component id="d7d23" class="javax.swing.JCheckBox" binding="updateByExampleWithBLOBsCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="updateByExampleWithBLOBs"/>
+                </properties>
+              </component>
+              <component id="937" class="javax.swing.JCheckBox" binding="updateByPrimaryKeyWithBLOBsCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="updateByPrimaryKeyWithBLOBs"/>
+                </properties>
+              </component>
+              <component id="80476" class="javax.swing.JCheckBox" binding="deleteByExampleCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="deleteByExample"/>
+                </properties>
+              </component>
+              <component id="e51f6" class="javax.swing.JCheckBox" binding="deleteByPrimaryKeyCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="deleteByPrimaryKey"/>
                 </properties>
               </component>
-            </children>
-          </grid>
-          <grid id="b9d9f" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <tabbedpane title="MapperXml"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="43b9b" class="javax.swing.JLabel">
+              <component id="7214a" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="mapperXml 命名格式"/>
+                  <text value="mapper是否生成"/>
                 </properties>
               </component>
-              <vspacer id="2e01a">
+              <component id="8c356" class="javax.swing.JCheckBox" binding="mapperGenerateCheckBox">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
-              </vspacer>
-              <component id="28f3d" class="javax.swing.JTextField" binding="mapperXmlNamePattern">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
+                <properties>
+                  <text value="生成"/>
+                </properties>
               </component>
             </children>
           </grid>
-          <grid id="8ebf3" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="f62dd" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Service"/>
+              <tabbedpane title="mapperXml"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <component id="37a43" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="service 路径"/>
-                </properties>
-              </component>
-              <vspacer id="78737">
-                <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                </constraints>
-              </vspacer>
-              <component id="39703" class="javax.swing.JTextField" binding="servicePath">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="df47e" class="javax.swing.JButton" binding="servicePathBtn">
-                <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="..."/>
-                </properties>
-              </component>
-              <component id="71ff0" class="javax.swing.JLabel">
+              <component id="8ccd" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="service 包名"/>
+                  <text value="mapperXml命名格式"/>
                 </properties>
               </component>
-              <component id="15b2f" class="javax.swing.JTextField" binding="servicePackage">
+              <vspacer id="5df3d">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="daa0d" class="javax.swing.JTextField" binding="mapperXmlNamePatternTf">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="1" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="8ee30" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="                    "/>
+                </properties>
+              </component>
+              <component id="3bc4a" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="mapperXml是否生成"/>
+                </properties>
+              </component>
+              <component id="28af9" class="javax.swing.JCheckBox" binding="mapperXmlGenerateCheckBox">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="生成"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="617a0" layout-manager="GridLayoutManager" row-count="6" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="service"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="e66b2" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="service路径"/>
+                </properties>
+              </component>
+              <vspacer id="95fce">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="ace02" class="javax.swing.JTextField" binding="servicePathTf">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -558,15 +532,15 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="511bd" class="javax.swing.JLabel">
+              <component id="c8902" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="service 命名格式"/>
+                  <text value="service包名"/>
                 </properties>
               </component>
-              <component id="a70ea" class="javax.swing.JTextField" binding="serviceNamePattern">
+              <component id="4390a" class="javax.swing.JTextField" binding="servicePackageTf">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -574,192 +548,338 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="79aa0" class="javax.swing.JLabel">
+              <component id="81b81" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="service命名格式"/>
+                </properties>
+              </component>
+              <component id="1df7f" class="javax.swing.JTextField" binding="serviceNamePatternTf">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="ba18f" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="superServiceClass"/>
                 </properties>
               </component>
-              <component id="dbda2" class="javax.swing.JTextField" binding="superServiceClass">
+              <component id="24214" class="javax.swing.JTextField" binding="superServiceClassTf">
                 <constraints>
-                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
                 <properties/>
               </component>
-            </children>
-          </grid>
-          <grid id="a287c" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <tabbedpane title="ServiceImpl"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="e6252" class="javax.swing.JLabel">
+              <component id="367dd" class="javax.swing.JButton" binding="servicePathBtn">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="serviceImpl 路径"/>
-                </properties>
-              </component>
-              <component id="b5b6b" class="javax.swing.JTextField" binding="serviceImplPath">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="7b7db" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="serviceImpl 包名"/>
-                </properties>
-              </component>
-              <component id="65d0d" class="javax.swing.JTextField" binding="serviceImplPackage">
-                <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="f67c" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="serviceImpl 命名格式"/>
-                </properties>
-              </component>
-              <component id="c8f2b" class="javax.swing.JTextField" binding="serviceImplNamePattern">
-                <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="d94d0" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="supperServiceImplClass"/>
-                </properties>
-              </component>
-              <component id="46799" class="javax.swing.JTextField" binding="supperServiceImplClass">
-                <constraints>
-                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="e7b35" class="javax.swing.JButton" binding="serviceImplPathBtn">
-                <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="..."/>
                 </properties>
               </component>
-            </children>
-          </grid>
-          <grid id="85b62" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <tabbedpane title="Controller"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="13d3e" class="javax.swing.JLabel">
+              <component id="66e44" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="controller 路径"/>
+                  <text value="service是否生成"/>
                 </properties>
               </component>
-              <component id="8698e" class="javax.swing.JTextField" binding="controllerPath">
+              <component id="6f2e3" class="javax.swing.JCheckBox" binding="serviceGenerateCheckBox">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="757" height="30"/>
-                  </grid>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value="生成"/>
+                </properties>
               </component>
-              <component id="fd630" class="javax.swing.JLabel">
+            </children>
+          </grid>
+          <grid id="6135a" layout-manager="GridLayoutManager" row-count="6" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="serviceImpl"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="e78e4" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="controller 包名"/>
+                  <text value="serviceImpl路径"/>
                 </properties>
               </component>
-              <component id="9456e" class="javax.swing.JTextField" binding="controllerPackage">
+              <vspacer id="163ad">
                 <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="757" height="30"/>
-                  </grid>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
-              </component>
-              <component id="f27c6" class="javax.swing.JLabel">
+              </vspacer>
+              <component id="afaa4" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="controller 命名格式"/>
+                  <text value="serviceImpl包名"/>
                 </properties>
               </component>
-              <component id="8c8b8" class="javax.swing.JTextField" binding="controllerNamePattern">
+              <component id="f61d1" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="757" height="30"/>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="serviceImpl命名格式"/>
+                </properties>
+              </component>
+              <component id="20733" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="superServiceImplClass"/>
+                </properties>
+              </component>
+              <component id="be76f" class="javax.swing.JTextField" binding="serviceImplPathTf">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
                 <properties/>
               </component>
-              <component id="5ccad" class="javax.swing.JCheckBox" binding="controllerSwagger">
+              <component id="3432f" class="javax.swing.JTextField" binding="serviceImplPackageTf">
                 <constraints>
-                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="757" height="21"/>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
                   </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="fec3b" class="javax.swing.JTextField" binding="serviceImplNamePatternTf">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="9721" class="javax.swing.JTextField" binding="superServiceImplClassTf">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="32ba" class="javax.swing.JButton" binding="serviceImplPathBtn">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="..."/>
+                </properties>
+              </component>
+              <component id="4ca93" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="serviceImpl是否生成"/>
+                </properties>
+              </component>
+              <component id="3bc62" class="javax.swing.JCheckBox" binding="serviceImplGenerateCheckBox">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="生成"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="adb1e" layout-manager="GridLayoutManager" row-count="6" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="controller"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="38937" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="controller路径"/>
+                </properties>
+              </component>
+              <vspacer id="be48d">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="c3d76" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="controller包名"/>
+                </properties>
+              </component>
+              <component id="295b2" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="controller命名格式"/>
+                </properties>
+              </component>
+              <component id="315e1" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="swagger注解"/>
+                </properties>
+              </component>
+              <component id="82849" class="javax.swing.JTextField" binding="controllerPathTf">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="f3367" class="javax.swing.JTextField" binding="controllerPackageTf">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="c05d5" class="javax.swing.JTextField" binding="controllerNamePatternTf">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="68855" class="javax.swing.JCheckBox" binding="controllerSwaggerCheckBox">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="生成swagger注解"/>
                 </properties>
               </component>
-              <component id="b6d8d" class="javax.swing.JLabel">
+              <component id="436bb" class="javax.swing.JButton" binding="controllerPathBtn">
                 <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="swagger"/>
-                </properties>
-              </component>
-              <component id="d8b1a" class="javax.swing.JButton" binding="controllerPathBtn">
-                <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="..."/>
+                </properties>
+              </component>
+              <component id="89ca6" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="controller是否生成"/>
+                </properties>
+              </component>
+              <component id="381b3" class="javax.swing.JCheckBox" binding="controllerGenerateCheckBox">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="生成"/>
                 </properties>
               </component>
             </children>
           </grid>
         </children>
       </tabbedpane>
+      <grid id="181df" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none" title="表查询"/>
+        <children>
+          <component id="18cdf" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="数据库"/>
+            </properties>
+          </component>
+          <component id="54df" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="表"/>
+            </properties>
+          </component>
+          <component id="3e0fc" class="javax.swing.JComboBox" binding="databaseComboBox">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="43e5d" class="javax.swing.JTextField" binding="tableNameRegexTf">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="40cfa" class="javax.swing.JButton" binding="selectTableBtn">
+            <constraints>
+              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="查询表"/>
+            </properties>
+          </component>
+          <component id="5259b" class="javax.swing.JButton" binding="configDataBaseBtn">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="配置数据库"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <component id="ec794" class="javax.swing.JTable" binding="table">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
     </children>
   </grid>
 </form>

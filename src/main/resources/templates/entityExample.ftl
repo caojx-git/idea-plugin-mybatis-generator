@@ -1,18 +1,18 @@
-package ${package};
+package ${entityExamplePackage};
 
 import java.util.ArrayList;
 import java.util.List;
-<#list imports as import>
+<#list entityImportPackages as import>
 import ${import};
 </#list>
 
 /**
-* 注释${comment!""} Example
+* 注释${table.comment!} Example
 *
-* @author ${author!""}
+* @author ${author!}
 * @date ${.now?string("yyyy-MM-dd HH:mm")}
 */
-public class ${simpleName}Example {
+public class ${entityExampleName} {
 
     protected String orderByClause;
 
@@ -20,7 +20,7 @@ public class ${simpleName}Example {
 
     protected List<Criteria> oredCriteria;
 
-    public ${simpleName}Example() {
+    public ${entityExampleName}() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -114,7 +114,7 @@ public class ${simpleName}Example {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-<#list fields as field>
+<#list table.fields as field>
         public Criteria and${field.name?cap_first}IsNull() {
             addCriterion("${field.name} is null");
             return (Criteria) this;
@@ -174,8 +174,8 @@ public class ${simpleName}Example {
             addCriterion("${field.name} not between", value1, value2, "${field.name}");
             return (Criteria) this;
         }
-</#list>        
-        
+</#list>
+
     }
 
     public static class Criteria extends GeneratedCriteria {

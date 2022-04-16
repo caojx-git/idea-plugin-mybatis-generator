@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="${fullClazzName}">
+<mapper namespace="${mapperFullClazzName}">
 
-  <resultMap id="BaseResultMap" type="${entity.fullClazzName}">
-    <#list entity.fields as field>
-     <#if field.id>
+  <resultMap id="BaseResultMap" type="${entityFullClazzName}">
+    <#list table.fields as field>
+     <#if field.primaryKeyFlag>
     <id column="${field.columnName}" jdbcType="${field.jdbcType}" property="${field.name}"/>
-     <#elseif !field.BLOB>
+     <#elseif !field.blobFlag>
     <result column="${field.columnName}" jdbcType="${field.jdbcType}" property="${field.name}"/>
      </#if>
     </#list>
   </resultMap>
 
-  <#if entity.containBLOBField>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="${entity.fullClazzName}">
-    <#list entity.fields as field>
-      <#if field.BLOB>
+  <#if table.haveBlobField>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="${entityFullClazzName}">
+    <#list table.fields as field>
+      <#if field.blobFlag>
     <result column="${field.columnName}" jdbcType="${field.jdbcType}" property="${field.name}"/>
       </#if>
     </#list>
   </resultMap>
   </#if>
-
+  <#if generateEntityExample>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -81,19 +81,20 @@
       </foreach>
     </where>
   </sql>
+  </#if>
 
   <sql id="Base_Column_List">
-    <#list entity.fields as field><#if !field.BLOB>${field.columnName}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#list>
+    <#list table.fields as field><#if !field.blobFlag>${field.columnName}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#list>
   </sql>
 
-  <#if entity.containBLOBField>
+  <#if table.haveBlobField>
   <sql id="Blob_Column_List">
-    <#list entity.BLOBFields as field><#if field.BLOB>${field.columnName}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#list>
+    <#list table.blobFields as field><#if field.blobFlag>${field.columnName}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#list>
   </sql>
   </#if>
 
-  <#if entity.containBLOBField>
-  <select id="selectByExampleWithBLOBs" parameterType="${entity.fullClazzName}Example" resultMap="ResultMapWithBLOBs">
+  <#if selectByExampleWithBLOBsCheckBoxValue && table.haveBlobField>
+  <select id="selectByExampleWithBLOBs" parameterType="${entityExampleName}" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
@@ -102,7 +103,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from ${entity.tableName}
+    from ${table.name}
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -111,15 +112,15 @@
     </if>
   </select>
   </#if>
-
-  <select id="selectByExample" parameterType="${entity.fullClazzName}Example" resultMap="BaseResultMap">
+  <#if selectByExampleCheckBoxValue>
+  <select id="selectByExample" parameterType="${entityExampleName}" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
-    from ${entity.tableName}
+    from ${table.name}
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -127,100 +128,104 @@
       order by <#noparse>${orderByClause</#noparse>}
     </if>
   </select>
-
-  <#if !entity.containBLOBField>
-  <select id="selectByPrimaryKey" parameterType="${entity.idType}" resultMap="BaseResultMap">
+</#if>
+  <#if selectByPrimaryKeyCheckBoxValue && !table.haveBlobField>
+  <select id="selectByPrimaryKey" parameterType="${table.primaryKeyType}" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from ${entity.tableName}
-    <#list entity.fields as field>
-    <#if field.id>
+    from ${table.name}
+    <#list table.fields as field>
+    <#if field.primaryKeyFlag>
     where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
     </#if>
     </#list>
   </select>
   </#if>
-
-  <#if entity.containBLOBField>
-  <select id="selectByPrimaryKey" parameterType="${entity.idType}" resultMap="ResultMapWithBLOBs">
+  <#if selectByPrimaryKeyCheckBoxValue && table.haveBlobField>
+  <select id="selectByPrimaryKey" parameterType="${table.primaryKeyType}" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from ${entity.tableName}
-    <#list entity.fields as field>
-      <#if field.id>
+    from ${table.name}
+    <#list table.fields as field>
+      <#if field.primaryKeyFlag>
     where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
       </#if>
     </#list>
   </select>
   </#if>
-
-  <delete id="deleteByPrimaryKey" parameterType="${entity.idType}">
-    delete from ${entity.tableName}
-    <#list entity.fields as field>
-    <#if field.id>
+ <#if deleteByPrimaryKeyCheckBoxValue>
+  <delete id="deleteByPrimaryKey" parameterType="${table.primaryKeyType}">
+    delete from ${table.name}
+    <#list table.fields as field>
+    <#if field.primaryKeyFlag>
     where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
     </#if>
     </#list>
   </delete>
-
-  <delete id="deleteByExample" parameterType="${entity.fullClazzName}Example">
-    delete from ${entity.tableName}
+</#if>
+  <#if deleteByExampleCheckBoxValue>
+  <delete id="deleteByExample" parameterType="${entityExampleName}">
+    delete from ${table.name}
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-
-  <insert id="insert" parameterType="${entity.fullClazzName}">
-    <#list entity.fields as field>
-      <#if field.id>
+</#if>
+  <#if insertCheckBoxValue>
+  <insert id="insert" parameterType="${entityFullClazzName}">
+    <#list table.fields as field>
+      <#if field.primaryKeyFlag>
     <selectKey keyProperty="${field.columnName}" order="AFTER" resultType="${field.type.name}">
       SELECT LAST_INSERT_ID()
     </selectKey>
       </#if>
     </#list>
-    insert into ${entity.tableName}(<#list entity.fields as field>${field.columnName}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t","")}</#list>)
+    insert into ${table.name}(<#list table.fields as field>${field.columnName}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t","")}</#list>)
     values
-    (<#list entity.fields as field><#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t","")}</#list>)
+    (<#list table.fields as field><#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t","")}</#list>)
   </insert>
-
-  <insert id="insertSelective" parameterType="${entity.fullClazzName}">
-    <#list entity.fields as field>
-     <#if field.id>
+</#if>
+  <#if insertSelectiveCheckBoxValue>
+  <insert id="insertSelective" parameterType="${entityFullClazzName}">
+    <#list table.fields as field>
+     <#if field.primaryKeyFlag>
     <selectKey keyProperty="${field.columnName}" order="AFTER" resultType="${field.type.name}">
       SELECT LAST_INSERT_ID()
     </selectKey>
      </#if>
     </#list>
-    insert into ${entity.tableName}
+    insert into ${table.name}
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <#list entity.fields as field>
+      <#list table.fields as field>
       <if test="${field.name} != null">
         ${field.columnName}<#if field_has_next>,</#if>
       </if>
      </#list>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-     <#list entity.fields as field>
+     <#list table.fields as field>
       <if test="${field.name} != null">
         <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if>
       </if>
       </#list>
     </trim>
   </insert>
-
-  <select id="countByExample" parameterType="${entity.fullClazzName}Example" resultType="java.lang.Long">
-    select count(*) from ${entity.tableName}
+</#if>
+  <#if countByExampleCheckBoxValue>
+  <select id="countByExample" parameterType="${entityExampleName}" resultType="java.lang.Long">
+    select count(*) from ${table.name}
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-
+</#if>
+  <#if updateByExampleSelectiveCheckBoxValue>
   <update id="updateByExampleSelective" parameterType="map">
-    update ${entity.tableName}
+    update ${table.name}
     <set>
-      <#list entity.fields as field>
+      <#list table.fields as field>
       <if test="record.${field.name} != null">
        ${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if>
       </if>
@@ -230,13 +235,13 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-
-  <#if entity.containBLOBField>
+</#if>
+  <#if updateByExampleWithBLOBsCheckBoxValue && table.haveBlobField>
   <update id="updateByExampleWithBLOBs" parameterType="map">
-    update ${entity.tableName}
+    update ${table.name}
     set
-    <#list entity.fields as field>
-      <#if !field.id>
+    <#list table.fields as field>
+      <#if !field.primaryKeyFlag>
      ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if>
       </#if>
     </#list>
@@ -245,61 +250,63 @@
     </if>
   </update>
   </#if>
-
+  <#if updateByExampleCheckBoxValue>
   <update id="updateByExample" parameterType="map">
-    update ${entity.tableName}
+    update ${table.name}
     set
-    <#list entity.fields as field>${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if><#assign newLine=(field_index)%1 == 0>${newLine?string("\n\t","")}</#list>
+    <#list table.fields as field>${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if><#assign newLine=(field_index)%1 == 0>${newLine?string("\n\t","")}</#list>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-
-  <update id="updateByPrimaryKeySelective" parameterType="${entity.fullClazzName}">
-    update ${entity.tableName}
+</#if>
+  <#if updateByPrimaryKeySelectiveCheckBoxValue>
+  <update id="updateByPrimaryKeySelective" parameterType="${entityFullClazzName}">
+    update ${table.name}
     <set>
-     <#list entity.fields as field>
+     <#list table.fields as field>
       <if test="${field.name} != null">
         userId = <#noparse>#{</#noparse>${field.name},jdbcType=INTEGER}<#if field_has_next>,</#if>
       </if>
       </#list>
     </set>
-    <#list entity.fields as field>
-    <#if field.id>
+    <#list table.fields as field>
+    <#if field.primaryKeyFlag>
     where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
     </#if>
     </#list>
   </update>
-
-  <#if entity.containBLOBField>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.generator.test.entity.Film">
-    update ${entity.tableName}
+</#if>
+  <#if updateByPrimaryKeyWithBLOBsCheckBoxValue && table.haveBlobField>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="${entityFullClazzName}">
+    update ${table.name}
     set
-    <#list entity.fields as field>
-      <#if !field.id>
+    <#list table.fields as field>
+      <#if !field.primaryKeyFlag>
         ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if>
       </#if>
     </#list>
-    <#list entity.fields as field>
-      <#if field.id>
+    <#list table.fields as field>
+      <#if field.primaryKeyFlag>
      where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
       </#if>
     </#list>
   </update>
   </#if>
-
-  <update id="updateByPrimaryKey" parameterType="${entity.fullClazzName}">
-    update ${entity.tableName}
+  <#if updateByPrimaryKeyCheckBoxValue>
+  <update id="updateByPrimaryKey" parameterType="${entityFullClazzName}">
+    update ${table.name}
     set
-     <#list entity.fields as field>
-     <#if !field.id && !field.BLOB>
+     <#list table.fields as field>
+     <#if !field.primaryKeyFlag && !field.blobFlag>
        ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if>
       </#if>
       </#list>
-   <#list entity.fields as field>
-      <#if field.id>
+   <#list table.fields as field>
+      <#if field.primaryKeyFlag>
       where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
       </#if>
    </#list>
   </update>
+  </#if>
 </mapper>

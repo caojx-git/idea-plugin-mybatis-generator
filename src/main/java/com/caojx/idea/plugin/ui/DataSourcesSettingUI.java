@@ -1,8 +1,9 @@
 package com.caojx.idea.plugin.ui;
 
+import com.caojx.idea.plugin.common.pojo.model.Database;
 import com.caojx.idea.plugin.common.pojo.persistent.PersistentState;
+import com.caojx.idea.plugin.common.properties.CommonProperties;
 import com.caojx.idea.plugin.generator.PersistentStateService;
-import com.caojx.idea.plugin.common.pojo.db.Database;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
@@ -19,6 +20,9 @@ import java.util.Objects;
 
 /**
  * 数据源UI配置类
+ *
+ * @author caojx
+ * @date 2022/4/10 10:00 AM
  */
 public class DataSourcesSettingUI extends DialogWrapper {
     private JPanel mainPanel;
@@ -27,26 +31,89 @@ public class DataSourcesSettingUI extends DialogWrapper {
     private JButton deleteBtn;
     private JButton editBtn;
 
+    /**
+     * 项目
+     */
+    private Project project;
+
+    /**
+     * 代码生成配置UI
+     */
     private GeneratorSettingUI generatorSettingUI;
-    private PersistentState persistentState;
 
-    private String[] title = {"database", "host", "port", "type"};
-    private DefaultTableModel defaultTableModel;
+    /**
+     * 数据库列表
+     */
+    private List<Database> databases;
 
-
+    /**
+     * 选择的数据库名
+     */
     private String selectDatabaseName;
+
+    /**
+     * 表头
+     */
+    private final String[] title = {"database", "host", "port", "type"};
+
+    /**
+     * 表数据模型
+     */
+    private DefaultTableModel defaultTableModel;
 
     public DataSourcesSettingUI(Project project, GeneratorSettingUI generatorSettingUI) {
         super(true);
         init();
 
+        this.project = project;
         this.generatorSettingUI = generatorSettingUI;
 
-        this.persistentState = PersistentStateService.getInstance(project).getState();
+        // 初始化界面数据
+        renderUIData(project);
 
-        // 初始化数据库列表
-        initDataSourcesTable(persistentState.getDatabases());
+        // 创建事件监听器
+        initActionListener(project);
+    }
 
+    @Override
+    protected @Nullable JComponent createCenterPanel() {
+        return mainPanel;
+    }
+
+    @Override
+    protected JComponent createSouthPanel() {
+        return null;
+    }
+
+    /**
+     * 渲染UI数据
+     *
+     * @param project 项目
+     */
+    private void renderUIData(Project project) {
+        // 数据库列表
+        PersistentState persistentState = PersistentStateService.getInstance(project).getState();
+        CommonProperties commonProperties = persistentState.getGeneratorContext().getGeneratorProperties().getCommonProperties();
+        databases = commonProperties.getDatabases();
+
+        // 初始化表
+        Object[][] data = new Object[databases.size()][4];
+        for (int i = 0; i < databases.size(); i++) {
+            data[i][0] = databases.get(i).getDatabaseName();
+            data[i][1] = databases.get(i).getHost();
+            data[i][2] = databases.get(i).getPort();
+            data[i][3] = databases.get(i).getDatabaseType();
+        }
+        defaultTableModel = new DefaultTableModel(data, title);
+        dataSourcesTable.setModel(defaultTableModel);
+    }
+
+    /**
+     * 创建事件监听器
+     *
+     * @param project 项目
+     */
+    private void initActionListener(Project project) {
         // 监听表格选中的行
         dataSourcesTable.addMouseListener(new MouseAdapter() {
             @Override
@@ -64,12 +131,11 @@ public class DataSourcesSettingUI extends DialogWrapper {
                 Messages.showWarningDialog(project, "请选择需要删除的数据库", "Warning");
                 return;
             }
-            removeDatabaseByName(persistentState.getDatabases(), selectDatabaseName);
+            removeDatabaseByName(databases, selectDatabaseName);
             selectDatabaseName = "";
 
             // 刷新
-            refreshDatabaseTable(persistentState.getDatabases());
-            generatorSettingUI.refreshDatabaseComBox(persistentState.getDatabases());
+            generatorSettingUI.refreshDatabaseComBox(databases);
 
         });
 
@@ -80,7 +146,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
                 return;
             }
 
-            Database database = getDatabaseByName(persistentState.getDatabases(), selectDatabaseName);
+            Database database = getDatabaseByName(databases, selectDatabaseName);
             EditDatabaseSettingUI editDatabaseSettingUI = new EditDatabaseSettingUI(project, database, this);
             editDatabaseSettingUI.show();
 
@@ -94,33 +160,6 @@ public class DataSourcesSettingUI extends DialogWrapper {
         });
     }
 
-    @Override
-    protected @Nullable JComponent createCenterPanel() {
-        return mainPanel;
-    }
-
-    @Override
-    protected JComponent createSouthPanel() {
-        return null;
-    }
-
-    /**
-     * 初始化数据库表
-     *
-     * @param databases 数据库列表
-     */
-    private void initDataSourcesTable(List<Database> databases) {
-        Object[][] data = new Object[databases.size()][4];
-        for (int i = 0; i < databases.size(); i++) {
-            data[i][0] = databases.get(i).getDatabaseName();
-            data[i][1] = databases.get(i).getHost();
-            data[i][2] = databases.get(i).getPort();
-            data[i][3] = databases.get(i).getDatabaseType();
-        }
-        this.defaultTableModel = new DefaultTableModel(data, title);
-        dataSourcesTable.setModel(defaultTableModel);
-    }
-
     /**
      * 刷新数据库表
      *
@@ -128,7 +167,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
      */
     public void refreshDatabaseTable(List<Database> databases) {
         // 刷新数据库表
-        this.defaultTableModel.setDataVector(null, title);
+        defaultTableModel.setDataVector(null, title);
         databases.forEach(database -> {
             Object[] row = new Object[4];
             row[0] = database.getDatabaseName();
@@ -139,7 +178,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
         });
 
         // 刷新数据库选择下拉框
-        this.generatorSettingUI.refreshDatabaseComBox(databases);
+        generatorSettingUI.refreshDatabaseComBox(databases);
     }
 
     /**
@@ -171,6 +210,4 @@ public class DataSourcesSettingUI extends DialogWrapper {
             }
         }
     }
-
-
 }

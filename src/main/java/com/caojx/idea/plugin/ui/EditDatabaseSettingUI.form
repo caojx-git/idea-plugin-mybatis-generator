@@ -21,7 +21,7 @@
           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
-      <component id="a0cdd" class="javax.swing.JComboBox" binding="databaseType">
+      <component id="a0cdd" class="javax.swing.JComboBox" binding="databaseTypeComboBox">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -35,7 +35,7 @@
           <text value="Host"/>
         </properties>
       </component>
-      <component id="4f597" class="javax.swing.JTextField" binding="host">
+      <component id="4f597" class="javax.swing.JTextField" binding="hostTf">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -51,7 +51,7 @@
           <text value="port"/>
         </properties>
       </component>
-      <component id="eab7f" class="javax.swing.JTextField" binding="port">
+      <component id="eab7f" class="javax.swing.JTextField" binding="portTf">
         <constraints>
           <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -69,7 +69,7 @@
           <text value="数据库"/>
         </properties>
       </component>
-      <component id="1a4cc" class="javax.swing.JTextField" binding="databaseName">
+      <component id="1a4cc" class="javax.swing.JTextField" binding="databaseNameTf">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -85,7 +85,7 @@
           <text value="username"/>
         </properties>
       </component>
-      <component id="a2da1" class="javax.swing.JTextField" binding="userName">
+      <component id="a2da1" class="javax.swing.JTextField" binding="userNameTf">
         <constraints>
           <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -117,7 +117,7 @@
           <text value="测试连接"/>
         </properties>
       </component>
-      <component id="ae7c1" class="javax.swing.JPasswordField" binding="password">
+      <component id="ae7c1" class="javax.swing.JPasswordField" binding="passwordTf">
         <constraints>
           <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>

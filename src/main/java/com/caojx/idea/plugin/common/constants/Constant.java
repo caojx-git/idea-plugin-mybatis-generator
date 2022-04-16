@@ -5,7 +5,8 @@ import java.nio.charset.StandardCharsets;
 /**
  * 常量类
  *
- * @author caojx created on 2021/4/6 10:56 上午
+ * @author caojx
+ * @date 2022/4/10 4:00 PM
  */
 public interface Constant {
 
@@ -37,7 +38,7 @@ public interface Constant {
     /**
      * 实体默认文件名格式，注意 %s 会自动填充表原始实体名称
      */
-    String ENTITY_NAME_DEFAULT_FORMAT = "%s";
+    String ENTITY_NAME_DEFAULT_FORMAT = "%sEntity";
 
     /**
      * 实体默认文件名格式，注意 %s 会自动填充表原始实体名称
@@ -52,7 +53,7 @@ public interface Constant {
     /**
      * mapper.xml默认文件名格式，注意 %s 会自动填充表原始实体名称
      */
-    String XML_NAME_DEFAULT_FORMAT = "%sMapper";
+    String MAPPER_XML_NAME_DEFAULT_FORMAT = "%sMapper";
 
     /**
      * service默认文件名格式，注意 %s 会自动填充表原始实体名称
@@ -68,4 +69,39 @@ public interface Constant {
      * controller默认文件名格式，注意 %s 会自动填充表原始实体名称
      */
     String CONTROLLER_NAME_DEFAULT_FORMAT = "%sController";
+
+    /**
+     * entity模板路径
+     */
+    String ENTITY_TEMPLATE_PATH = "/templates/entity.ftl";
+
+    /**
+     * entityExample模板路径
+     */
+    String ENTITY_EXAMPLE_TEMPLATE_PATH = "/templates/entityExample.ftl";
+
+    /**
+     * mapper模板路径
+     */
+    String MAPPER_TEMPLATE_PATH = "/templates/mapper.ftl";
+
+    /**
+     * mapperXml实体模板路径
+     */
+    String MAPPER_XML_TEMPLATE_PATH = "/templates/mapperXml.ftl";
+
+    /**
+     * service模板路径
+     */
+    String SERVICE_TEMPLATE_PATH = "/templates/service.ftl";
+
+    /**
+     * serviceImpl 模板路径
+     */
+    String SERVICE_IMPL_TEMPLATE_PATH = "/templates/serviceImpl.ftl";
+
+    /**
+     * controller模板路径
+     */
+    String CONTROLLER_TEMPLATE_PATH = "/templates/controller.ftl";
 }

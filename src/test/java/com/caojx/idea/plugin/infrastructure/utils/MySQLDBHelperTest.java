@@ -1,8 +1,8 @@
 package com.caojx.idea.plugin.infrastructure.utils;
 
 import com.caojx.idea.plugin.common.utils.MySQLDBHelper;
-import com.caojx.idea.plugin.common.pojo.db.Database;
-import com.caojx.idea.plugin.common.pojo.db.Table;
+import com.caojx.idea.plugin.common.pojo.model.Database;
+import com.caojx.idea.plugin.common.pojo.model.TableInfo;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class MySQLDBHelperTest {
 
         MySQLDBHelper mySQLDBHelper = new MySQLDBHelper(database);
 
-        Table yeecode = mySQLDBHelper.getTable("task");
+        TableInfo yeecode = mySQLDBHelper.getTableInfo("task");
         System.out.println(yeecode);
 
         List<String> allTableName = mySQLDBHelper.getAllTableName(database.getDatabaseName());

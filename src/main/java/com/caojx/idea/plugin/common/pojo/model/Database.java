@@ -1,7 +1,10 @@
-package com.caojx.idea.plugin.common.pojo.db;
+package com.caojx.idea.plugin.common.pojo.model;
 
 /**
  * 数据库
+ *
+ * @author caojx
+ * @date 2022/4/10 4:00 PM
  */
 public class Database {
 

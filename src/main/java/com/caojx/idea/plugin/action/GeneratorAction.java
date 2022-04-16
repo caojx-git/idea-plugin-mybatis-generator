@@ -7,6 +7,12 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 
+/**
+ * 代码生成Action
+ *
+ * @author caojx
+ * @date 2022/4/10 4:00 PM
+ */
 public class GeneratorAction extends AnAction {
 
     @Override

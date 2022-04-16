@@ -11,6 +11,9 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * 持久化数据业务实现
+ *
+ * @author caojx
+ * @date 2022/4/4 12:57 PM
  */
 @State(name = "PersistentStateService", storages = @Storage("plugin.xml"))
 public class PersistentStateService implements PersistentStateComponent<PersistentState> {

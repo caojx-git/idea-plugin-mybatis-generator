@@ -9,6 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 类型处理
+ *
+ * @author caojx
+ * @date 2022/4/10 12:20 PM
  */
 public class TypeHandler {
 

@@ -1,8 +1,8 @@
 package com.caojx.idea.plugin.common.utils;
 
-import com.caojx.idea.plugin.common.pojo.db.Column;
-import com.caojx.idea.plugin.common.pojo.db.Database;
-import com.caojx.idea.plugin.common.pojo.db.Table;
+import com.caojx.idea.plugin.common.pojo.model.Database;
+import com.caojx.idea.plugin.common.pojo.model.TableField;
+import com.caojx.idea.plugin.common.pojo.model.TableInfo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,6 +12,9 @@ import java.util.Properties;
 
 /**
  * MySQL数据库工具类
+ *
+ * @author caojx
+ * @date 2022/4/10 12:20 PM
  */
 public class MySQLDBHelper {
 
@@ -111,7 +114,7 @@ public class MySQLDBHelper {
             ResultSet resultSet = metaData.getTables(null, null, tableNamePattern, new String[]{"TABLE"});
             List<String> tableNames = new ArrayList<>();
             while (resultSet.next()) {
-                if(resultSet.getString(4) != null  && resultSet.getString(4).equalsIgnoreCase("TABLE") ){
+                if (resultSet.getString(4) != null && resultSet.getString(4).equalsIgnoreCase("TABLE")) {
                     String tableName = resultSet.getString(3).toLowerCase();
                     tableNames.add(tableName);
                 }
@@ -130,19 +133,18 @@ public class MySQLDBHelper {
      * @param tableName 表名
      * @return 表信息
      */
-    public Table getTable(String tableName) {
+    public TableInfo getTableInfo(String tableName) {
         Connection conn = getConnection(this.database.getDatabaseName());
         try {
             DatabaseMetaData metaData = conn.getMetaData();
             ResultSet rs = metaData.getTables(null, "", tableName, new String[]{"TABLE"});
             if (rs.next()) {
-                // 列列表
-                List<Column> columns = getAllColumn(tableName, conn);
-                // 表备注
+                // 表注释
                 String remarks = rs.getString("REMARKS");
-
-                // 返回表
-                return new Table(tableName, columns, remarks);
+                // 列列表
+                List<TableField> fields = getAllTableField(tableName, conn);
+                // 返回表信息
+                return new TableInfo(tableName, remarks, fields);
             }
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
@@ -159,7 +161,7 @@ public class MySQLDBHelper {
      * @param connection 连接
      * @return 列列表
      */
-    public List<Column> getAllColumn(String tableName, Connection connection) {
+    public List<TableField> getAllTableField(String tableName, Connection connection) {
         try {
             DatabaseMetaData metaData = connection.getMetaData();
 
@@ -172,7 +174,7 @@ public class MySQLDBHelper {
 
             // 获取表中的所有列名
             ResultSet rs = metaData.getColumns(null, "%", tableName, "%");
-            List<Column> columns = new ArrayList<>();
+            List<TableField> fields = new ArrayList<>();
             while (rs.next()) {
                 // 列名
                 String columnName = rs.getString("COLUMN_NAME");
@@ -180,13 +182,18 @@ public class MySQLDBHelper {
                 String remarks = rs.getString("REMARKS");
                 // 字段类型
                 int dataType = rs.getInt("DATA_TYPE");
-                Column column = new Column(columnName, remarks, dataType);
+
+                // 是否为主键
+                boolean keyIdentityFlag = false;
                 if (Objects.nonNull(primaryKey) && columnName.endsWith(primaryKey)) {
-                    column.setId(true);
+                    keyIdentityFlag = true;
                 }
-                columns.add(column);
+
+                // 构建表属性
+                TableField tableField = new TableField(columnName, remarks, dataType, keyIdentityFlag);
+                fields.add(tableField);
             }
-            return columns;
+            return fields;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
