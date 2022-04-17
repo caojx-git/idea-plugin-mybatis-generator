@@ -113,6 +113,7 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
         objectMap.put("entityName", entityName);
         objectMap.put("entityFullClassName", FullClassName(entityProperties.getPackageName(), entityName));
         objectMap.put("entityImportPackages", tableInfo.getImportPackages());
+        objectMap.put("isSelectedSerializableCheckBox", entityProperties.isSelectedSerializableCheckBox());
         objectMap.put("isSelectedDataCheckBox", entityProperties.isSelectedDataCheckBox());
         objectMap.put("isSelectedBuilderCheckBox", entityProperties.isSelectedBuilderCheckBox());
         objectMap.put("isSelectedNoArgsConstructorCheckBox", entityProperties.isSelectedNoArgsConstructorCheckBox());

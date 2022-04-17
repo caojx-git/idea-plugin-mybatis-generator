@@ -96,6 +96,7 @@ public class GeneratorSettingUI extends DialogWrapper {
     private JCheckBox serviceImplGenerateCheckBox;
     private JCheckBox controllerGenerateCheckBox;
     private JTextField authorTf;
+    private JCheckBox serializableCheckBox;
 
     private JButton restConfigBtn;
     private JButton saveConfigBtn;
@@ -224,6 +225,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         entityPathTf.setText(entityProperties.getPath());
         entityPackageTf.setText(entityProperties.getPackageName());
         entityNamePatternTf.setText(StringUtils.isBlank(entityProperties.getNamePattern()) ? Constant.ENTITY_NAME_DEFAULT_FORMAT : entityProperties.getNamePattern());
+        serviceGenerateCheckBox.setSelected(entityProperties.isSelectedSerializableCheckBox());
         dataCheckBox.setSelected(entityProperties.isSelectedDataCheckBox());
         builderCheckBox.setSelected(entityProperties.isSelectedBuilderCheckBox());
         noArgsConstructorCheckBox.setSelected(entityProperties.isSelectedNoArgsConstructorCheckBox());
@@ -294,6 +296,76 @@ public class GeneratorSettingUI extends DialogWrapper {
         controllerPackageTf.setText(controllerProperties.getPackageName());
         controllerNamePatternTf.setText(StringUtils.isBlank(controllerProperties.getNamePattern()) ? Constant.CONTROLLER_NAME_DEFAULT_FORMAT : controllerProperties.getNamePattern());
         controllerSwaggerCheckBox.setSelected(controllerProperties.isSelectedSwaggerCheckBox());
+    }
+
+    /**
+     * 重置UI数据
+     */
+    private void restUIData() {
+        // entity 设置
+        entityGenerateCheckBox.setSelected(true);
+        entityPathTf.setText("");
+        entityPackageTf.setText("");
+        entityNamePatternTf.setText(Constant.ENTITY_NAME_DEFAULT_FORMAT);
+        serviceGenerateCheckBox.setSelected(false);
+        dataCheckBox.setSelected(true);
+        builderCheckBox.setSelected(false);
+        noArgsConstructorCheckBox.setSelected(false);
+        allArgsConstructorCheckBox.setSelected(false);
+
+        // mapper 设置
+        mapperGenerateCheckBox.setSelected(true);
+        mapperPathTf.setText("");
+        mapperPackageTf.setText("");
+        mapperNamePatternTf.setText(Constant.MAPPER_NAME_DEFAULT_FORMAT);
+        superMapperClassTf.setText("");
+        if (FrameworkTypeEnum.MYBATIS_PLUS.getFrameworkName().equals(frameworkTypeComboBox.getSelectedItem())) {
+            superMapperClassTf.setText(Constant.MYBATIS_PLUS_DEFAULT_SUPER_MAPPER_CLASS);
+        }
+        if (FrameworkTypeEnum.TK_MYBATIS.getFrameworkName().equals(frameworkTypeComboBox.getSelectedItem())) {
+            superMapperClassTf.setText(Constant.TK_MYBATIS_DEFAULT_SUPER_MAPPER_CLASS);
+        }
+
+        enableInsertCheckBox.setSelected(true);
+        enableSelectByPrimaryKeyCheckBox.setSelected(true);
+        enableSelectByExampleCheckBox.setSelected(false);
+        enableUpdateByPrimaryKeyCheckBox.setSelected(true);
+        enableUpdateByExampleCheckBox.setSelected(false);
+        enableDeleteByPrimaryKeyCheckBox.setSelected(false);
+        enableDeleteByExampleCheckBox.setSelected(false);
+        enableCountByExampleCheckBox.setSelected(false);
+
+        // mapperXml 设置
+        mapperXmlGenerateCheckBox.setSelected(true);
+        mapperXmlPathTf.setText("");
+        mapperXmlNamePatternTf.setText(Constant.MAPPER_XML_NAME_DEFAULT_FORMAT);
+
+        // service 设置
+        serviceGenerateCheckBox.setSelected(false);
+        servicePathTf.setText("");
+        servicePackageTf.setText("");
+        serviceNamePatternTf.setText(Constant.SERVICE_NAME_DEFAULT_FORMAT);
+        superServiceClassTf.setText("");
+        if (FrameworkTypeEnum.MYBATIS_PLUS.getFrameworkName().equals(frameworkTypeComboBox.getSelectedItem())) {
+            superServiceClassTf.setText(Constant.MYBATIS_PLUS_DEFAULT_SUPER_SERVICE_CLASS);
+        }
+
+        // serviceImpl 设置
+        serviceImplGenerateCheckBox.setSelected(false);
+        serviceImplPathTf.setText("");
+        serviceImplPackageTf.setText("");
+        serviceImplNamePatternTf.setText(Constant.SERVICE_IMPL_NAME_DEFAULT_FORMAT);
+        superServiceImplClassTf.setText("");
+        if (FrameworkTypeEnum.MYBATIS_PLUS.getFrameworkName().equals(frameworkTypeComboBox.getSelectedItem())) {
+            superServiceImplClassTf.setText(Constant.MYBATIS_PLUS_DEFAULT_SUPER_SERVICE_IMPL_CLASS);
+        }
+
+        // controller 设置
+        controllerGenerateCheckBox.setSelected(false);
+        controllerPathTf.setText("");
+        controllerPackageTf.setText("");
+        controllerNamePatternTf.setText(Constant.CONTROLLER_NAME_DEFAULT_FORMAT);
+        controllerSwaggerCheckBox.setSelected(false);
     }
 
     /**
@@ -391,7 +463,8 @@ public class GeneratorSettingUI extends DialogWrapper {
             }
         });
         restConfigBtn.addActionListener(e -> {
-
+            // 重置UI数据
+            restUIData();
         });
         saveConfigBtn.addActionListener(e -> {
             // 获取代码生成配置
@@ -463,6 +536,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         entityProperties.setPackageName(entityPackageTf.getText());
         entityProperties.setNamePattern(StringUtils.isBlank(entityNamePatternTf.getText()) ? Constant.ENTITY_NAME_DEFAULT_FORMAT : entityNamePatternTf.getText());
         entityProperties.setExampleNamePattern(Constant.ENTITY_EXAMPLE_NAME_DEFAULT_FORMAT);
+        entityProperties.setSelectedSerializableCheckBox(serializableCheckBox.isSelected());
         entityProperties.setSelectedDataCheckBox(dataCheckBox.isSelected());
         entityProperties.setSelectedBuilderCheckBox(builderCheckBox.isSelected());
         entityProperties.setSelectedNoArgsConstructorCheckBox(noArgsConstructorCheckBox.isSelected());
@@ -659,132 +733,6 @@ public class GeneratorSettingUI extends DialogWrapper {
             tables.add(mySQLDBHelper.getTableInfo(tableName));
         }
         return tables;
-    }
-
-    /**
-     * 重置配置
-     */
-    private void restUIData() {
-        // 获取持久化数据
-        PersistentState persistentState = PersistentStateService.getInstance(null != project ? project : ProjectManager.getInstance().getDefaultProject()).getState();
-        GeneratorProperties generatorProperties = persistentState.getGeneratorContext().getGeneratorProperties();
-
-        // 获取生成配置
-        CommonProperties commonProperties = generatorProperties.getCommonProperties();
-
-        // 获取代码生成作者
-        authorTf.setText(commonProperties.getAuthor());
-        if (StringUtils.isBlank(commonProperties.getAuthor())) {
-            authorTf.setText(System.getenv().get("USER"));
-        }
-
-        // 框架类型
-        FrameworkTypeEnum.getFrameworkNames().forEach(frameworkTypeName -> frameworkTypeComboBox.addItem(frameworkTypeName));
-        frameworkTypeComboBox.setSelectedItem(FrameworkTypeEnum.getFrameworkNames().get(0));
-        if (StringUtils.isNotBlank(commonProperties.getFrameworkTypeComboBoxValue())) {
-            frameworkTypeComboBox.setSelectedItem(commonProperties.getFrameworkTypeComboBoxValue());
-        }
-
-        // 项目路径
-        projectPathTf.setText(project.getBasePath());
-
-        // 数据库
-        databases = commonProperties.getDatabases();
-        if (CollectionUtils.isNotEmpty(databases)) {
-            databases.forEach(database -> databaseComboBox.addItem(database.getDatabaseName()));
-
-            // 设置默认数据库
-            databaseComboBox.setSelectedItem(databases.get(0).getDatabaseName());
-            if (StringUtils.isNotBlank(commonProperties.getDatabaseComboBoxValue())) {
-                databaseComboBox.setSelectedItem(commonProperties.getDatabaseComboBoxValue());
-            }
-
-            for (Database database : databases) {
-                if (database.getDatabaseName().equals(databaseComboBox.getSelectedItem())) {
-                    selectedDatabase = database;
-                }
-            }
-        }
-
-        // 表名格式
-        tableNameRegexTf.setText(commonProperties.getTableNameRegex());
-
-        // entity 设置
-        EntityProperties entityProperties = generatorProperties.getEntityProperties();
-        entityGenerateCheckBox.setSelected(entityProperties.isSelectedGenerateCheckBox());
-        entityPathTf.setText(entityProperties.getPath());
-        entityPackageTf.setText(entityProperties.getPackageName());
-        entityNamePatternTf.setText(StringUtils.isBlank(entityProperties.getNamePattern()) ? Constant.ENTITY_NAME_DEFAULT_FORMAT : entityProperties.getNamePattern());
-        dataCheckBox.setSelected(entityProperties.isSelectedDataCheckBox());
-        builderCheckBox.setSelected(entityProperties.isSelectedBuilderCheckBox());
-        noArgsConstructorCheckBox.setSelected(entityProperties.isSelectedNoArgsConstructorCheckBox());
-        allArgsConstructorCheckBox.setSelected(entityProperties.isSelectedAllArgsConstructorCheckBox());
-
-        // mapper 设置
-        MapperProperties mapperProperties = generatorProperties.getMapperProperties();
-        mapperGenerateCheckBox.setSelected(mapperProperties.isSelectedGenerateCheckBox());
-        mapperPathTf.setText(mapperProperties.getPath());
-        mapperPackageTf.setText(mapperProperties.getPackageName());
-        mapperNamePatternTf.setText(StringUtils.isBlank(mapperProperties.getNamePattern()) ? Constant.MAPPER_NAME_DEFAULT_FORMAT : mapperProperties.getNamePattern());
-
-        if (StringUtils.isBlank(mapperProperties.getSuperMapperClass())) {
-            if (FrameworkTypeEnum.MYBATIS_PLUS.getFrameworkName().equals(commonProperties.getFrameworkTypeComboBoxValue())) {
-                superMapperClassTf.setText(Constant.MYBATIS_PLUS_DEFAULT_SUPER_MAPPER_CLASS);
-            }
-            if (FrameworkTypeEnum.TK_MYBATIS.getFrameworkName().equals(commonProperties.getFrameworkTypeComboBoxValue())) {
-                superMapperClassTf.setText(Constant.TK_MYBATIS_DEFAULT_SUPER_MAPPER_CLASS);
-            }
-        } else {
-            superMapperClassTf.setText(mapperProperties.getSuperMapperClass());
-        }
-        enableInsertCheckBox.setSelected(mapperProperties.isSelectedEnableInsertCheckBox());
-        enableSelectByPrimaryKeyCheckBox.setSelected(mapperProperties.isSelectedEnableSelectByPrimaryKeyCheckBox());
-        enableSelectByExampleCheckBox.setSelected(mapperProperties.isSelectedEnableSelectByExampleCheckBox());
-        enableUpdateByPrimaryKeyCheckBox.setSelected(mapperProperties.isSelectedEnableUpdateByPrimaryKeyCheckBox());
-        enableUpdateByExampleCheckBox.setSelected(mapperProperties.isSelectedEnableUpdateByExampleCheckBox());
-        enableDeleteByPrimaryKeyCheckBox.setSelected(mapperProperties.isSelectedEnableDeleteByPrimaryKeyCheckBox());
-        enableDeleteByExampleCheckBox.setSelected(mapperProperties.isSelectedEnableDeleteByExampleCheckBox());
-        enableCountByExampleCheckBox.setSelected(mapperProperties.isSelectedEnableCountByExampleCheckBox());
-
-        // mapperXml 设置
-        MapperXmlProperties mapperXmlProperties = generatorProperties.getMapperXmlProperties();
-        mapperXmlGenerateCheckBox.setSelected(mapperXmlProperties.isSelectedGenerateCheckBox());
-        mapperXmlPathTf.setText(mapperXmlProperties.getPath());
-        mapperXmlNamePatternTf.setText(StringUtils.isBlank(mapperXmlProperties.getNamePattern()) ? Constant.MAPPER_XML_NAME_DEFAULT_FORMAT : mapperXmlProperties.getNamePattern());
-
-        // service 设置
-        ServiceProperties serviceProperties = generatorProperties.getServiceProperties();
-        serviceGenerateCheckBox.setSelected(serviceProperties.isSelectedGenerateCheckBox());
-        servicePathTf.setText(serviceProperties.getPath());
-        servicePackageTf.setText(serviceProperties.getPackageName());
-        serviceNamePatternTf.setText(StringUtils.isBlank(serviceProperties.getNamePattern()) ? Constant.SERVICE_NAME_DEFAULT_FORMAT : serviceProperties.getNamePattern());
-        if (StringUtils.isBlank(serviceProperties.getSuperServiceClass())
-                && FrameworkTypeEnum.MYBATIS_PLUS.getFrameworkName().equals(commonProperties.getFrameworkTypeComboBoxValue())) {
-            superServiceClassTf.setText(Constant.MYBATIS_PLUS_DEFAULT_SUPER_SERVICE_CLASS);
-        } else {
-            superServiceClassTf.setText(serviceProperties.getSuperServiceClass());
-        }
-
-        // serviceImpl 设置
-        ServiceImplProperties serviceImplProperties = generatorProperties.getServiceImplProperties();
-        serviceImplGenerateCheckBox.setSelected(serviceImplProperties.isSelectedGenerateCheckBox());
-        serviceImplPathTf.setText(serviceImplProperties.getPath());
-        serviceImplPackageTf.setText(serviceImplProperties.getPackageName());
-        serviceImplNamePatternTf.setText(StringUtils.isBlank(serviceImplProperties.getNamePattern()) ? Constant.SERVICE_IMPL_NAME_DEFAULT_FORMAT : serviceImplProperties.getNamePattern());
-        if (StringUtils.isBlank(serviceImplProperties.getSuperServiceImplClass())
-                && FrameworkTypeEnum.MYBATIS_PLUS.getFrameworkName().equals(commonProperties.getFrameworkTypeComboBoxValue())) {
-            superServiceImplClassTf.setText(Constant.MYBATIS_PLUS_DEFAULT_SUPER_SERVICE_IMPL_CLASS);
-        } else {
-            superServiceImplClassTf.setText(serviceImplProperties.getSuperServiceImplClass());
-        }
-
-        // controller 设置
-        ControllerProperties controllerProperties = generatorProperties.getControllerProperties();
-        controllerGenerateCheckBox.setSelected(controllerProperties.isSelectedGenerateCheckBox());
-        controllerPathTf.setText(controllerProperties.getPath());
-        controllerPackageTf.setText(controllerProperties.getPackageName());
-        controllerNamePatternTf.setText(StringUtils.isBlank(controllerProperties.getNamePattern()) ? Constant.CONTROLLER_NAME_DEFAULT_FORMAT : controllerProperties.getNamePattern());
-        controllerSwaggerCheckBox.setSelected(controllerProperties.isSelectedSwaggerCheckBox());
     }
 
     /**

@@ -38,6 +38,11 @@ public class EntityProperties implements Serializable {
     private String exampleNamePattern;
 
     /**
+     * entity 实现 Serializable
+     */
+    private boolean selectedSerializableCheckBox;
+
+    /**
      * 实体lombok @Data注解
      */
     private boolean selectedDataCheckBox;
@@ -95,6 +100,14 @@ public class EntityProperties implements Serializable {
 
     public void setExampleNamePattern(String exampleNamePattern) {
         this.exampleNamePattern = exampleNamePattern;
+    }
+
+    public boolean isSelectedSerializableCheckBox() {
+        return selectedSerializableCheckBox;
+    }
+
+    public void setSelectedSerializableCheckBox(boolean selectedSerializableCheckBox) {
+        this.selectedSerializableCheckBox = selectedSerializableCheckBox;
     }
 
     public boolean isSelectedDataCheckBox() {

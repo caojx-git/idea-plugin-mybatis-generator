@@ -43,9 +43,13 @@ import com.baomidou.mybatisplus.annotation.TableId;
 <#if isSelectedAllArgsConstructorCheckBox>
 @AllArgsConstructor
 </#if>
+<#if isSelectedSerializableCheckBox>
 public class ${entityName} implements Serializable {
 
     private static final long serialVersionUID = 1L;
+<#else>
+public class ${entityName} {
+</#if>
 <#list table.fields as field>
 
     <#if field.comment?default("")?trim?length gt 1>
@@ -53,10 +57,10 @@ public class ${entityName} implements Serializable {
      * ${field.comment}
      */
    </#if>
-   <#if field.primaryKeyFlag && frameworkType =="TkMyBatis">
+   <#if field.primaryKeyFlag && frameworkType == "TkMyBatis">
     @Id
    </#if>
-    <#if field.primaryKeyFlag && frameworkType =="MyBatisPlus">
+    <#if field.primaryKeyFlag && frameworkType == "MyBatisPlus">
     @TableId(value = "${field.columnName}", type = IdType.AUTO)
     </#if>
     private ${field.typeSimpleName} ${field.name};
