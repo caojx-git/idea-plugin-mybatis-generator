@@ -104,4 +104,30 @@ public interface Constant {
      * controller模板路径
      */
     String CONTROLLER_TEMPLATE_PATH = "/templates/controller.ftl";
+
+    /**
+     * mybatis plus BASE_MAPPER
+     */
+    String MYBATIS_PLUS_BASE_MAPPER = "com.baomidou.mybatisplus.core.mapper.BaseMapper";
+
+    /**
+     * tk mybatis 默认 superMapperClass
+     */
+    String TK_MYBATIS_DEFAULT_SUPER_MAPPER_CLASS = "tk.mybatis.mapper.common.Mapper";
+
+    /**
+     * mybatis plus 默认 superMapperClass
+     */
+    String MYBATIS_PLUS_DEFAULT_SUPER_MAPPER_CLASS = "com.baomidou.mybatisplus.core.mapper.BaseMapper";
+
+    /**
+     * mybatis plus 默认 superServiceClass
+     */
+    String MYBATIS_PLUS_DEFAULT_SUPER_SERVICE_CLASS = "com.baomidou.mybatisplus.extension.service.IService";
+
+    /**
+     * mybatis plus 默认 superServiceImplClass
+     */
+    String MYBATIS_PLUS_DEFAULT_SUPER_SERVICE_IMPL_CLASS = "com.baomidou.mybatisplus.extension.service.impl.ServiceImpl";
+
 }

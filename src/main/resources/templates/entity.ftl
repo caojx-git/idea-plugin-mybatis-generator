@@ -18,6 +18,12 @@ import lombok.NoArgsConstructor;
 <#if isSelectedAllArgsConstructorCheckBox>
 import lombok.AllArgsConstructor;
 </#if>
+<#if field.primaryKeyFlag && frameworkType =="TkMyBatis">
+import javax.persistence.*;
+</#if>
+<#if field.primaryKeyFlag && frameworkType =="MyBatisPlus">
+import com.baomidou.mybatisplus.annotation.TableId;
+</#if>
 
 /**
  * 注释${table.comment!}
@@ -47,6 +53,12 @@ public class ${entityName} implements Serializable {
      * ${field.comment}
      */
    </#if>
+   <#if field.primaryKeyFlag && frameworkType =="TkMyBatis">
+    @Id
+   </#if>
+    <#if field.primaryKeyFlag && frameworkType =="MyBatisPlus">
+    @TableId(value = "${field.columnName}", type = IdType.AUTO)
+    </#if>
     private ${field.typeSimpleName} ${field.name};
 </#list>
 <#if isGenerateGetterSetter>

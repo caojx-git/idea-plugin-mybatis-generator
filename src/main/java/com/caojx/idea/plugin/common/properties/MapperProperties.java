@@ -1,17 +1,19 @@
 package com.caojx.idea.plugin.common.properties;
 
+import java.io.Serializable;
+
 /**
  * Mapper配置属性
  *
  * @author caojx
  * @date 2022/4/10 12:15 PM
  */
-public class MapperProperties {
+public class MapperProperties implements Serializable {
 
     /**
      * 是否生成mapper
      */
-    private boolean selectedGenerateCheckBox;
+    private boolean selectedGenerateCheckBox = true;
 
     /**
      * mapper路径
@@ -34,22 +36,16 @@ public class MapperProperties {
     private String superMapperClass;
 
     /**
-     * mapper生成方法
+     * mapper生成方法控制
      */
-    private boolean selectedSelectByExampleWithBLOBsCheckBox;
-    private boolean selectedSelectByExampleCheckBox;
-    private boolean selectedSelectByPrimaryKeyCheckBox;
-    private boolean selectedInsertCheckBox;
-    private boolean selectedInsertSelectiveCheckBox;
-    private boolean selectedCountByExampleCheckBox;
-    private boolean selectedUpdateByExampleCheckBox;
-    private boolean selectedUpdateByExampleSelectiveCheckBox;
-    private boolean selectedUpdateByPrimaryKeyCheckBox;
-    private boolean selectedUpdateByPrimaryKeySelectiveCheckBox;
-    private boolean selectedUpdateByExampleWithBLOBsCheckBox;
-    private boolean selectedUpdateByPrimaryKeyWithBLOBsCheckBox;
-    private boolean selectedDeleteByExampleCheckBox;
-    private boolean selectedDeleteByPrimaryKeyCheckBox;
+    private boolean selectedEnableInsertCheckBox;
+    private boolean selectedEnableSelectByPrimaryKeyCheckBox;
+    private boolean selectedEnableSelectByExampleCheckBox;
+    private boolean selectedEnableUpdateByPrimaryKeyCheckBox;
+    private boolean selectedEnableUpdateByExampleCheckBox;
+    private boolean selectedEnableDeleteByPrimaryKeyCheckBox;
+    private boolean selectedEnableDeleteByExampleCheckBox;
+    private boolean selectedEnableCountByExampleCheckBox;
 
     public boolean isSelectedGenerateCheckBox() {
         return selectedGenerateCheckBox;
@@ -91,115 +87,67 @@ public class MapperProperties {
         this.superMapperClass = superMapperClass;
     }
 
-    public boolean isSelectedSelectByExampleWithBLOBsCheckBox() {
-        return selectedSelectByExampleWithBLOBsCheckBox;
+    public boolean isSelectedEnableInsertCheckBox() {
+        return selectedEnableInsertCheckBox;
     }
 
-    public void setSelectedSelectByExampleWithBLOBsCheckBox(boolean selectedSelectByExampleWithBLOBsCheckBox) {
-        this.selectedSelectByExampleWithBLOBsCheckBox = selectedSelectByExampleWithBLOBsCheckBox;
+    public void setSelectedEnableInsertCheckBox(boolean selectedEnableInsertCheckBox) {
+        this.selectedEnableInsertCheckBox = selectedEnableInsertCheckBox;
     }
 
-    public boolean isSelectedSelectByExampleCheckBox() {
-        return selectedSelectByExampleCheckBox;
+    public boolean isSelectedEnableSelectByPrimaryKeyCheckBox() {
+        return selectedEnableSelectByPrimaryKeyCheckBox;
     }
 
-    public void setSelectedSelectByExampleCheckBox(boolean selectedSelectByExampleCheckBox) {
-        this.selectedSelectByExampleCheckBox = selectedSelectByExampleCheckBox;
+    public void setSelectedEnableSelectByPrimaryKeyCheckBox(boolean selectedEnableSelectByPrimaryKeyCheckBox) {
+        this.selectedEnableSelectByPrimaryKeyCheckBox = selectedEnableSelectByPrimaryKeyCheckBox;
     }
 
-    public boolean isSelectedSelectByPrimaryKeyCheckBox() {
-        return selectedSelectByPrimaryKeyCheckBox;
+    public boolean isSelectedEnableSelectByExampleCheckBox() {
+        return selectedEnableSelectByExampleCheckBox;
     }
 
-    public void setSelectedSelectByPrimaryKeyCheckBox(boolean selectedSelectByPrimaryKeyCheckBox) {
-        this.selectedSelectByPrimaryKeyCheckBox = selectedSelectByPrimaryKeyCheckBox;
+    public void setSelectedEnableSelectByExampleCheckBox(boolean selectedEnableSelectByExampleCheckBox) {
+        this.selectedEnableSelectByExampleCheckBox = selectedEnableSelectByExampleCheckBox;
     }
 
-    public boolean isSelectedInsertCheckBox() {
-        return selectedInsertCheckBox;
+    public boolean isSelectedEnableUpdateByPrimaryKeyCheckBox() {
+        return selectedEnableUpdateByPrimaryKeyCheckBox;
     }
 
-    public void setSelectedInsertCheckBox(boolean selectedInsertCheckBox) {
-        this.selectedInsertCheckBox = selectedInsertCheckBox;
+    public void setSelectedEnableUpdateByPrimaryKeyCheckBox(boolean selectedEnableUpdateByPrimaryKeyCheckBox) {
+        this.selectedEnableUpdateByPrimaryKeyCheckBox = selectedEnableUpdateByPrimaryKeyCheckBox;
     }
 
-    public boolean isSelectedInsertSelectiveCheckBox() {
-        return selectedInsertSelectiveCheckBox;
+    public boolean isSelectedEnableUpdateByExampleCheckBox() {
+        return selectedEnableUpdateByExampleCheckBox;
     }
 
-    public void setSelectedInsertSelectiveCheckBox(boolean selectedInsertSelectiveCheckBox) {
-        this.selectedInsertSelectiveCheckBox = selectedInsertSelectiveCheckBox;
+    public void setSelectedEnableUpdateByExampleCheckBox(boolean selectedEnableUpdateByExampleCheckBox) {
+        this.selectedEnableUpdateByExampleCheckBox = selectedEnableUpdateByExampleCheckBox;
     }
 
-    public boolean isSelectedCountByExampleCheckBox() {
-        return selectedCountByExampleCheckBox;
+    public boolean isSelectedEnableDeleteByPrimaryKeyCheckBox() {
+        return selectedEnableDeleteByPrimaryKeyCheckBox;
     }
 
-    public void setSelectedCountByExampleCheckBox(boolean selectedCountByExampleCheckBox) {
-        this.selectedCountByExampleCheckBox = selectedCountByExampleCheckBox;
+    public void setSelectedEnableDeleteByPrimaryKeyCheckBox(boolean selectedEnableDeleteByPrimaryKeyCheckBox) {
+        this.selectedEnableDeleteByPrimaryKeyCheckBox = selectedEnableDeleteByPrimaryKeyCheckBox;
     }
 
-    public boolean isSelectedUpdateByExampleCheckBox() {
-        return selectedUpdateByExampleCheckBox;
+    public boolean isSelectedEnableDeleteByExampleCheckBox() {
+        return selectedEnableDeleteByExampleCheckBox;
     }
 
-    public void setSelectedUpdateByExampleCheckBox(boolean selectedUpdateByExampleCheckBox) {
-        this.selectedUpdateByExampleCheckBox = selectedUpdateByExampleCheckBox;
+    public void setSelectedEnableDeleteByExampleCheckBox(boolean selectedEnableDeleteByExampleCheckBox) {
+        this.selectedEnableDeleteByExampleCheckBox = selectedEnableDeleteByExampleCheckBox;
     }
 
-    public boolean isSelectedUpdateByExampleSelectiveCheckBox() {
-        return selectedUpdateByExampleSelectiveCheckBox;
+    public boolean isSelectedEnableCountByExampleCheckBox() {
+        return selectedEnableCountByExampleCheckBox;
     }
 
-    public void setSelectedUpdateByExampleSelectiveCheckBox(boolean selectedUpdateByExampleSelectiveCheckBox) {
-        this.selectedUpdateByExampleSelectiveCheckBox = selectedUpdateByExampleSelectiveCheckBox;
-    }
-
-    public boolean isSelectedUpdateByPrimaryKeyCheckBox() {
-        return selectedUpdateByPrimaryKeyCheckBox;
-    }
-
-    public void setSelectedUpdateByPrimaryKeyCheckBox(boolean selectedUpdateByPrimaryKeyCheckBox) {
-        this.selectedUpdateByPrimaryKeyCheckBox = selectedUpdateByPrimaryKeyCheckBox;
-    }
-
-    public boolean isSelectedUpdateByPrimaryKeySelectiveCheckBox() {
-        return selectedUpdateByPrimaryKeySelectiveCheckBox;
-    }
-
-    public void setSelectedUpdateByPrimaryKeySelectiveCheckBox(boolean selectedUpdateByPrimaryKeySelectiveCheckBox) {
-        this.selectedUpdateByPrimaryKeySelectiveCheckBox = selectedUpdateByPrimaryKeySelectiveCheckBox;
-    }
-
-    public boolean isSelectedUpdateByExampleWithBLOBsCheckBox() {
-        return selectedUpdateByExampleWithBLOBsCheckBox;
-    }
-
-    public void setSelectedUpdateByExampleWithBLOBsCheckBox(boolean selectedUpdateByExampleWithBLOBsCheckBox) {
-        this.selectedUpdateByExampleWithBLOBsCheckBox = selectedUpdateByExampleWithBLOBsCheckBox;
-    }
-
-    public boolean isSelectedUpdateByPrimaryKeyWithBLOBsCheckBox() {
-        return selectedUpdateByPrimaryKeyWithBLOBsCheckBox;
-    }
-
-    public void setSelectedUpdateByPrimaryKeyWithBLOBsCheckBox(boolean selectedUpdateByPrimaryKeyWithBLOBsCheckBox) {
-        this.selectedUpdateByPrimaryKeyWithBLOBsCheckBox = selectedUpdateByPrimaryKeyWithBLOBsCheckBox;
-    }
-
-    public boolean isSelectedDeleteByExampleCheckBox() {
-        return selectedDeleteByExampleCheckBox;
-    }
-
-    public void setSelectedDeleteByExampleCheckBox(boolean selectedDeleteByExampleCheckBox) {
-        this.selectedDeleteByExampleCheckBox = selectedDeleteByExampleCheckBox;
-    }
-
-    public boolean isSelectedDeleteByPrimaryKeyCheckBox() {
-        return selectedDeleteByPrimaryKeyCheckBox;
-    }
-
-    public void setSelectedDeleteByPrimaryKeyCheckBox(boolean selectedDeleteByPrimaryKeyCheckBox) {
-        this.selectedDeleteByPrimaryKeyCheckBox = selectedDeleteByPrimaryKeyCheckBox;
+    public void setSelectedEnableCountByExampleCheckBox(boolean selectedEnableCountByExampleCheckBox) {
+        this.selectedEnableCountByExampleCheckBox = selectedEnableCountByExampleCheckBox;
     }
 }

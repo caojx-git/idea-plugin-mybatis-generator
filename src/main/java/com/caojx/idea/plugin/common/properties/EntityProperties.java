@@ -1,17 +1,21 @@
 package com.caojx.idea.plugin.common.properties;
 
+import com.caojx.idea.plugin.common.constants.Constant;
+
+import java.io.Serializable;
+
 /**
  * 实体配置属性
  *
  * @author caojx
  * @date 2022/4/10 12:15 PM
  */
-public class EntityProperties {
+public class EntityProperties implements Serializable {
 
     /**
      * 是否生成实体
      */
-    private boolean selectedGenerateCheckBox;
+    private boolean selectedGenerateCheckBox = true;
 
     /**
      * 实体路径
