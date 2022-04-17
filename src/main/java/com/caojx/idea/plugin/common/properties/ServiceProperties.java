@@ -1,12 +1,14 @@
 package com.caojx.idea.plugin.common.properties;
 
+import java.io.Serializable;
+
 /**
  * Service配置属性
  *
  * @author caojx
  * @date 2022/4/10 12:16 PM
  */
-public class ServiceProperties {
+public class ServiceProperties implements Serializable {
 
     /**
      * 是否生成service

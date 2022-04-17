@@ -2,6 +2,7 @@ package com.caojx.idea.plugin.common.properties;
 
 import com.caojx.idea.plugin.common.pojo.model.Database;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @author caojx
  * @date 2022/4/10 12:20 PM
  */
-public class CommonProperties {
+public class CommonProperties implements Serializable {
 
 
     /**

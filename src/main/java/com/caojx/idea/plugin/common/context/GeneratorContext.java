@@ -3,6 +3,7 @@ package com.caojx.idea.plugin.common.context;
 import com.caojx.idea.plugin.common.pojo.model.TableInfo;
 import com.caojx.idea.plugin.common.properties.GeneratorProperties;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @author caojx
  * @date 2022/4/10 4:00 PM
  */
-public class GeneratorContext {
+public class GeneratorContext implements Serializable {
 
     /**
      * 代码生成配置

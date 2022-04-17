@@ -16,6 +16,9 @@
         <!-- Add your extensions here -->
         <!--持久化-->
         <projectService serviceImplementation="com.caojx.idea.plugin.generator.PersistentStateService"></projectService>
+
+        <!--工具栏-->
+        <toolWindow id="generatorCode" factoryClass="com.caojx.idea.plugin.ui.GeneratorWindowFactory" anchor="right"></toolWindow>
     </extensions>
 
     <actions>

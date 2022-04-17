@@ -1,12 +1,14 @@
 package com.caojx.idea.plugin.common.properties;
 
+import java.io.Serializable;
+
 /**
  * Controller配置属性
  *
  * @author caojx
  * @date 2022/4/10 12:16 PM
  */
-public class ControllerProperties {
+public class ControllerProperties implements Serializable {
 
     /**
      * 是否生成controller

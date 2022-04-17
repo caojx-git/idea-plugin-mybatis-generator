@@ -1,5 +1,6 @@
 package com.caojx.idea.plugin.common.pojo.model;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,7 @@ import java.util.stream.Collectors;
  * @author caojx
  * @date 2022/4/10 4:00 PM
  */
-public class TableInfo {
+public class TableInfo implements Serializable {
 
     /**
      * 表名

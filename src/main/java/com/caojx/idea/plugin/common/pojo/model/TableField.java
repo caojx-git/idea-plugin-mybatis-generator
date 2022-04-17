@@ -4,13 +4,15 @@ import com.caojx.idea.plugin.common.utils.TypeHandler;
 import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
+
 /**
  * 表属性模型
  *
  * @author caojx
  * @date 2022/4/10 4:00 PM
  */
-public class TableField {
+public class TableField implements Serializable {
 
     /**
      * 字段列名

@@ -11,8 +11,8 @@
      </#if>
     </#list>
   </resultMap>
-
   <#if table.haveBlobField>
+
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="${entityFullClassName}">
     <#list table.fields as field>
       <#if field.blobFlag>
@@ -22,6 +22,7 @@
   </resultMap>
   </#if>
   <#if generateEntityExample>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -81,25 +82,24 @@
       </foreach>
     </where>
   </sql>
-  </#if>
 
+  </#if>
   <sql id="Base_Column_List">
     <#list table.fields as field><#if !field.blobFlag>${field.columnName}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#list>
   </sql>
-
   <#if table.haveBlobField>
+
   <sql id="Blob_Column_List">
     <#list table.blobFields as field><#if field.blobFlag>${field.columnName}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#list>
   </sql>
   </#if>
+  <#if isSelectedEnableSelectByExampleCheckBox && table.haveBlobField>
 
-  <#if isSelectByExampleWithBLOBsCheckBox && table.haveBlobField>
   <select id="selectByExampleWithBLOBs" parameterType="${entityExampleName}" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
     </if>
-    'true' as QUERYID,
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -112,13 +112,13 @@
     </if>
   </select>
   </#if>
-  <#if isSelectByExampleCheckBox>
+  <#if isSelectedEnableSelectByExampleCheckBox>
+
   <select id="selectByExample" parameterType="${entityExampleName}" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
-    'true' as QUERYID,
     <include refid="Base_Column_List" />
     from ${table.name}
     <if test="_parameter != null">
@@ -129,7 +129,8 @@
     </if>
   </select>
 </#if>
-  <#if isSelectByPrimaryKeyCheckBox && !table.haveBlobField>
+  <#if isSelectedEnableSelectByPrimaryKeyCheckBox && table.havePrimaryKey && !table.haveBlobField>
+
   <select id="selectByPrimaryKey" parameterType="${table.primaryKeyType}" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -141,7 +142,8 @@
     </#list>
   </select>
   </#if>
-  <#if isSelectByPrimaryKeyCheckBox && table.haveBlobField>
+  <#if isSelectedEnableSelectByPrimaryKeyCheckBox && table.havePrimaryKey && table.haveBlobField>
+
   <select id="selectByPrimaryKey" parameterType="${table.primaryKeyType}" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Base_Column_List" />
@@ -155,7 +157,8 @@
     </#list>
   </select>
   </#if>
- <#if isDeleteByPrimaryKeyCheckBox>
+  <#if isSelectedEnableDeleteByPrimaryKeyCheckBox && table.havePrimaryKey>
+
   <delete id="deleteByPrimaryKey" parameterType="${table.primaryKeyType}">
     delete from ${table.name}
     <#list table.fields as field>
@@ -164,8 +167,9 @@
     </#if>
     </#list>
   </delete>
-</#if>
-  <#if isDeleteByExampleCheckBox>
+  </#if>
+  <#if isSelectedEnableDeleteByExampleCheckBox>
+
   <delete id="deleteByExample" parameterType="${entityExampleName}">
     delete from ${table.name}
     <if test="_parameter != null">
@@ -173,7 +177,8 @@
     </if>
   </delete>
 </#if>
-  <#if isInsertCheckBox>
+  <#if isSelectedEnableInsertCheckBox>
+
   <insert id="insert" parameterType="${entityFullClassName}">
     <#list table.fields as field>
       <#if field.primaryKeyFlag>
@@ -187,7 +192,8 @@
     (<#list table.fields as field><#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t","")}</#list>)
   </insert>
 </#if>
-  <#if isInsertSelectiveCheckBox>
+  <#if isSelectedEnableInsertCheckBox>
+
   <insert id="insertSelective" parameterType="${entityFullClassName}">
     <#list table.fields as field>
      <#if field.primaryKeyFlag>
@@ -213,7 +219,8 @@
     </trim>
   </insert>
 </#if>
-  <#if isCountByExampleCheckBox>
+  <#if isSelectedEnableCountByExampleCheckBox>
+
   <select id="countByExample" parameterType="${entityExampleName}" resultType="java.lang.Long">
     select count(*) from ${table.name}
     <if test="_parameter != null">
@@ -221,13 +228,14 @@
     </if>
   </select>
 </#if>
-  <#if isUpdateByExampleSelectiveCheckBox>
+  <#if isSelectedEnableUpdateByExampleCheckBox>
+
   <update id="updateByExampleSelective" parameterType="map">
     update ${table.name}
     <set>
       <#list table.fields as field>
       <if test="record.${field.name} != null">
-       ${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if>
+       ${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcType}}
       </if>
       </#list>
     </set>
@@ -236,7 +244,8 @@
     </if>
   </update>
 </#if>
-  <#if isUpdateByExampleWithBLOBsCheckBox && table.haveBlobField>
+  <#if isSelectedEnableUpdateByExampleCheckBox && table.haveBlobField>
+
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update ${table.name}
     set
@@ -250,7 +259,8 @@
     </if>
   </update>
   </#if>
-  <#if isUpdateByExampleCheckBox>
+  <#if isSelectedEnableUpdateByExampleCheckBox>
+
   <update id="updateByExample" parameterType="map">
     update ${table.name}
     set
@@ -260,13 +270,14 @@
     </if>
   </update>
 </#if>
-  <#if isUpdateByPrimaryKeySelectiveCheckBox>
+  <#if isSelectedEnableUpdateByPrimaryKeyCheckBox && table.havePrimaryKey>
+
   <update id="updateByPrimaryKeySelective" parameterType="${entityFullClassName}">
     update ${table.name}
     <set>
      <#list table.fields as field>
       <if test="${field.name} != null">
-        userId = <#noparse>#{</#noparse>${field.name},jdbcType=INTEGER}<#if field_has_next>,</#if>
+        userId = <#noparse>#{</#noparse>${field.name},jdbcType=INTEGER}
       </if>
       </#list>
     </set>
@@ -277,7 +288,8 @@
     </#list>
   </update>
 </#if>
-  <#if isUpdateByPrimaryKeyWithBLOBsCheckBox && table.haveBlobField>
+  <#if isSelectedEnableUpdateByPrimaryKeyCheckBox && table.havePrimaryKey && table.haveBlobField>
+
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="${entityFullClassName}">
     update ${table.name}
     set
@@ -293,7 +305,8 @@
     </#list>
   </update>
   </#if>
-  <#if isUpdateByPrimaryKeyCheckBox>
+  <#if isSelectedEnableUpdateByPrimaryKeyCheckBox && table.havePrimaryKey>
+
   <update id="updateByPrimaryKey" parameterType="${entityFullClassName}">
     update ${table.name}
     set

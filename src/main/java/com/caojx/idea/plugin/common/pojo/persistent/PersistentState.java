@@ -2,10 +2,12 @@ package com.caojx.idea.plugin.common.pojo.persistent;
 
 import com.caojx.idea.plugin.common.context.GeneratorContext;
 
+import java.io.Serializable;
+
 /**
  * 持久化数据
  */
-public class PersistentState {
+public class PersistentState implements Serializable {
 
     /**
      * 生成代码配置上线文

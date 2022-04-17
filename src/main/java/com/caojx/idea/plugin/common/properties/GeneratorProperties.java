@@ -1,12 +1,14 @@
 package com.caojx.idea.plugin.common.properties;
 
+import java.io.Serializable;
+
 /**
  * 生成属性配置
  *
  * @author caojx
  * @date 2022/4/10 12:55 PM
  */
-public class GeneratorProperties {
+public class GeneratorProperties implements Serializable {
 
     /**
      * 公共配置

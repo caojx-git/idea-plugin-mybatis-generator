@@ -266,7 +266,7 @@
               </component>
             </children>
           </grid>
-          <grid id="9415f" layout-manager="GridLayoutManager" row-count="8" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="9415f" layout-manager="GridLayoutManager" row-count="6" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title="mapper"/>
@@ -315,119 +315,23 @@
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="mapper生成方法"/>
+                  <text value="mapper生成配置"/>
                 </properties>
               </component>
-              <component id="b4a94" class="javax.swing.JCheckBox" binding="selectByExampleWithBLOBsCheckBox" default-binding="true">
+              <component id="b4a94" class="javax.swing.JCheckBox" binding="enableInsertCheckBox">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="selectByExampleWithBLOBs"/>
+                  <text value="enableInsert"/>
                 </properties>
               </component>
-              <component id="4765f" class="javax.swing.JCheckBox" binding="selectByExampleCheckBox" default-binding="true">
+              <component id="4765f" class="javax.swing.JCheckBox" binding="enableSelectByPrimaryKeyCheckBox">
                 <constraints>
                   <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="selectByExample"/>
-                </properties>
-              </component>
-              <component id="be9a2" class="javax.swing.JCheckBox" binding="selectByPrimaryKeyCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="selectByPrimaryKey"/>
-                </properties>
-              </component>
-              <component id="ab85e" class="javax.swing.JCheckBox" binding="insertCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="insert"/>
-                </properties>
-              </component>
-              <component id="282d9" class="javax.swing.JCheckBox" binding="insertSelectiveCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="insertSelective"/>
-                </properties>
-              </component>
-              <component id="78163" class="javax.swing.JCheckBox" binding="countByExampleCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="countByExample"/>
-                </properties>
-              </component>
-              <component id="a25" class="javax.swing.JCheckBox" binding="updateByExampleCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="updateByExample"/>
-                </properties>
-              </component>
-              <component id="c5015" class="javax.swing.JCheckBox" binding="updateByExampleSelectiveCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="updateByExampleSelective"/>
-                </properties>
-              </component>
-              <component id="5d63e" class="javax.swing.JCheckBox" binding="updateByPrimaryKeyCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="updateByPrimaryKey"/>
-                </properties>
-              </component>
-              <component id="976c5" class="javax.swing.JCheckBox" binding="updateByPrimaryKeySelectiveCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="updateByPrimaryKeySelective"/>
-                </properties>
-              </component>
-              <component id="d7d23" class="javax.swing.JCheckBox" binding="updateByExampleWithBLOBsCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="updateByExampleWithBLOBs"/>
-                </properties>
-              </component>
-              <component id="937" class="javax.swing.JCheckBox" binding="updateByPrimaryKeyWithBLOBsCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="updateByPrimaryKeyWithBLOBs"/>
-                </properties>
-              </component>
-              <component id="80476" class="javax.swing.JCheckBox" binding="deleteByExampleCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="deleteByExample"/>
-                </properties>
-              </component>
-              <component id="e51f6" class="javax.swing.JCheckBox" binding="deleteByPrimaryKeyCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="deleteByPrimaryKey"/>
+                  <text value="enableSelectByPrimaryKey"/>
                 </properties>
               </component>
               <component id="7214a" class="javax.swing.JLabel">
@@ -444,6 +348,54 @@
                 </constraints>
                 <properties>
                   <text value="生成"/>
+                </properties>
+              </component>
+              <component id="ab85e" class="javax.swing.JCheckBox" binding="enableSelectByExampleCheckBox">
+                <constraints>
+                  <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="enableSelectByExample"/>
+                </properties>
+              </component>
+              <component id="78163" class="javax.swing.JCheckBox" binding="enableUpdateByPrimaryKeyCheckBox">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="enableUpdateByPrimaryKey"/>
+                </properties>
+              </component>
+              <component id="a25" class="javax.swing.JCheckBox" binding="enableUpdateByExampleCheckBox">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="enableUpdateByExample"/>
+                </properties>
+              </component>
+              <component id="c5015" class="javax.swing.JCheckBox" binding="enableDeleteByPrimaryKeyCheckBox">
+                <constraints>
+                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="enableDeleteByPrimaryKey"/>
+                </properties>
+              </component>
+              <component id="5d63e" class="javax.swing.JCheckBox" binding="enableDeleteByExampleCheckBox">
+                <constraints>
+                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="enableDeleteByExample"/>
+                </properties>
+              </component>
+              <component id="976c5" class="javax.swing.JCheckBox" binding="enableCountByExampleCheckBox">
+                <constraints>
+                  <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="enableCountByExample"/>
                 </properties>
               </component>
             </children>

@@ -101,6 +101,10 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
         // 表信息
         objectMap.put("table", tableInfo);
 
+        // 公共配置
+        CommonProperties commonProperties = generatorProperties.getCommonProperties();
+        objectMap.put("frameworkType", commonProperties.getFrameworkTypeComboBoxValue());
+
         // entity
         EntityProperties entityProperties = generatorProperties.getEntityProperties();
         String entityName = String.format(entityProperties.getNamePattern(), baseEntityName);
@@ -134,20 +138,14 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
         objectMap.put("superMapperClass", mapperProperties.getSuperMapperClass());
         objectMap.put("superMapperClassName", StringUtils.substringAfterLast(mapperProperties.getSuperMapperClass(), "."));
         objectMap.put("superMapperClassPackage", StringUtils.substringBeforeLast(mapperProperties.getSuperMapperClass(), "."));
-        objectMap.put("isSelectByExampleWithBLOBsCheckBox", mapperProperties.isSelectedSelectByExampleWithBLOBsCheckBox());
-        objectMap.put("isSelectByExampleCheckBox", mapperProperties.isSelectedSelectByExampleCheckBox());
-        objectMap.put("isSelectByPrimaryKeyCheckBox", mapperProperties.isSelectedSelectByPrimaryKeyCheckBox());
-        objectMap.put("isInsertCheckBox", mapperProperties.isSelectedInsertCheckBox());
-        objectMap.put("isInsertSelectiveCheckBox", mapperProperties.isSelectedInsertSelectiveCheckBox());
-        objectMap.put("isCountByExampleCheckBox", mapperProperties.isSelectedCountByExampleCheckBox());
-        objectMap.put("isUpdateByExampleCheckBox", mapperProperties.isSelectedUpdateByExampleCheckBox());
-        objectMap.put("isUpdateByExampleSelectiveCheckBox", mapperProperties.isSelectedUpdateByExampleSelectiveCheckBox());
-        objectMap.put("isUpdateByPrimaryKeyCheckBox", mapperProperties.isSelectedUpdateByPrimaryKeyCheckBox());
-        objectMap.put("isUpdateByPrimaryKeySelectiveCheckBox", mapperProperties.isSelectedUpdateByPrimaryKeySelectiveCheckBox());
-        objectMap.put("isUpdateByExampleWithBLOBsCheckBox", mapperProperties.isSelectedUpdateByExampleWithBLOBsCheckBox());
-        objectMap.put("isUpdateByPrimaryKeyWithBLOBsCheckBox", mapperProperties.isSelectedUpdateByPrimaryKeyWithBLOBsCheckBox());
-        objectMap.put("isDeleteByExampleCheckBox", mapperProperties.isSelectedDeleteByExampleCheckBox());
-        objectMap.put("isDeleteByPrimaryKeyCheckBox", mapperProperties.isSelectedDeleteByPrimaryKeyCheckBox());
+        objectMap.put("isSelectedEnableInsertCheckBox", mapperProperties.isSelectedEnableInsertCheckBox());
+        objectMap.put("isSelectedEnableSelectByPrimaryKeyCheckBox", mapperProperties.isSelectedEnableSelectByPrimaryKeyCheckBox());
+        objectMap.put("isSelectedEnableSelectByExampleCheckBox", mapperProperties.isSelectedEnableSelectByExampleCheckBox());
+        objectMap.put("isSelectedEnableUpdateByPrimaryKeyCheckBox", mapperProperties.isSelectedEnableUpdateByPrimaryKeyCheckBox());
+        objectMap.put("isSelectedEnableUpdateByExampleCheckBox", mapperProperties.isSelectedEnableUpdateByExampleCheckBox());
+        objectMap.put("isSelectedEnableDeleteByPrimaryKeyCheckBox", mapperProperties.isSelectedEnableDeleteByPrimaryKeyCheckBox());
+        objectMap.put("isSelectedEnableDeleteByExampleCheckBox", mapperProperties.isSelectedEnableDeleteByExampleCheckBox());
+        objectMap.put("isSelectedEnableCountByExampleCheckBox", mapperProperties.isSelectedEnableCountByExampleCheckBox());
 
         // mapperXml
         MapperXmlProperties mapperXmlProperties = generatorProperties.getMapperXmlProperties();
@@ -217,12 +215,9 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
      * @return true 生成、false 不生成
      */
     private boolean isGenerateEntityExample(MapperProperties mapperProperties) {
-        return mapperProperties.isSelectedSelectByExampleWithBLOBsCheckBox()
-                || mapperProperties.isSelectedSelectByExampleCheckBox()
-                || mapperProperties.isSelectedCountByExampleCheckBox()
-                || mapperProperties.isSelectedUpdateByExampleCheckBox()
-                || mapperProperties.isSelectedUpdateByExampleSelectiveCheckBox()
-                || mapperProperties.isSelectedUpdateByExampleWithBLOBsCheckBox()
-                || mapperProperties.isSelectedDeleteByExampleCheckBox();
+        return mapperProperties.isSelectedEnableSelectByExampleCheckBox()
+                || mapperProperties.isSelectedEnableUpdateByExampleCheckBox()
+                || mapperProperties.isSelectedEnableDeleteByExampleCheckBox()
+                || mapperProperties.isSelectedEnableCountByExampleCheckBox();
     }
 }
