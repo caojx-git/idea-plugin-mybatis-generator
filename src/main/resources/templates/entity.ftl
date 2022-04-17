@@ -18,10 +18,10 @@ import lombok.NoArgsConstructor;
 <#if isSelectedAllArgsConstructorCheckBox>
 import lombok.AllArgsConstructor;
 </#if>
-<#if field.primaryKeyFlag && frameworkType =="TkMyBatis">
+<#if table.havePrimaryKey && frameworkType =="TkMyBatis">
 import javax.persistence.*;
 </#if>
-<#if field.primaryKeyFlag && frameworkType =="MyBatisPlus">
+<#if table.havePrimaryKey && frameworkType =="MyBatisPlus">
 import com.baomidou.mybatisplus.annotation.TableId;
 </#if>
 
