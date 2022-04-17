@@ -11,62 +11,58 @@ public class ServiceImplProperties {
     /**
      * 是否生成serviceImpl
      */
-    private boolean serviceImplGenerateValue;
+    private boolean selectedGenerateCheckBox;
 
     /**
      * serviceImpl路径
      */
-    private String serviceImplPath;
+    private String path;
 
     /**
      * serviceImpl包名
      */
-    private String serviceImplPackage;
+    private String packageName;
 
     /**
      * serviceImpl命名格式
      */
-    private String serviceImplNamePattern;
+    private String namePattern;
 
     /**
      * serviceImpl父类
      */
     private String superServiceImplClass;
 
-    public boolean getServiceImplGenerateValue() {
-        return serviceImplGenerateValue;
+    public boolean isSelectedGenerateCheckBox() {
+        return selectedGenerateCheckBox;
     }
 
-    public void setServiceImplGenerateValue(boolean serviceImplGenerateValue) {
-        this.serviceImplGenerateValue = serviceImplGenerateValue;
+    public void setSelectedGenerateCheckBox(boolean selectedGenerateCheckBox) {
+        this.selectedGenerateCheckBox = selectedGenerateCheckBox;
     }
 
-    public String getServiceImplPath() {
-        return serviceImplPath;
+    public String getPath() {
+        return path;
     }
 
-    public void setServiceImplPath(String serviceImplPath) {
-        this.serviceImplPath = serviceImplPath;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public String getServiceImplPackage() {
-        return serviceImplPackage;
+    public String getPackageName() {
+        return packageName;
     }
 
-    public void setServiceImplPackage(String serviceImplPackage) {
-        this.serviceImplPackage = serviceImplPackage;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
-    public String getServiceImplNamePattern() {
-        return serviceImplNamePattern;
+    public String getNamePattern() {
+        return namePattern;
     }
 
-    public void setServiceImplNamePattern(String serviceImplNamePattern) {
-        this.serviceImplNamePattern = serviceImplNamePattern;
-    }
-
-    public boolean isServiceImplGenerateValue() {
-        return serviceImplGenerateValue;
+    public void setNamePattern(String namePattern) {
+        this.namePattern = namePattern;
     }
 
     public String getSuperServiceImplClass() {

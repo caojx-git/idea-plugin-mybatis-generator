@@ -131,12 +131,12 @@ public class TableField {
         return type.getSimpleName();
     }
 
-    public String getFullClazzName() {
+    public String getFullClassName() {
         return type.getName();
     }
 
     public boolean isImport() {
-        String fullClazzName = getFullClazzName();
-        return !type.isPrimitive() && !"java.lang".equals(StringUtils.substringBeforeLast(fullClazzName, "."));
+        String fullClassName = getFullClassName();
+        return !type.isPrimitive() && !"java.lang".equals(StringUtils.substringBeforeLast(fullClassName, "."));
     }
 }

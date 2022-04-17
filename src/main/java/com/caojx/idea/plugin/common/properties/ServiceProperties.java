@@ -11,58 +11,58 @@ public class ServiceProperties {
     /**
      * 是否生成service
      */
-    private boolean serviceGenerateValue;
+    private boolean selectedGenerateCheckBox;
 
     /**
      * service路径
      */
-    private String servicePath;
+    private String path;
 
     /**
      * service包名
      */
-    private String servicePackage;
+    private String packageName;
 
     /**
      * service命名格式
      */
-    private String serviceNamePattern;
+    private String namePattern;
 
     /**
      * service父类
      */
     private String superServiceClass;
 
-    public boolean getServiceGenerateValue() {
-        return serviceGenerateValue;
+    public boolean isSelectedGenerateCheckBox() {
+        return selectedGenerateCheckBox;
     }
 
-    public void setServiceGenerateValue(boolean serviceGenerateValue) {
-        this.serviceGenerateValue = serviceGenerateValue;
+    public void setSelectedGenerateCheckBox(boolean selectedGenerateCheckBox) {
+        this.selectedGenerateCheckBox = selectedGenerateCheckBox;
     }
 
-    public String getServicePath() {
-        return servicePath;
+    public String getPath() {
+        return path;
     }
 
-    public void setServicePath(String servicePath) {
-        this.servicePath = servicePath;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public String getServicePackage() {
-        return servicePackage;
+    public String getPackageName() {
+        return packageName;
     }
 
-    public void setServicePackage(String servicePackage) {
-        this.servicePackage = servicePackage;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
-    public String getServiceNamePattern() {
-        return serviceNamePattern;
+    public String getNamePattern() {
+        return namePattern;
     }
 
-    public void setServiceNamePattern(String serviceNamePattern) {
-        this.serviceNamePattern = serviceNamePattern;
+    public void setNamePattern(String namePattern) {
+        this.namePattern = namePattern;
     }
 
     public String getSuperServiceClass() {

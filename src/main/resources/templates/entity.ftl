@@ -6,16 +6,16 @@ import java.io.Serializable;
 <#list entityImportPackages as import>
 import ${import};
 </#list>
-<#if dataCheckBoxValue>
+<#if isSelectedDataCheckBox>
 import lombok.Data;
 </#if>
-<#if builderCheckBoxValue>
+<#if isSelectedBuilderCheckBox>
 import lombok.Builder;
 </#if>
-<#if noArgsConstructorCheckBoxValue>
+<#if isSelectedNoArgsConstructorCheckBox>
 import lombok.NoArgsConstructor;
 </#if>
-<#if allArgsConstructorCheckBoxValue>
+<#if isSelectedAllArgsConstructorCheckBox>
 import lombok.AllArgsConstructor;
 </#if>
 
@@ -25,23 +25,23 @@ import lombok.AllArgsConstructor;
  * @author ${author!}
  * @date ${.now?string("yyyy-MM-dd HH:mm")}
  */
-<#if dataCheckBoxValue>
+<#if isSelectedDataCheckBox>
 @Data
 </#if>
-<#if builderCheckBoxValue>
+<#if isSelectedBuilderCheckBox>
 @Builder
 </#if>
-<#if noArgsConstructorCheckBoxValue>
+<#if isSelectedNoArgsConstructorCheckBox>
 @NoArgsConstructor
 </#if>
-<#if allArgsConstructorCheckBoxValue>
+<#if isSelectedAllArgsConstructorCheckBox>
 @AllArgsConstructor
 </#if>
 public class ${entityName} implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
 <#list table.fields as field>
+
     <#if field.comment?default("")?trim?length gt 1>
     /**
      * ${field.comment}
@@ -49,9 +49,9 @@ public class ${entityName} implements Serializable {
    </#if>
     private ${field.typeSimpleName} ${field.name};
 </#list>
-
-<#if generateGetterSetter>
+<#if isGenerateGetterSetter>
 <#list table.fields as field>
+
     /**
      * 获取${field.comment}值
      *

@@ -11,117 +11,117 @@ public class EntityProperties {
     /**
      * 是否生成实体
      */
-    private boolean entityGenerateValue;
+    private boolean selectedGenerateCheckBox;
 
     /**
      * 实体路径
      */
-    private String entityPath;
+    private String path;
 
     /**
      * 实体包名
      */
-    private String entityPackage;
+    private String packageName;
 
     /**
      * 实体命名格式
      */
-    private String entityNamePattern;
+    private String namePattern;
 
     /**
      * entityExample 命名格式
      */
-    private String entityExampleNamePattern;
+    private String exampleNamePattern;
 
     /**
      * 实体lombok @Data注解
      */
-    private boolean dataCheckBoxValue;
+    private boolean selectedDataCheckBox;
 
     /**
      * 实体lombok @Builder注解
      */
-    private boolean builderCheckBoxValue;
+    private boolean selectedBuilderCheckBox;
 
     /**
      * 实体lombok @NoArgsConstructor注解
      */
-    private boolean noArgsConstructorCheckBoxValue;
+    private boolean selectedNoArgsConstructorCheckBox;
 
     /**
      * 实体lombok @AllArgsConstructor注解
      */
-    private boolean allArgsConstructorCheckBoxValue;
+    private boolean selectedAllArgsConstructorCheckBox;
 
-    public boolean getEntityGenerateValue() {
-        return entityGenerateValue;
+    public boolean isSelectedGenerateCheckBox() {
+        return selectedGenerateCheckBox;
     }
 
-    public void setEntityGenerateValue(boolean entityGenerateValue) {
-        this.entityGenerateValue = entityGenerateValue;
+    public void setSelectedGenerateCheckBox(boolean selectedGenerateCheckBox) {
+        this.selectedGenerateCheckBox = selectedGenerateCheckBox;
     }
 
-    public String getEntityPath() {
-        return entityPath;
+    public String getPath() {
+        return path;
     }
 
-    public void setEntityPath(String entityPath) {
-        this.entityPath = entityPath;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public String getEntityPackage() {
-        return entityPackage;
+    public String getPackageName() {
+        return packageName;
     }
 
-    public void setEntityPackage(String entityPackage) {
-        this.entityPackage = entityPackage;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
-    public String getEntityNamePattern() {
-        return entityNamePattern;
+    public String getNamePattern() {
+        return namePattern;
     }
 
-    public void setEntityNamePattern(String entityNamePattern) {
-        this.entityNamePattern = entityNamePattern;
+    public void setNamePattern(String namePattern) {
+        this.namePattern = namePattern;
     }
 
-    public String getEntityExampleNamePattern() {
-        return entityExampleNamePattern;
+    public String getExampleNamePattern() {
+        return exampleNamePattern;
     }
 
-    public void setEntityExampleNamePattern(String entityExampleNamePattern) {
-        this.entityExampleNamePattern = entityExampleNamePattern;
+    public void setExampleNamePattern(String exampleNamePattern) {
+        this.exampleNamePattern = exampleNamePattern;
     }
 
-    public boolean getDataCheckBoxValue() {
-        return dataCheckBoxValue;
+    public boolean isSelectedDataCheckBox() {
+        return selectedDataCheckBox;
     }
 
-    public void setDataCheckBoxValue(boolean dataCheckBoxValue) {
-        this.dataCheckBoxValue = dataCheckBoxValue;
+    public void setSelectedDataCheckBox(boolean selectedDataCheckBox) {
+        this.selectedDataCheckBox = selectedDataCheckBox;
     }
 
-    public boolean getBuilderCheckBoxValue() {
-        return builderCheckBoxValue;
+    public boolean isSelectedBuilderCheckBox() {
+        return selectedBuilderCheckBox;
     }
 
-    public void setBuilderCheckBoxValue(boolean builderCheckBoxValue) {
-        this.builderCheckBoxValue = builderCheckBoxValue;
+    public void setSelectedBuilderCheckBox(boolean selectedBuilderCheckBox) {
+        this.selectedBuilderCheckBox = selectedBuilderCheckBox;
     }
 
-    public boolean getNoArgsConstructorCheckBoxValue() {
-        return noArgsConstructorCheckBoxValue;
+    public boolean isSelectedNoArgsConstructorCheckBox() {
+        return selectedNoArgsConstructorCheckBox;
     }
 
-    public void setNoArgsConstructorCheckBoxValue(boolean noArgsConstructorCheckBoxValue) {
-        this.noArgsConstructorCheckBoxValue = noArgsConstructorCheckBoxValue;
+    public void setSelectedNoArgsConstructorCheckBox(boolean selectedNoArgsConstructorCheckBox) {
+        this.selectedNoArgsConstructorCheckBox = selectedNoArgsConstructorCheckBox;
     }
 
-    public boolean getAllArgsConstructorCheckBoxValue() {
-        return allArgsConstructorCheckBoxValue;
+    public boolean isSelectedAllArgsConstructorCheckBox() {
+        return selectedAllArgsConstructorCheckBox;
     }
 
-    public void setAllArgsConstructorCheckBoxValue(boolean allArgsConstructorCheckBoxValue) {
-        this.allArgsConstructorCheckBoxValue = allArgsConstructorCheckBoxValue;
+    public void setSelectedAllArgsConstructorCheckBox(boolean selectedAllArgsConstructorCheckBox) {
+        this.selectedAllArgsConstructorCheckBox = selectedAllArgsConstructorCheckBox;
     }
 }

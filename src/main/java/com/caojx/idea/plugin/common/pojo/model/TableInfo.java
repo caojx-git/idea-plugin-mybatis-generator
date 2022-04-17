@@ -27,6 +27,11 @@ public class TableInfo {
     private List<TableField> fields;
 
     /**
+     * 是否有主键
+     */
+    private boolean havePrimaryKey;
+
+    /**
      * 主键id名称
      */
     private String primaryKeyName;
@@ -66,8 +71,8 @@ public class TableInfo {
 
         // 主键类型
         TableField primaryKeyField = Optional.ofNullable(fields).orElse(new ArrayList<>()).stream().filter(TableField::isPrimaryKeyFlag).findAny().orElse(null);
-        this.primaryKeyType = Long.class;
         if (Objects.nonNull(primaryKeyField)) {
+            this.havePrimaryKey = true;
             this.primaryKeyName = primaryKeyField.getName();
             this.primaryKeyType = primaryKeyField.getType();
         }
@@ -100,6 +105,14 @@ public class TableInfo {
 
     public void setFields(List<TableField> fields) {
         this.fields = fields;
+    }
+
+    public boolean isHavePrimaryKey() {
+        return havePrimaryKey;
+    }
+
+    public void setHavePrimaryKey(boolean havePrimaryKey) {
+        this.havePrimaryKey = havePrimaryKey;
     }
 
     public String getPrimaryKeyName() {
@@ -143,7 +156,7 @@ public class TableInfo {
         Set<String> imports = new HashSet<>();
         for (TableField field : this.fields) {
             if (field.isImport()) {
-                imports.add(field.getFullClazzName());
+                imports.add(field.getFullClassName());
             }
         }
         return imports;

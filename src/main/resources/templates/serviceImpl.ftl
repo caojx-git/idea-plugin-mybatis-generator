@@ -1,9 +1,9 @@
 package ${serviceImplPackage};
 
-import ${serviceFullClazzName};
+import ${serviceFullClassName};
 <#if superServiceImplClass?? && superServiceImplClass !="">
-import ${entityFullClazzName};
-import ${mapperFullClazzName};
+import ${entityFullClassName};
+import ${mapperFullClassName};
 import ${superServiceImplClass};
 </#if>
 import org.springframework.stereotype.Service;

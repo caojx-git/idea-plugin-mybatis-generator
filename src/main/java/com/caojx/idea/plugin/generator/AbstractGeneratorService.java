@@ -35,49 +35,49 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
 
             // entity
             EntityProperties entityProperties = generatorProperties.getEntityProperties();
-            if (entityProperties.getEntityGenerateValue()) {
-                String entityFile = entityProperties.getEntityPath() + File.separator + objectMap.get("entityName") + Constant.JAVA_SUFFIX;
+            if (entityProperties.isSelectedGenerateCheckBox()) {
+                String entityFile = entityProperties.getPath() + File.separator + objectMap.get("entityName") + Constant.JAVA_SUFFIX;
                 freemarkerTemplateEngine.writer(objectMap, objectMap.get("entityTemplatePath").toString(), entityFile);
             }
 
             // entityExample
             MapperProperties mapperProperties = generatorProperties.getMapperProperties();
             if (isGenerateEntityExample(mapperProperties)) {
-                String entityExampleFile = entityProperties.getEntityPath() + File.separator + objectMap.get("entityExampleName") + Constant.JAVA_SUFFIX;
+                String entityExampleFile = entityProperties.getPath() + File.separator + objectMap.get("entityExampleName") + Constant.JAVA_SUFFIX;
                 freemarkerTemplateEngine.writer(objectMap, objectMap.get("entityExampleTemplatePath").toString(), entityExampleFile);
             }
 
             // mapper
-            if (mapperProperties.getMapperGenerateValue()) {
-                String mapperFile = entityProperties.getEntityPath() + File.separator + objectMap.get("mapperName") + Constant.JAVA_SUFFIX;
+            if (mapperProperties.isSelectedGenerateCheckBox()) {
+                String mapperFile = entityProperties.getPath() + File.separator + objectMap.get("mapperName") + Constant.JAVA_SUFFIX;
                 freemarkerTemplateEngine.writer(objectMap, objectMap.get("mapperTemplatePath").toString(), mapperFile);
             }
 
             // mapperXml
             MapperXmlProperties mapperXmlProperties = generatorProperties.getMapperXmlProperties();
-            if (mapperXmlProperties.getMapperXmlGenerateValue()) {
-                String mapperXmlFile = entityProperties.getEntityPath() + File.separator + objectMap.get("mapperXmlName") + Constant.XML_SUFFIX;
+            if (mapperXmlProperties.isSelectedGenerateCheckBox()) {
+                String mapperXmlFile = entityProperties.getPath() + File.separator + objectMap.get("mapperXmlName") + Constant.XML_SUFFIX;
                 freemarkerTemplateEngine.writer(objectMap, objectMap.get("mapperXmlTemplatePath").toString(), mapperXmlFile);
             }
 
             // service
             ServiceProperties serviceProperties = generatorProperties.getServiceProperties();
-            if (serviceProperties.getServiceGenerateValue()) {
-                String serviceFile = entityProperties.getEntityPath() + File.separator + objectMap.get("serviceName") + Constant.JAVA_SUFFIX;
+            if (serviceProperties.isSelectedGenerateCheckBox()) {
+                String serviceFile = entityProperties.getPath() + File.separator + objectMap.get("serviceName") + Constant.JAVA_SUFFIX;
                 freemarkerTemplateEngine.writer(objectMap, objectMap.get("serviceTemplatePath").toString(), serviceFile);
             }
 
             // serviceImpl
             ServiceImplProperties serviceImplProperties = generatorProperties.getServiceImplProperties();
-            if (serviceImplProperties.getServiceImplGenerateValue()) {
-                String serviceImplFile = entityProperties.getEntityPath() + File.separator + objectMap.get("serviceImplName") + Constant.JAVA_SUFFIX;
+            if (serviceImplProperties.isSelectedGenerateCheckBox()) {
+                String serviceImplFile = entityProperties.getPath() + File.separator + objectMap.get("serviceImplName") + Constant.JAVA_SUFFIX;
                 freemarkerTemplateEngine.writer(objectMap, objectMap.get("serviceImplTemplatePath").toString(), serviceImplFile);
             }
 
             // controller
             ControllerProperties controllerProperties = generatorProperties.getControllerProperties();
-            if (controllerProperties.getControllerGenerateValue()) {
-                String controllerFile = entityProperties.getEntityPath() + File.separator + objectMap.get("controllerName") + Constant.JAVA_SUFFIX;
+            if (controllerProperties.isSelectedGenerateCheckBox()) {
+                String controllerFile = entityProperties.getPath() + File.separator + objectMap.get("controllerName") + Constant.JAVA_SUFFIX;
                 freemarkerTemplateEngine.writer(objectMap, objectMap.get("controllerTemplatePath").toString(), controllerFile);
             }
         }
@@ -103,88 +103,88 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
 
         // entity
         EntityProperties entityProperties = generatorProperties.getEntityProperties();
-        String entityName = String.format(entityProperties.getEntityNamePattern(), baseEntityName);
+        String entityName = String.format(entityProperties.getNamePattern(), baseEntityName);
         objectMap.put("entityTemplatePath", Constant.ENTITY_TEMPLATE_PATH);
-        objectMap.put("entityPackage", entityProperties.getEntityPackage());
+        objectMap.put("entityPackage", entityProperties.getPackageName());
         objectMap.put("entityName", entityName);
-        objectMap.put("entityFullClazzName", fullClazzName(entityProperties.getEntityPackage(), entityName));
+        objectMap.put("entityFullClassName", FullClassName(entityProperties.getPackageName(), entityName));
         objectMap.put("entityImportPackages", tableInfo.getImportPackages());
-        objectMap.put("dataCheckBoxValue", entityProperties.getDataCheckBoxValue());
-        objectMap.put("builderCheckBoxValue", entityProperties.getBuilderCheckBoxValue());
-        objectMap.put("noArgsConstructorCheckBoxValue", entityProperties.getNoArgsConstructorCheckBoxValue());
-        objectMap.put("allArgsConstructorCheckBoxValue", entityProperties.getAllArgsConstructorCheckBoxValue());
-        objectMap.put("generateGetterSetter", isGenerateGetterSetter(entityProperties));
+        objectMap.put("isSelectedDataCheckBox", entityProperties.isSelectedDataCheckBox());
+        objectMap.put("isSelectedBuilderCheckBox", entityProperties.isSelectedBuilderCheckBox());
+        objectMap.put("isSelectedNoArgsConstructorCheckBox", entityProperties.isSelectedNoArgsConstructorCheckBox());
+        objectMap.put("isSelectedAllArgsConstructorCheckBox", entityProperties.isSelectedAllArgsConstructorCheckBox());
+        objectMap.put("isGenerateGetterSetter", isGenerateGetterSetter(entityProperties));
 
 
         // entityExample
-        String entityExampleName = String.format(entityProperties.getEntityExampleNamePattern(), baseEntityName);
+        String entityExampleName = String.format(entityProperties.getExampleNamePattern(), baseEntityName);
         objectMap.put("generateEntityExample", isGenerateEntityExample(generatorProperties.getMapperProperties()));
         objectMap.put("entityExampleTemplatePath", Constant.ENTITY_EXAMPLE_TEMPLATE_PATH);
-        objectMap.put("entityExamplePackage", entityProperties.getEntityPackage());
+        objectMap.put("entityExamplePackage", entityProperties.getPackageName());
         objectMap.put("entityExampleName", entityExampleName);
-        objectMap.put("entityExampleFullClazzName", fullClazzName(entityProperties.getEntityPackage(), entityExampleName));
+        objectMap.put("entityExampleFullClassName", FullClassName(entityProperties.getPackageName(), entityExampleName));
 
         // mapper
         MapperProperties mapperProperties = generatorProperties.getMapperProperties();
-        String mapperName = String.format(mapperProperties.getMapperNamePattern(), baseEntityName);
+        String mapperName = String.format(mapperProperties.getNamePattern(), baseEntityName);
         objectMap.put("mapperTemplatePath", Constant.MAPPER_TEMPLATE_PATH);
-        objectMap.put("mapperPackage", mapperProperties.getMapperPackage());
+        objectMap.put("mapperPackage", mapperProperties.getPackageName());
         objectMap.put("mapperName", mapperName);
-        objectMap.put("mapperFullClazzName", fullClazzName(mapperProperties.getMapperPackage(), mapperName));
+        objectMap.put("mapperFullClassName", FullClassName(mapperProperties.getPackageName(), mapperName));
         objectMap.put("superMapperClass", mapperProperties.getSuperMapperClass());
         objectMap.put("superMapperClassName", StringUtils.substringAfterLast(mapperProperties.getSuperMapperClass(), "."));
         objectMap.put("superMapperClassPackage", StringUtils.substringBeforeLast(mapperProperties.getSuperMapperClass(), "."));
-        objectMap.put("selectByExampleWithBLOBsCheckBoxValue", mapperProperties.getSelectByExampleWithBLOBsCheckBoxValue());
-        objectMap.put("selectByExampleCheckBoxValue", mapperProperties.getSelectByExampleCheckBoxValue());
-        objectMap.put("selectByPrimaryKeyCheckBoxValue", mapperProperties.getSelectByPrimaryKeyCheckBoxValue());
-        objectMap.put("insertCheckBoxValue", mapperProperties.getInsertCheckBoxValue());
-        objectMap.put("insertSelectiveCheckBoxValue", mapperProperties.getInsertSelectiveCheckBoxValue());
-        objectMap.put("countByExampleCheckBoxValue", mapperProperties.getCountByExampleCheckBoxValue());
-        objectMap.put("updateByExampleCheckBoxValue", mapperProperties.getUpdateByExampleCheckBoxValue());
-        objectMap.put("updateByExampleSelectiveCheckBoxValue", mapperProperties.getUpdateByExampleSelectiveCheckBoxValue());
-        objectMap.put("updateByPrimaryKeyCheckBoxValue", mapperProperties.getUpdateByPrimaryKeyCheckBoxValue());
-        objectMap.put("updateByPrimaryKeySelectiveCheckBoxValue", mapperProperties.getUpdateByPrimaryKeySelectiveCheckBoxValue());
-        objectMap.put("updateByExampleWithBLOBsCheckBoxValue", mapperProperties.getUpdateByExampleWithBLOBsCheckBoxValue());
-        objectMap.put("updateByPrimaryKeyWithBLOBsCheckBoxValue", mapperProperties.getUpdateByPrimaryKeyWithBLOBsCheckBoxValue());
-        objectMap.put("deleteByExampleCheckBoxValue", mapperProperties.getDeleteByExampleCheckBoxValue());
-        objectMap.put("deleteByPrimaryKeyCheckBoxValue", mapperProperties.getDeleteByPrimaryKeyCheckBoxValue());
+        objectMap.put("isSelectByExampleWithBLOBsCheckBox", mapperProperties.isSelectedSelectByExampleWithBLOBsCheckBox());
+        objectMap.put("isSelectByExampleCheckBox", mapperProperties.isSelectedSelectByExampleCheckBox());
+        objectMap.put("isSelectByPrimaryKeyCheckBox", mapperProperties.isSelectedSelectByPrimaryKeyCheckBox());
+        objectMap.put("isInsertCheckBox", mapperProperties.isSelectedInsertCheckBox());
+        objectMap.put("isInsertSelectiveCheckBox", mapperProperties.isSelectedInsertSelectiveCheckBox());
+        objectMap.put("isCountByExampleCheckBox", mapperProperties.isSelectedCountByExampleCheckBox());
+        objectMap.put("isUpdateByExampleCheckBox", mapperProperties.isSelectedUpdateByExampleCheckBox());
+        objectMap.put("isUpdateByExampleSelectiveCheckBox", mapperProperties.isSelectedUpdateByExampleSelectiveCheckBox());
+        objectMap.put("isUpdateByPrimaryKeyCheckBox", mapperProperties.isSelectedUpdateByPrimaryKeyCheckBox());
+        objectMap.put("isUpdateByPrimaryKeySelectiveCheckBox", mapperProperties.isSelectedUpdateByPrimaryKeySelectiveCheckBox());
+        objectMap.put("isUpdateByExampleWithBLOBsCheckBox", mapperProperties.isSelectedUpdateByExampleWithBLOBsCheckBox());
+        objectMap.put("isUpdateByPrimaryKeyWithBLOBsCheckBox", mapperProperties.isSelectedUpdateByPrimaryKeyWithBLOBsCheckBox());
+        objectMap.put("isDeleteByExampleCheckBox", mapperProperties.isSelectedDeleteByExampleCheckBox());
+        objectMap.put("isDeleteByPrimaryKeyCheckBox", mapperProperties.isSelectedDeleteByPrimaryKeyCheckBox());
 
         // mapperXml
         MapperXmlProperties mapperXmlProperties = generatorProperties.getMapperXmlProperties();
-        String mapperXmlName = String.format(mapperXmlProperties.getMapperXmlNamePattern(), baseEntityName);
+        String mapperXmlName = String.format(mapperXmlProperties.getNamePattern(), baseEntityName);
         objectMap.put("mapperXmlTemplatePath", Constant.MAPPER_XML_TEMPLATE_PATH);
         objectMap.put("mapperXmlName", mapperXmlName);
 
         // service
         ServiceProperties serviceProperties = generatorProperties.getServiceProperties();
-        String serviceName = String.format(serviceProperties.getServiceNamePattern(), baseEntityName);
+        String serviceName = String.format(serviceProperties.getNamePattern(), baseEntityName);
         objectMap.put("serviceTemplatePath", Constant.SERVICE_TEMPLATE_PATH);
-        objectMap.put("servicePackage", serviceProperties.getServicePackage());
+        objectMap.put("servicePackage", serviceProperties.getPackageName());
         objectMap.put("serviceName", serviceName);
-        objectMap.put("serviceFullClazzName", fullClazzName(serviceProperties.getServicePackage(), serviceName));
+        objectMap.put("serviceFullClassName", FullClassName(serviceProperties.getPackageName(), serviceName));
         objectMap.put("superServiceClass", serviceProperties.getSuperServiceClass());
         objectMap.put("superServiceClassName", StringUtils.substringAfterLast(serviceProperties.getSuperServiceClass(), "."));
         objectMap.put("superServiceClassPackage", StringUtils.substringBeforeLast(serviceProperties.getSuperServiceClass(), "."));
 
         // serviceImpl
         ServiceImplProperties serviceImplProperties = generatorProperties.getServiceImplProperties();
-        String serviceImplName = String.format(serviceImplProperties.getServiceImplNamePattern(), baseEntityName);
+        String serviceImplName = String.format(serviceImplProperties.getNamePattern(), baseEntityName);
         objectMap.put("serviceImplTemplatePath", Constant.SERVICE_IMPL_TEMPLATE_PATH);
-        objectMap.put("serviceImplPackage", serviceImplProperties.getServiceImplPackage());
+        objectMap.put("serviceImplPackage", serviceImplProperties.getPackageName());
         objectMap.put("serviceImplName", serviceImplName);
-        objectMap.put("serviceImplFullClazzName", fullClazzName(serviceImplProperties.getServiceImplPackage(), serviceImplName));
+        objectMap.put("serviceImplFullClassName", FullClassName(serviceImplProperties.getPackageName(), serviceImplName));
         objectMap.put("superServiceImplClass", serviceImplProperties.getSuperServiceImplClass());
         objectMap.put("superServiceImplClassName", StringUtils.substringAfterLast(serviceImplProperties.getSuperServiceImplClass(), "."));
         objectMap.put("superServiceImplClassPackage", StringUtils.substringBeforeLast(serviceImplProperties.getSuperServiceImplClass(), "."));
 
         // controller
         ControllerProperties controllerProperties = generatorProperties.getControllerProperties();
-        String controllerName = String.format(controllerProperties.getControllerNamePattern(), baseEntityName);
+        String controllerName = String.format(controllerProperties.getNamePattern(), baseEntityName);
         objectMap.put("controllerTemplatePath", Constant.CONTROLLER_TEMPLATE_PATH);
-        objectMap.put("controllerPackage", controllerProperties.getControllerPackage());
+        objectMap.put("controllerPackage", controllerProperties.getPackageName());
         objectMap.put("controllerName", controllerName);
-        objectMap.put("controllerFullClazzName", fullClazzName(controllerProperties.getControllerPackage(), controllerName));
-        objectMap.put("controllerSwaggerCheckBoxValue", controllerProperties.getControllerSwaggerCheckBoxValue());
+        objectMap.put("controllerFullClassName", FullClassName(controllerProperties.getPackageName(), controllerName));
+        objectMap.put("isSelectedSwaggerCheckBox", controllerProperties.isSelectedSwaggerCheckBox());
         objectMap.put("controllerMappingHyphen", CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, tableInfo.getName()));
         return objectMap;
     }
@@ -196,7 +196,7 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
      * @param clazzName   类名
      * @return 全类名
      */
-    private String fullClazzName(String packageName, String clazzName) {
+    private String FullClassName(String packageName, String clazzName) {
         return packageName + Constant.POINT + clazzName;
     }
 
@@ -207,7 +207,7 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
      * @return true 生成、false 不生成
      */
     private boolean isGenerateGetterSetter(EntityProperties entityProperties) {
-        return !entityProperties.getDataCheckBoxValue();
+        return !entityProperties.isSelectedDataCheckBox();
     }
 
     /**
@@ -217,12 +217,12 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
      * @return true 生成、false 不生成
      */
     private boolean isGenerateEntityExample(MapperProperties mapperProperties) {
-        return mapperProperties.getSelectByExampleWithBLOBsCheckBoxValue()
-                || mapperProperties.getSelectByExampleCheckBoxValue()
-                || mapperProperties.getCountByExampleCheckBoxValue()
-                || mapperProperties.getUpdateByExampleCheckBoxValue()
-                || mapperProperties.getUpdateByExampleSelectiveCheckBoxValue()
-                || mapperProperties.getUpdateByExampleWithBLOBsCheckBoxValue()
-                || mapperProperties.getDeleteByExampleCheckBoxValue();
+        return mapperProperties.isSelectedSelectByExampleWithBLOBsCheckBox()
+                || mapperProperties.isSelectedSelectByExampleCheckBox()
+                || mapperProperties.isSelectedCountByExampleCheckBox()
+                || mapperProperties.isSelectedUpdateByExampleCheckBox()
+                || mapperProperties.isSelectedUpdateByExampleSelectiveCheckBox()
+                || mapperProperties.isSelectedUpdateByExampleWithBLOBsCheckBox()
+                || mapperProperties.isSelectedDeleteByExampleCheckBox();
     }
 }

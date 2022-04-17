@@ -3,8 +3,8 @@ package ${mapperPackage};
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
-import ${entityFullClazzName};
-import ${entityExampleFullClazzName};
+import ${entityFullClassName};
+import ${entityExampleFullClassName};
 
 /**
 * 注释${table.comment!} Mapper
@@ -14,7 +14,7 @@ import ${entityExampleFullClazzName};
 */
 @Mapper
 public interface ${mapperName} {
-<#if selectByExampleWithBLOBsCheckBoxValue && table.haveBlobField>
+<#if isSelectByExampleWithBLOBsCheckBox && table.haveBlobField>
 
     /**
      * 查询记录包含BLOB信息
@@ -24,7 +24,7 @@ public interface ${mapperName} {
      */
     List<${entityName}> selectByExampleWithBLOBs(${entityExampleName} example);
 </#if>
-<#if selectByExampleCheckBoxValue>
+<#if isSelectByExampleCheckBox>
 
     /**
      * 列表查询
@@ -34,7 +34,7 @@ public interface ${mapperName} {
      */
     List<${entityName}> selectByExample(${entityExampleName} example);
 </#if>
-<#if selectByPrimaryKeyCheckBoxValue>
+<#if isSelectByPrimaryKeyCheckBox>
 
     /**
      * 根据主键id查询
@@ -44,7 +44,7 @@ public interface ${mapperName} {
      */
     ${entityName} selectByPrimaryKey(${table.primaryKeyType.simpleName} ${table.primaryKeyName});
 </#if>
-<#if deleteByPrimaryKeyCheckBoxValue>
+<#if isDeleteByPrimaryKeyCheckBox>
 
     /**
      * 根据主键删除数据
@@ -54,7 +54,7 @@ public interface ${mapperName} {
      */
     int deleteByPrimaryKey(${table.primaryKeyType.simpleName} ${table.primaryKeyName});
 </#if>
-<#if deleteByExampleCheckBoxValue>
+<#if isDeleteByExampleCheckBox>
 
     /**
      * 删除数据
@@ -64,7 +64,7 @@ public interface ${mapperName} {
      */
     int deleteByExample(${entityExampleName} example);
 </#if>
-<#if insertCheckBoxValue>
+<#if isInsertCheckBox>
 
     /**
      * 插入数据库记录（不建议使用）
@@ -73,7 +73,7 @@ public interface ${mapperName} {
      */
     int insert(${entityName} record);
 </#if>
-<#if insertSelectiveCheckBoxValue>
+<#if isInsertSelectiveCheckBox>
 
     /**
      * 插入数据库记录（建议使用）
@@ -83,7 +83,7 @@ public interface ${mapperName} {
      */
     int insertSelective(${entityName} record);
 </#if>
-<#if countByExampleCheckBoxValue>
+<#if isCountByExampleCheckBox>
 
     /**
      * 计数
@@ -93,7 +93,7 @@ public interface ${mapperName} {
      */
     long countByExample(${entityExampleName} example);
 </#if>
-<#if updateByExampleSelectiveCheckBoxValue>
+<#if isUpdateByExampleSelectiveCheckBox>
 
     /**
      * 修改数据
@@ -104,7 +104,7 @@ public interface ${mapperName} {
      */
     int updateByExampleSelective(@Param("record") ${entityName} record, @Param("example") ${entityExampleName} example);
 </#if>
-<#if updateByExampleWithBLOBsCheckBoxValue && table.haveBlobField>
+<#if isUpdateByExampleWithBLOBsCheckBox && table.haveBlobField>
 
     /**
      * 更新记录包含BLOB
@@ -115,7 +115,7 @@ public interface ${mapperName} {
      */
     int updateByExampleWithBLOBs(@Param("record") ${entityName} record, @Param("example") ${entityExampleName} example);
 </#if>
-<#if updateByExampleCheckBoxValue>
+<#if isUpdateByExampleCheckBox>
 
     /**
      * 修改数据
@@ -126,7 +126,7 @@ public interface ${mapperName} {
      */
     int updateByExample(@Param("record") ${entityName} record, @Param("example") ${entityExampleName} example);
 </#if>
-<#if updateByPrimaryKeySelectiveCheckBoxValue>
+<#if isUpdateByPrimaryKeySelectiveCheckBox>
 
     /**
      * 修改数据(推荐使用)
@@ -136,7 +136,7 @@ public interface ${mapperName} {
      */
     int updateByPrimaryKeySelective(${entityName} record);
 </#if>
-<#if updateByPrimaryKeyWithBLOBsCheckBoxValue && table.haveBlobField>
+<#if isUpdateByPrimaryKeyWithBLOBsCheckBox && table.haveBlobField>
 
     /**
      * 根据主键更新数据
@@ -146,7 +146,7 @@ public interface ${mapperName} {
      */
     int updateByPrimaryKeyWithBLOBs(${entityName} record);
 </#if>
-<#if updateByPrimaryKeyCheckBoxValue>
+<#if isUpdateByPrimaryKeyCheckBox>
 
     /**
      * 根据主键更新数据

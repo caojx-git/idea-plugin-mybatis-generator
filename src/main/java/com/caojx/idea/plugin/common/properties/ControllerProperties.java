@@ -11,65 +11,65 @@ public class ControllerProperties {
     /**
      * 是否生成controller
      */
-    private boolean controllerGenerateValue;
+    private boolean selectedGenerateCheckBox;
 
     /**
      * controller路径
      */
-    private String controllerPath;
+    private String path;
 
     /**
      * controller包名
      */
-    private String controllerPackage;
+    private String packageName;
 
     /**
      * controller 命名格式
      */
-    private String controllerNamePattern;
+    private String namePattern;
 
     /**
      * controller swagger注解
      */
-    private boolean controllerSwaggerCheckBoxValue;
+    private boolean selectedSwaggerCheckBox;
 
-    public boolean getControllerGenerateValue() {
-        return controllerGenerateValue;
+    public boolean isSelectedGenerateCheckBox() {
+        return selectedGenerateCheckBox;
     }
 
-    public void setControllerGenerateValue(boolean controllerGenerateValue) {
-        this.controllerGenerateValue = controllerGenerateValue;
+    public void setSelectedGenerateCheckBox(boolean selectedGenerateCheckBox) {
+        this.selectedGenerateCheckBox = selectedGenerateCheckBox;
     }
 
-    public String getControllerPath() {
-        return controllerPath;
+    public String getPath() {
+        return path;
     }
 
-    public void setControllerPath(String controllerPath) {
-        this.controllerPath = controllerPath;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public String getControllerPackage() {
-        return controllerPackage;
+    public String getPackageName() {
+        return packageName;
     }
 
-    public void setControllerPackage(String controllerPackage) {
-        this.controllerPackage = controllerPackage;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
-    public String getControllerNamePattern() {
-        return controllerNamePattern;
+    public String getNamePattern() {
+        return namePattern;
     }
 
-    public void setControllerNamePattern(String controllerNamePattern) {
-        this.controllerNamePattern = controllerNamePattern;
+    public void setNamePattern(String namePattern) {
+        this.namePattern = namePattern;
     }
 
-    public boolean getControllerSwaggerCheckBoxValue() {
-        return controllerSwaggerCheckBoxValue;
+    public boolean isSelectedSwaggerCheckBox() {
+        return selectedSwaggerCheckBox;
     }
 
-    public void setControllerSwaggerCheckBoxValue(boolean controllerSwaggerCheckBoxValue) {
-        this.controllerSwaggerCheckBoxValue = controllerSwaggerCheckBoxValue;
+    public void setSelectedSwaggerCheckBox(boolean selectedSwaggerCheckBox) {
+        this.selectedSwaggerCheckBox = selectedSwaggerCheckBox;
     }
 }
