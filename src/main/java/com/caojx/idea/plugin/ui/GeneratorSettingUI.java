@@ -17,6 +17,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -176,7 +177,7 @@ public class GeneratorSettingUI extends DialogWrapper {
      */
     private void renderUIData(Project project) {
         // 获取持久化数据
-        PersistentState persistentState = PersistentStateService.getInstance(null != project ? project : ProjectManager.getInstance().getDefaultProject()).getState();
+        PersistentState persistentState = PersistentStateService.getInstance(project).getState();
         GeneratorProperties generatorProperties = persistentState.getGeneratorContext().getGeneratorProperties();
 
         // 获取生成配置
@@ -225,7 +226,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         entityPathTf.setText(entityProperties.getPath());
         entityPackageTf.setText(entityProperties.getPackageName());
         entityNamePatternTf.setText(StringUtils.isBlank(entityProperties.getNamePattern()) ? Constant.ENTITY_NAME_DEFAULT_FORMAT : entityProperties.getNamePattern());
-        serviceGenerateCheckBox.setSelected(entityProperties.isSelectedSerializableCheckBox());
+        serializableCheckBox.setSelected(entityProperties.isSelectedSerializableCheckBox());
         dataCheckBox.setSelected(entityProperties.isSelectedDataCheckBox());
         builderCheckBox.setSelected(entityProperties.isSelectedBuilderCheckBox());
         noArgsConstructorCheckBox.setSelected(entityProperties.isSelectedNoArgsConstructorCheckBox());
@@ -465,6 +466,8 @@ public class GeneratorSettingUI extends DialogWrapper {
         restConfigBtn.addActionListener(e -> {
             // 重置UI数据
             restUIData();
+
+            Messages.showWarningDialog(project, "重置成功", "info");
         });
         saveConfigBtn.addActionListener(e -> {
             // 获取代码生成配置
@@ -473,8 +476,10 @@ public class GeneratorSettingUI extends DialogWrapper {
             generatorContext.setGeneratorProperties(generatorProperties);
 
             // 持久化
-            PersistentState persistentState = PersistentStateService.getInstance(null != project ? project : ProjectManager.getInstance().getDefaultProject()).getState();
+            PersistentState persistentState = PersistentStateService.getInstance(project).getState();
             persistentState.setGeneratorContext(generatorContext);
+
+            Messages.showWarningDialog(project, "保存成功", "info");
         });
         generatorBtn.addActionListener(e -> {
             // 获取代码生成配置
@@ -491,7 +496,7 @@ public class GeneratorSettingUI extends DialogWrapper {
             generatorContext.setGeneratorProperties(generatorProperties);
 
             // 持久化
-            PersistentState persistentState = PersistentStateService.getInstance(null != project ? project : ProjectManager.getInstance().getDefaultProject()).getState();
+            PersistentState persistentState = PersistentStateService.getInstance(project).getState();
             persistentState.setGeneratorContext(generatorContext);
 
             // 校验数据
@@ -504,6 +509,9 @@ public class GeneratorSettingUI extends DialogWrapper {
             // 生成代码
             generatorService.doGenerator(project, generatorContext);
             Messages.showWarningDialog(project, "代码生成成功", "info");
+
+            // 刷新文件
+            LocalFileSystem.getInstance().refreshAndFindFileByPath(project.getBasePath());
         });
         cancelBtn.addActionListener(e -> {
             GeneratorSettingUI.this.dispose();

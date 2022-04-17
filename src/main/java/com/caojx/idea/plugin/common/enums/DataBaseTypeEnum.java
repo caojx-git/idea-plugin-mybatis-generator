@@ -13,7 +13,7 @@ public enum DataBaseTypeEnum {
 
     MySQL,
 
-    Oracle,
+//    Oracle,
 
     ;
 

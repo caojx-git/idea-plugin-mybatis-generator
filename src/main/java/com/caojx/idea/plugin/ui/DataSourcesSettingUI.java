@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -61,7 +62,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
      */
     private DefaultTableModel defaultTableModel;
 
-    public DataSourcesSettingUI(Project project, GeneratorSettingUI generatorSettingUI) {
+    public DataSourcesSettingUI(@NotNull Project project, @NotNull GeneratorSettingUI generatorSettingUI) {
         super(true);
         init();
 

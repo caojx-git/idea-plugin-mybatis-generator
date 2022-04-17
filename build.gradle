@@ -26,8 +26,11 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+      V1.0<br>
+      <em>1.Support MySQL</em>
+      <em>2.It supports code generation in three styles: MyBatis, TkMyBatis and MybatisPlus</em>
+      <em>3.Support customized generation of entity, mapper, mapperXml, service, serviceImpl and controller</em>
+      """
 }
 test {
     useJUnitPlatform()

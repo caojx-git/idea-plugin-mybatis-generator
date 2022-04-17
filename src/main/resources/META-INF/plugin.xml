@@ -1,11 +1,17 @@
 <idea-plugin>
-    <id>com.caojx.MybatisGenerator</id>
-    <name>MybatisGenerator</name>
+    <id>com.caojx.MyBatisCodeGenerator</id>
+    <name>MyBatisCodeGenerator</name>
     <vendor email="caojx_wy@163.com" url="">caojx</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+        <em>Simple MyBatisCodeGenerator Plugin </em>
+        <em>1.It supports code generation in three styles: MyBatis, TkMyBatis and MybatisPlus</em>
+        <em>2.Support customized generation of entity, mapper, mapperXml, service, serviceImpl and controller</em>
+
+        <br>
+        <em>MyBatis 代码生成插件</em>
+        <em>1.支持MyBatis、TkMyBatis、MyBatisPlus 三种风格代码生成</em>
+        <em>2.支持定制化生成entity、mapper、mapperXml、service、serviceImpl、Controller</em>
     ]]></description>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
@@ -15,15 +21,15 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <!--持久化-->
-        <projectService serviceImplementation="com.caojx.idea.plugin.generator.PersistentStateService"></projectService>
+        <projectService serviceImplementation="com.caojx.idea.plugin.generator.PersistentStateService"/>
 
         <!--工具栏-->
-        <toolWindow id="generatorCode" factoryClass="com.caojx.idea.plugin.ui.GeneratorWindowFactory" anchor="right"></toolWindow>
+        <toolWindow id="MyBatisCodeGenerator" factoryClass="com.caojx.idea.plugin.ui.GeneratorWindowFactory" anchor="right"/>
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <action id="GeneratorActionId" class="com.caojx.idea.plugin.action.GeneratorAction" text="GeneratorActionName" description="生成代码">
+        <action id="GeneratorActionId" class="com.caojx.idea.plugin.action.GeneratorAction" text="MyBatisCodeGenerator" description="生成代码">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
         </action>
     </actions>

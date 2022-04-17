@@ -9,6 +9,7 @@ import com.caojx.idea.plugin.generator.PersistentStateService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -53,7 +54,7 @@ public class EditDatabaseSettingUI extends DialogWrapper {
      */
     private List<Database> databases;
 
-    public EditDatabaseSettingUI(Project project, Database editDatabase, DataSourcesSettingUI dataSourcesSettingUI) {
+    public EditDatabaseSettingUI(@NotNull Project project, Database editDatabase, @NotNull DataSourcesSettingUI dataSourcesSettingUI) {
         super(true);
         init();
 

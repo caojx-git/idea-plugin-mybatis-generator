@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
  * @author caojx
  * @date 2022/4/4 12:57 PM
  */
-@State(name = "PersistentStateService", storages = @Storage("plugin.xml"))
+@State(name = "persistentStateService", storages = @Storage("plugin.xml"))
 public class PersistentStateService implements PersistentStateComponent<PersistentState> {
 
     /**
@@ -23,8 +23,8 @@ public class PersistentStateService implements PersistentStateComponent<Persiste
      */
     private PersistentState persistentData = new PersistentState();
 
-    public static PersistentStateService getInstance(Project project) {
-        return ServiceManager.getService(project, PersistentStateService.class);
+    public static PersistentStateService getInstance(@NotNull Project project) {
+        return project.getService(PersistentStateService.class);
     }
 
     @Override
