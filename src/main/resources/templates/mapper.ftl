@@ -1,10 +1,18 @@
+<#if mapperPackage?default("")?trim?length gt 1>
 package ${mapperPackage};
 
+</#if>
 import org.apache.ibatis.annotations.Mapper;
+<#if isSelectedEnableUpdateByExampleCheckBox>
 import org.apache.ibatis.annotations.Param;
+</#if>
+<#if isSelectedEnableSelectByExampleCheckBox>
 import java.util.List;
+</#if>
 import ${entityFullClassName};
+<#if isSelectedEnableSelectByExampleCheckBox || isSelectedEnableDeleteByExampleCheckBox || isSelectedEnableCountByExampleCheckBox || isSelectedEnableUpdateByExampleCheckBox>
 import ${entityExampleFullClassName};
+</#if>
 
 /**
 * 注释${table.comment!} Mapper

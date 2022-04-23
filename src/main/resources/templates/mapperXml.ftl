@@ -12,7 +12,6 @@
     </#list>
   </resultMap>
   <#if table.haveBlobField>
-
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="${entityFullClassName}">
     <#list table.fields as field>
       <#if field.blobFlag>
@@ -21,8 +20,7 @@
     </#list>
   </resultMap>
   </#if>
-  <#if generateEntityExample>
-
+  <#if isSelectedEnableSelectByExampleCheckBox || isSelectedEnableDeleteByExampleCheckBox || isSelectedEnableCountByExampleCheckBox || isSelectedEnableUpdateByExampleCheckBox>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -52,7 +50,6 @@
       </foreach>
     </where>
   </sql>
-
   <sql id="Update_By_Example_Where_Clause">
     <where>
       <foreach collection="example.oredCriteria" item="criteria" separator="or">
@@ -82,20 +79,18 @@
       </foreach>
     </where>
   </sql>
-
   </#if>
   <sql id="Base_Column_List">
-    <#list table.fields as field><#if !field.blobFlag>${field.columnName}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#list>
+    <#list table.fields as field><#if !field.blobFlag>${field.columnName}<#if field_has_next>, <#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#if></#list>
   </sql>
   <#if table.haveBlobField>
-
   <sql id="Blob_Column_List">
-    <#list table.blobFields as field><#if field.blobFlag>${field.columnName}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#list>
+    <#list table.blobFields as field><#if field.blobFlag>${field.columnName}<#if field_has_next>, <#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#if></#list>
   </sql>
   </#if>
   <#if isSelectedEnableSelectByExampleCheckBox && table.haveBlobField>
 
-  <select id="selectByExampleWithBLOBs" parameterType="${entityExampleName}" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="${entityExampleFullClassName}" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
@@ -114,7 +109,7 @@
   </#if>
   <#if isSelectedEnableSelectByExampleCheckBox>
 
-  <select id="selectByExample" parameterType="${entityExampleName}" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="${entityExampleFullClassName}" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -131,7 +126,7 @@
 </#if>
   <#if isSelectedEnableSelectByPrimaryKeyCheckBox && table.havePrimaryKey && !table.haveBlobField>
 
-  <select id="selectByPrimaryKey" parameterType="${table.primaryKeyType}" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="${table.primaryKeyType.name}" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from ${table.name}
@@ -144,7 +139,7 @@
   </#if>
   <#if isSelectedEnableSelectByPrimaryKeyCheckBox && table.havePrimaryKey && table.haveBlobField>
 
-  <select id="selectByPrimaryKey" parameterType="${table.primaryKeyType}" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="${table.primaryKeyType.name}" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Base_Column_List" />
     ,
@@ -159,7 +154,7 @@
   </#if>
   <#if isSelectedEnableDeleteByPrimaryKeyCheckBox && table.havePrimaryKey>
 
-  <delete id="deleteByPrimaryKey" parameterType="${table.primaryKeyType}">
+  <delete id="deleteByPrimaryKey" parameterType="${table.primaryKeyType.name}">
     delete from ${table.name}
     <#list table.fields as field>
     <#if field.primaryKeyFlag>
@@ -170,7 +165,7 @@
   </#if>
   <#if isSelectedEnableDeleteByExampleCheckBox>
 
-  <delete id="deleteByExample" parameterType="${entityExampleName}">
+  <delete id="deleteByExample" parameterType="${entityExampleFullClassName}">
     delete from ${table.name}
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -187,9 +182,8 @@
     </selectKey>
       </#if>
     </#list>
-    insert into ${table.name}(<#list table.fields as field>${field.columnName}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t","")}</#list>)
-    values
-    (<#list table.fields as field><#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>, </#if><#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t","")}</#list>)
+    insert into ${table.name}(<#list table.fields as field><#if !field.primaryKeyFlag>${field.columnName}<#if field_has_next>, <#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t ","")}</#if></#if></#list>)
+    values (<#list table.fields as field><#if !field.primaryKeyFlag><#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>, <#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t ","")}</#if></#if></#list>)
   </insert>
 </#if>
   <#if isSelectedEnableInsertCheckBox>
@@ -205,23 +199,27 @@
     insert into ${table.name}
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <#list table.fields as field>
+      <#if !field.primaryKeyFlag>
       <if test="${field.name} != null">
-        ${field.columnName}<#if field_has_next>,</#if>
+        ${field.columnName},
       </if>
-     </#list>
+      </#if>
+      </#list>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
      <#list table.fields as field>
+       <#if !field.primaryKeyFlag>
       <if test="${field.name} != null">
-        <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if>
+        <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}},
       </if>
+      </#if>
       </#list>
     </trim>
   </insert>
 </#if>
   <#if isSelectedEnableCountByExampleCheckBox>
 
-  <select id="countByExample" parameterType="${entityExampleName}" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="${entityExampleFullClassName}" resultType="java.lang.Long">
     select count(*) from ${table.name}
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -235,7 +233,7 @@
     <set>
       <#list table.fields as field>
       <if test="record.${field.name} != null">
-       ${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcType}}
+       ${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcType}},
       </if>
       </#list>
     </set>
@@ -248,12 +246,7 @@
 
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update ${table.name}
-    set
-    <#list table.fields as field>
-      <#if !field.primaryKeyFlag>
-     ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if>
-      </#if>
-    </#list>
+    set<#list table.fields as field> ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#list>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -263,8 +256,7 @@
 
   <update id="updateByExample" parameterType="map">
     update ${table.name}
-    set
-    <#list table.fields as field>${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if><#assign newLine=(field_index)%1 == 0>${newLine?string("\n\t","")}</#list>
+    set<#list table.fields as field> ${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#list>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -276,9 +268,11 @@
     update ${table.name}
     <set>
      <#list table.fields as field>
+       <#if !field.primaryKeyFlag>
       <if test="${field.name} != null">
-        userId = <#noparse>#{</#noparse>${field.name},jdbcType=INTEGER}
+        ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}},
       </if>
+       </#if>
       </#list>
     </set>
     <#list table.fields as field>
@@ -292,15 +286,10 @@
 
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="${entityFullClassName}">
     update ${table.name}
-    set
-    <#list table.fields as field>
-      <#if !field.primaryKeyFlag>
-        ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if>
-      </#if>
-    </#list>
+    set<#list table.fields as field><#if !field.primaryKeyFlag> ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#if></#list>
     <#list table.fields as field>
       <#if field.primaryKeyFlag>
-     where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
+    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
       </#if>
     </#list>
   </update>
@@ -309,15 +298,10 @@
 
   <update id="updateByPrimaryKey" parameterType="${entityFullClassName}">
     update ${table.name}
-    set
-     <#list table.fields as field>
-     <#if !field.primaryKeyFlag && !field.blobFlag>
-       ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,</#if>
-      </#if>
-      </#list>
+    set<#list table.fields as field><#if !field.primaryKeyFlag && !field.blobFlag> ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#if></#list>
    <#list table.fields as field>
       <#if field.primaryKeyFlag>
-      where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
+    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
       </#if>
    </#list>
   </update>

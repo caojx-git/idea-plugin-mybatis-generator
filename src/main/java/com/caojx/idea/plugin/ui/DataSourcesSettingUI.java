@@ -1,12 +1,12 @@
 package com.caojx.idea.plugin.ui;
 
-import com.caojx.idea.plugin.common.pojo.model.Database;
-import com.caojx.idea.plugin.common.pojo.persistent.PersistentState;
+import com.caojx.idea.plugin.common.pojo.Database;
 import com.caojx.idea.plugin.common.properties.CommonProperties;
-import com.caojx.idea.plugin.generator.PersistentStateService;
+import com.caojx.idea.plugin.common.utils.MyMessages;
+import com.caojx.idea.plugin.persistent.PersistentState;
+import com.caojx.idea.plugin.persistent.PersistentStateService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,14 +33,9 @@ public class DataSourcesSettingUI extends DialogWrapper {
     private JButton editBtn;
 
     /**
-     * 项目
-     */
-    private Project project;
-
-    /**
      * 代码生成配置UI
      */
-    private GeneratorSettingUI generatorSettingUI;
+    private final GeneratorSettingUI generatorSettingUI;
 
     /**
      * 数据库列表
@@ -66,7 +61,6 @@ public class DataSourcesSettingUI extends DialogWrapper {
         super(true);
         init();
 
-        this.project = project;
         this.generatorSettingUI = generatorSettingUI;
 
         // 初始化界面数据
@@ -94,7 +88,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
     private void renderUIData(Project project) {
         // 数据库列表
         PersistentState persistentState = PersistentStateService.getInstance(project).getState();
-        CommonProperties commonProperties = persistentState.getGeneratorContext().getGeneratorProperties().getCommonProperties();
+        CommonProperties commonProperties = persistentState.getGeneratorProperties().getCommonProperties();
         databases = commonProperties.getDatabases();
 
         // 初始化表
@@ -129,7 +123,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
         // 删除数据库
         deleteBtn.addActionListener(e -> {
             if (StringUtils.isBlank(selectDatabaseName)) {
-                Messages.showWarningDialog(project, "请选择需要删除的数据库", "Warning");
+                MyMessages.showWarningDialog(project, "请选择需要删除的数据库", "Warning");
                 return;
             }
             removeDatabaseByName(databases, selectDatabaseName);
@@ -143,7 +137,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
         // 编辑数据库
         editBtn.addActionListener(e -> {
             if (StringUtils.isBlank(selectDatabaseName)) {
-                Messages.showWarningDialog(project, "请选择需要编辑的数据库", "Warning");
+                MyMessages.showWarningDialog(project, "请选择需要编辑的数据库", "Warning");
                 return;
             }
 

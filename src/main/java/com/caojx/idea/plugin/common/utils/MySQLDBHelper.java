@@ -1,8 +1,8 @@
 package com.caojx.idea.plugin.common.utils;
 
-import com.caojx.idea.plugin.common.pojo.model.Database;
-import com.caojx.idea.plugin.common.pojo.model.TableField;
-import com.caojx.idea.plugin.common.pojo.model.TableInfo;
+import com.caojx.idea.plugin.common.pojo.Database;
+import com.caojx.idea.plugin.common.pojo.TableField;
+import com.caojx.idea.plugin.common.pojo.TableInfo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -184,13 +184,13 @@ public class MySQLDBHelper {
                 int dataType = rs.getInt("DATA_TYPE");
 
                 // 是否为主键
-                boolean keyIdentityFlag = false;
-                if (Objects.nonNull(primaryKey) && columnName.endsWith(primaryKey)) {
-                    keyIdentityFlag = true;
+                boolean primaryKeyFlag = false;
+                if (Objects.nonNull(primaryKey) && columnName.equals(primaryKey)) {
+                    primaryKeyFlag = true;
                 }
 
                 // 构建表属性
-                TableField tableField = new TableField(columnName, remarks, dataType, keyIdentityFlag);
+                TableField tableField = new TableField(columnName, remarks, dataType, primaryKeyFlag);
                 fields.add(tableField);
             }
             return fields;

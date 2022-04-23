@@ -1,8 +1,6 @@
-package com.caojx.idea.plugin.generator;
+package com.caojx.idea.plugin.persistent;
 
-import com.caojx.idea.plugin.common.pojo.persistent.PersistentState;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
@@ -15,7 +13,12 @@ import org.jetbrains.annotations.Nullable;
  * @author caojx
  * @date 2022/4/4 12:57 PM
  */
-@State(name = "persistentStateService", storages = @Storage("plugin.xml"))
+@State(
+        // 存储xml标签信息
+        name = "persistentStateService",
+        // 存放文件名
+        storages = @Storage("mbg-plugin.xml")
+)
 public class PersistentStateService implements PersistentStateComponent<PersistentState> {
 
     /**

@@ -1,5 +1,7 @@
+<#if servicePackage?default("")?trim?length gt 1>
 package ${servicePackage};
 
+</#if>
 <#if superServiceClass?? && superServiceClass !="">
 import ${entityFullClassName};
 import ${superServiceClassPackage};

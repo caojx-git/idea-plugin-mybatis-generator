@@ -1,7 +1,5 @@
 package com.caojx.idea.plugin.common.properties;
 
-import com.caojx.idea.plugin.common.constants.Constant;
-
 import java.io.Serializable;
 
 /**
@@ -31,6 +29,11 @@ public class EntityProperties implements Serializable {
      * 实体命名格式
      */
     private String namePattern;
+
+    /**
+     * entityExample是否生成
+     */
+    private boolean selectedGenerateEntityExampleCheckBox;
 
     /**
      * entityExample 命名格式
@@ -92,6 +95,14 @@ public class EntityProperties implements Serializable {
 
     public void setNamePattern(String namePattern) {
         this.namePattern = namePattern;
+    }
+
+    public boolean isSelectedGenerateEntityExampleCheckBox() {
+        return selectedGenerateEntityExampleCheckBox;
+    }
+
+    public void setSelectedGenerateEntityExampleCheckBox(boolean selectedGenerateEntityExampleCheckBox) {
+        this.selectedGenerateEntityExampleCheckBox = selectedGenerateEntityExampleCheckBox;
     }
 
     public String getExampleNamePattern() {

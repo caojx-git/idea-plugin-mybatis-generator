@@ -57,15 +57,27 @@ public class TypeHandler {
     }
 
     /**
+     * 是否Date类型
+     *
+     * @param sqlType
+     * @return true 是、false 不是
+     */
+    public static boolean isDate(int sqlType) {
+        List<JDBCType> dates = Arrays.asList(JDBCType.DATE, JDBCType.TIME, JDBCType.TIMESTAMP, JDBCType.TIME_WITH_TIMEZONE, JDBCType.TIMESTAMP_WITH_TIMEZONE);
+        JDBCType jdbcType = JDBCType.valueOf(sqlType);
+        return dates.contains(jdbcType);
+    }
+
+    /**
      * 是否BLOB类型
      *
      * @param sqlType
      * @return true 是、false 不是
      */
     public static boolean isBLOB(int sqlType) {
-        List<JDBCType> BLOBS = Arrays.asList(JDBCType.LONGVARCHAR, JDBCType.LONGNVARCHAR, JDBCType.LONGVARBINARY, JDBCType.BLOB, JDBCType.CLOB, JDBCType.NCLOB);
+        List<JDBCType> blobs = Arrays.asList(JDBCType.LONGVARCHAR, JDBCType.LONGNVARCHAR, JDBCType.LONGVARBINARY, JDBCType.BLOB, JDBCType.CLOB, JDBCType.NCLOB);
         JDBCType jdbcType = JDBCType.valueOf(sqlType);
-        return BLOBS.contains(jdbcType);
+        return blobs.contains(jdbcType);
     }
 
 }

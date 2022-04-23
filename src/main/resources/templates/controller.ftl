@@ -1,5 +1,7 @@
+<#if controllerPackage?default("")?trim?length gt 1>
 package ${controllerPackage};
 
+</#if>
 <#if isSelectedSwaggerCheckBox>
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

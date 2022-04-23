@@ -1,17 +1,20 @@
 package com.caojx.idea.plugin.generator;
 
 import com.caojx.idea.plugin.common.constants.Constant;
-import com.caojx.idea.plugin.common.context.GeneratorContext;
-import com.caojx.idea.plugin.common.pojo.model.TableInfo;
+import com.caojx.idea.plugin.common.pojo.TableInfo;
 import com.caojx.idea.plugin.common.properties.*;
+import com.caojx.idea.plugin.common.utils.ClassUtils;
+import com.caojx.idea.plugin.common.utils.MyMessages;
 import com.caojx.idea.plugin.generator.engin.FreemarkerTemplateEngine;
 import com.google.common.base.CaseFormat;
 import com.intellij.openapi.project.Project;
-import org.apache.commons.lang3.StringUtils;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 生成文件抽象类
@@ -37,48 +40,48 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
             EntityProperties entityProperties = generatorProperties.getEntityProperties();
             if (entityProperties.isSelectedGenerateCheckBox()) {
                 String entityFile = entityProperties.getPath() + File.separator + objectMap.get("entityName") + Constant.JAVA_SUFFIX;
-                freemarkerTemplateEngine.writer(objectMap, objectMap.get("entityTemplatePath").toString(), entityFile);
+                generatorFile(project, objectMap, objectMap.get("entityTemplatePath").toString(), entityFile);
             }
 
             // entityExample
-            MapperProperties mapperProperties = generatorProperties.getMapperProperties();
-            if (isGenerateEntityExample(mapperProperties)) {
+            if (entityProperties.isSelectedGenerateEntityExampleCheckBox()) {
                 String entityExampleFile = entityProperties.getPath() + File.separator + objectMap.get("entityExampleName") + Constant.JAVA_SUFFIX;
-                freemarkerTemplateEngine.writer(objectMap, objectMap.get("entityExampleTemplatePath").toString(), entityExampleFile);
+                generatorFile(project, objectMap, objectMap.get("entityExampleTemplatePath").toString(), entityExampleFile);
             }
 
             // mapper
+            MapperProperties mapperProperties = generatorProperties.getMapperProperties();
             if (mapperProperties.isSelectedGenerateCheckBox()) {
-                String mapperFile = entityProperties.getPath() + File.separator + objectMap.get("mapperName") + Constant.JAVA_SUFFIX;
-                freemarkerTemplateEngine.writer(objectMap, objectMap.get("mapperTemplatePath").toString(), mapperFile);
+                String mapperFile = mapperProperties.getPath() + File.separator + objectMap.get("mapperName") + Constant.JAVA_SUFFIX;
+                generatorFile(project, objectMap, objectMap.get("mapperTemplatePath").toString(), mapperFile);
             }
 
             // mapperXml
             MapperXmlProperties mapperXmlProperties = generatorProperties.getMapperXmlProperties();
             if (mapperXmlProperties.isSelectedGenerateCheckBox()) {
-                String mapperXmlFile = entityProperties.getPath() + File.separator + objectMap.get("mapperXmlName") + Constant.XML_SUFFIX;
-                freemarkerTemplateEngine.writer(objectMap, objectMap.get("mapperXmlTemplatePath").toString(), mapperXmlFile);
+                String mapperXmlFile = mapperXmlProperties.getPath() + File.separator + objectMap.get("mapperXmlName") + Constant.XML_SUFFIX;
+                generatorFile(project, objectMap, objectMap.get("mapperXmlTemplatePath").toString(), mapperXmlFile);
             }
 
             // service
             ServiceProperties serviceProperties = generatorProperties.getServiceProperties();
             if (serviceProperties.isSelectedGenerateCheckBox()) {
-                String serviceFile = entityProperties.getPath() + File.separator + objectMap.get("serviceName") + Constant.JAVA_SUFFIX;
-                freemarkerTemplateEngine.writer(objectMap, objectMap.get("serviceTemplatePath").toString(), serviceFile);
+                String serviceFile = serviceProperties.getPath() + File.separator + objectMap.get("serviceName") + Constant.JAVA_SUFFIX;
+                generatorFile(project, objectMap, objectMap.get("serviceTemplatePath").toString(), serviceFile);
             }
 
             // serviceImpl
             ServiceImplProperties serviceImplProperties = generatorProperties.getServiceImplProperties();
             if (serviceImplProperties.isSelectedGenerateCheckBox()) {
-                String serviceImplFile = entityProperties.getPath() + File.separator + objectMap.get("serviceImplName") + Constant.JAVA_SUFFIX;
-                freemarkerTemplateEngine.writer(objectMap, objectMap.get("serviceImplTemplatePath").toString(), serviceImplFile);
+                String serviceImplFile = serviceImplProperties.getPath() + File.separator + objectMap.get("serviceImplName") + Constant.JAVA_SUFFIX;
+                generatorFile(project, objectMap, objectMap.get("serviceImplTemplatePath").toString(), serviceImplFile);
             }
 
             // controller
             ControllerProperties controllerProperties = generatorProperties.getControllerProperties();
             if (controllerProperties.isSelectedGenerateCheckBox()) {
-                String controllerFile = entityProperties.getPath() + File.separator + objectMap.get("controllerName") + Constant.JAVA_SUFFIX;
-                freemarkerTemplateEngine.writer(objectMap, objectMap.get("controllerTemplatePath").toString(), controllerFile);
+                String controllerFile = controllerProperties.getPath() + File.separator + objectMap.get("controllerName") + Constant.JAVA_SUFFIX;
+                generatorFile(project, objectMap, objectMap.get("controllerTemplatePath").toString(), controllerFile);
             }
         }
     }
@@ -103,6 +106,7 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
 
         // 公共配置
         CommonProperties commonProperties = generatorProperties.getCommonProperties();
+        objectMap.put("author", commonProperties.getAuthor());
         objectMap.put("frameworkType", commonProperties.getFrameworkTypeComboBoxValue());
 
         // entity
@@ -111,7 +115,7 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
         objectMap.put("entityTemplatePath", Constant.ENTITY_TEMPLATE_PATH);
         objectMap.put("entityPackage", entityProperties.getPackageName());
         objectMap.put("entityName", entityName);
-        objectMap.put("entityFullClassName", FullClassName(entityProperties.getPackageName(), entityName));
+        objectMap.put("entityFullClassName", ClassUtils.getFullClassName(entityProperties.getPackageName(), entityName));
         objectMap.put("entityImportPackages", tableInfo.getImportPackages());
         objectMap.put("isSelectedSerializableCheckBox", entityProperties.isSelectedSerializableCheckBox());
         objectMap.put("isSelectedDataCheckBox", entityProperties.isSelectedDataCheckBox());
@@ -123,11 +127,10 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
 
         // entityExample
         String entityExampleName = String.format(entityProperties.getExampleNamePattern(), baseEntityName);
-        objectMap.put("generateEntityExample", isGenerateEntityExample(generatorProperties.getMapperProperties()));
         objectMap.put("entityExampleTemplatePath", Constant.ENTITY_EXAMPLE_TEMPLATE_PATH);
         objectMap.put("entityExamplePackage", entityProperties.getPackageName());
         objectMap.put("entityExampleName", entityExampleName);
-        objectMap.put("entityExampleFullClassName", FullClassName(entityProperties.getPackageName(), entityExampleName));
+        objectMap.put("entityExampleFullClassName", ClassUtils.getFullClassName(entityProperties.getPackageName(), entityExampleName));
 
         // mapper
         MapperProperties mapperProperties = generatorProperties.getMapperProperties();
@@ -135,10 +138,10 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
         objectMap.put("mapperTemplatePath", Constant.MAPPER_TEMPLATE_PATH);
         objectMap.put("mapperPackage", mapperProperties.getPackageName());
         objectMap.put("mapperName", mapperName);
-        objectMap.put("mapperFullClassName", FullClassName(mapperProperties.getPackageName(), mapperName));
+        objectMap.put("mapperFullClassName", ClassUtils.getFullClassName(mapperProperties.getPackageName(), mapperName));
         objectMap.put("superMapperClass", mapperProperties.getSuperMapperClass());
-        objectMap.put("superMapperClassName", StringUtils.substringAfterLast(mapperProperties.getSuperMapperClass(), "."));
-        objectMap.put("superMapperClassPackage", StringUtils.substringBeforeLast(mapperProperties.getSuperMapperClass(), "."));
+        objectMap.put("superMapperClassName", ClassUtils.getClassNameByFullClassName(mapperProperties.getSuperMapperClass()));
+        objectMap.put("superMapperClassPackage", ClassUtils.getPackageNameByFullClassName(mapperProperties.getSuperMapperClass()));
         objectMap.put("isSelectedEnableInsertCheckBox", mapperProperties.isSelectedEnableInsertCheckBox());
         objectMap.put("isSelectedEnableSelectByPrimaryKeyCheckBox", mapperProperties.isSelectedEnableSelectByPrimaryKeyCheckBox());
         objectMap.put("isSelectedEnableSelectByExampleCheckBox", mapperProperties.isSelectedEnableSelectByExampleCheckBox());
@@ -160,10 +163,10 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
         objectMap.put("serviceTemplatePath", Constant.SERVICE_TEMPLATE_PATH);
         objectMap.put("servicePackage", serviceProperties.getPackageName());
         objectMap.put("serviceName", serviceName);
-        objectMap.put("serviceFullClassName", FullClassName(serviceProperties.getPackageName(), serviceName));
+        objectMap.put("serviceFullClassName", ClassUtils.getFullClassName(serviceProperties.getPackageName(), serviceName));
         objectMap.put("superServiceClass", serviceProperties.getSuperServiceClass());
-        objectMap.put("superServiceClassName", StringUtils.substringAfterLast(serviceProperties.getSuperServiceClass(), "."));
-        objectMap.put("superServiceClassPackage", StringUtils.substringBeforeLast(serviceProperties.getSuperServiceClass(), "."));
+        objectMap.put("superServiceClassName", ClassUtils.getClassNameByFullClassName(serviceProperties.getSuperServiceClass()));
+        objectMap.put("superServiceClassPackage", ClassUtils.getPackageNameByFullClassName(serviceProperties.getSuperServiceClass()));
 
         // serviceImpl
         ServiceImplProperties serviceImplProperties = generatorProperties.getServiceImplProperties();
@@ -171,10 +174,10 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
         objectMap.put("serviceImplTemplatePath", Constant.SERVICE_IMPL_TEMPLATE_PATH);
         objectMap.put("serviceImplPackage", serviceImplProperties.getPackageName());
         objectMap.put("serviceImplName", serviceImplName);
-        objectMap.put("serviceImplFullClassName", FullClassName(serviceImplProperties.getPackageName(), serviceImplName));
+        objectMap.put("serviceImplFullClassName", ClassUtils.getFullClassName(serviceImplProperties.getPackageName(), serviceImplName));
         objectMap.put("superServiceImplClass", serviceImplProperties.getSuperServiceImplClass());
-        objectMap.put("superServiceImplClassName", StringUtils.substringAfterLast(serviceImplProperties.getSuperServiceImplClass(), "."));
-        objectMap.put("superServiceImplClassPackage", StringUtils.substringBeforeLast(serviceImplProperties.getSuperServiceImplClass(), "."));
+        objectMap.put("superServiceImplClassName", ClassUtils.getClassNameByFullClassName(serviceImplProperties.getSuperServiceImplClass()));
+        objectMap.put("superServiceImplClassPackage", ClassUtils.getPackageNameByFullClassName(serviceImplProperties.getSuperServiceImplClass()));
 
         // controller
         ControllerProperties controllerProperties = generatorProperties.getControllerProperties();
@@ -182,21 +185,34 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
         objectMap.put("controllerTemplatePath", Constant.CONTROLLER_TEMPLATE_PATH);
         objectMap.put("controllerPackage", controllerProperties.getPackageName());
         objectMap.put("controllerName", controllerName);
-        objectMap.put("controllerFullClassName", FullClassName(controllerProperties.getPackageName(), controllerName));
+        objectMap.put("controllerFullClassName", ClassUtils.getFullClassName(controllerProperties.getPackageName(), controllerName));
         objectMap.put("isSelectedSwaggerCheckBox", controllerProperties.isSelectedSwaggerCheckBox());
         objectMap.put("controllerMappingHyphen", CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, tableInfo.getName()));
         return objectMap;
     }
 
     /**
-     * 全类名
+     * 生成文件
      *
-     * @param packageName 包名
-     * @param clazzName   类名
-     * @return 全类名
+     * @param project      项目
+     * @param objectMap    模板参数
+     * @param templatePath 模板路径
+     * @param outputFile   生成文件
      */
-    private String FullClassName(String packageName, String clazzName) {
-        return packageName + Constant.POINT + clazzName;
+    public void generatorFile(Project project, Map<String, Object> objectMap, String templatePath, String outputFile) {
+        try {
+            // 生成文件
+            freemarkerTemplateEngine.writer(objectMap, templatePath, outputFile);
+
+            // 刷新文件
+            VirtualFile virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(new File(outputFile));
+            if (Objects.nonNull(virtualFile)) {
+                virtualFile.refresh(false, true);
+            }
+        } catch (Exception e) {
+            MyMessages.showErrorNotify(project, outputFile + "文件生成失败" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -207,18 +223,5 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
      */
     private boolean isGenerateGetterSetter(EntityProperties entityProperties) {
         return !entityProperties.isSelectedDataCheckBox();
-    }
-
-    /**
-     * 是否生成 EntityExample
-     *
-     * @param mapperProperties mapper 配置信息
-     * @return true 生成、false 不生成
-     */
-    private boolean isGenerateEntityExample(MapperProperties mapperProperties) {
-        return mapperProperties.isSelectedEnableSelectByExampleCheckBox()
-                || mapperProperties.isSelectedEnableUpdateByExampleCheckBox()
-                || mapperProperties.isSelectedEnableDeleteByExampleCheckBox()
-                || mapperProperties.isSelectedEnableCountByExampleCheckBox();
     }
 }

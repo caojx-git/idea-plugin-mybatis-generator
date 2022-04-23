@@ -1,24 +1,23 @@
 package com.caojx.idea.plugin.ui;
 
 import com.caojx.idea.plugin.common.constants.Constant;
-import com.caojx.idea.plugin.common.context.GeneratorContext;
 import com.caojx.idea.plugin.common.enums.FrameworkTypeEnum;
-import com.caojx.idea.plugin.common.pojo.model.Database;
-import com.caojx.idea.plugin.common.pojo.model.TableInfo;
-import com.caojx.idea.plugin.common.pojo.persistent.PersistentState;
+import com.caojx.idea.plugin.common.pojo.Database;
+import com.caojx.idea.plugin.common.pojo.TableInfo;
 import com.caojx.idea.plugin.common.properties.*;
+import com.caojx.idea.plugin.common.utils.MyMessages;
 import com.caojx.idea.plugin.common.utils.MySQLDBHelper;
+import com.caojx.idea.plugin.generator.GeneratorContext;
 import com.caojx.idea.plugin.generator.GeneratorServiceImpl;
 import com.caojx.idea.plugin.generator.IGeneratorService;
-import com.caojx.idea.plugin.generator.PersistentStateService;
+import com.caojx.idea.plugin.persistent.PersistentState;
+import com.caojx.idea.plugin.persistent.PersistentStateService;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.ui.components.JBScrollPane;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -33,6 +32,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * 代码生成配置UI
@@ -98,6 +98,7 @@ public class GeneratorSettingUI extends DialogWrapper {
     private JCheckBox controllerGenerateCheckBox;
     private JTextField authorTf;
     private JCheckBox serializableCheckBox;
+    private JCheckBox entityExampleGenerateCheckBox;
 
     private JButton restConfigBtn;
     private JButton saveConfigBtn;
@@ -144,7 +145,7 @@ public class GeneratorSettingUI extends DialogWrapper {
 
     @Override
     protected @Nullable JComponent createCenterPanel() {
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        JBScrollPane scrollPane = new JBScrollPane(mainPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         return scrollPane;
     }
@@ -178,7 +179,7 @@ public class GeneratorSettingUI extends DialogWrapper {
     private void renderUIData(Project project) {
         // 获取持久化数据
         PersistentState persistentState = PersistentStateService.getInstance(project).getState();
-        GeneratorProperties generatorProperties = persistentState.getGeneratorContext().getGeneratorProperties();
+        GeneratorProperties generatorProperties = Optional.ofNullable(persistentState.getGeneratorProperties()).orElse(new GeneratorProperties());
 
         // 获取生成配置
         CommonProperties commonProperties = generatorProperties.getCommonProperties();
@@ -223,6 +224,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         // entity 设置
         EntityProperties entityProperties = generatorProperties.getEntityProperties();
         entityGenerateCheckBox.setSelected(entityProperties.isSelectedGenerateCheckBox());
+        entityExampleGenerateCheckBox.setSelected(entityProperties.isSelectedGenerateEntityExampleCheckBox());
         entityPathTf.setText(entityProperties.getPath());
         entityPackageTf.setText(entityProperties.getPackageName());
         entityNamePatternTf.setText(StringUtils.isBlank(entityProperties.getNamePattern()) ? Constant.ENTITY_NAME_DEFAULT_FORMAT : entityProperties.getNamePattern());
@@ -308,7 +310,8 @@ public class GeneratorSettingUI extends DialogWrapper {
         entityPathTf.setText("");
         entityPackageTf.setText("");
         entityNamePatternTf.setText(Constant.ENTITY_NAME_DEFAULT_FORMAT);
-        serviceGenerateCheckBox.setSelected(false);
+        entityGenerateCheckBox.setSelected(true);
+        entityExampleGenerateCheckBox.setSelected(false);
         dataCheckBox.setSelected(true);
         builderCheckBox.setSelected(false);
         noArgsConstructorCheckBox.setSelected(false);
@@ -445,7 +448,7 @@ public class GeneratorSettingUI extends DialogWrapper {
                 tableColumn.setCellRenderer(table.getDefaultRenderer(Boolean.class));
                 tableColumn.setMaxWidth(100);
             } catch (Exception ex) {
-                Messages.showWarningDialog(project, "数据库连接错误,请检查配置.", "Warning");
+                MyMessages.showWarningDialog(project, "数据库连接错误,请检查配置.", "Warning");
             }
         });
 
@@ -467,19 +470,17 @@ public class GeneratorSettingUI extends DialogWrapper {
             // 重置UI数据
             restUIData();
 
-            Messages.showWarningDialog(project, "重置成功", "info");
+            MyMessages.showInfoMessage(project, "重置成功", "info");
         });
         saveConfigBtn.addActionListener(e -> {
             // 获取代码生成配置
             GeneratorProperties generatorProperties = getGeneratorProperties();
-            GeneratorContext generatorContext = new GeneratorContext();
-            generatorContext.setGeneratorProperties(generatorProperties);
 
             // 持久化
             PersistentState persistentState = PersistentStateService.getInstance(project).getState();
-            persistentState.setGeneratorContext(generatorContext);
+            persistentState.setGeneratorProperties(generatorProperties);
 
-            Messages.showWarningDialog(project, "保存成功", "info");
+            MyMessages.showInfoMessage(project, "保存成功", "info");
         });
         generatorBtn.addActionListener(e -> {
             // 获取代码生成配置
@@ -487,7 +488,7 @@ public class GeneratorSettingUI extends DialogWrapper {
 
             // 获取表列表
             if (CollectionUtils.isEmpty(selectedTableNames)) {
-                Messages.showWarningDialog(project, "请选择要生成的表", "info");
+                MyMessages.showWarningDialog(project, "请选择要生成的表", "info");
                 return;
             }
             List<TableInfo> tables = getTables(selectedDatabase, selectedTableNames);
@@ -497,21 +498,18 @@ public class GeneratorSettingUI extends DialogWrapper {
 
             // 持久化
             PersistentState persistentState = PersistentStateService.getInstance(project).getState();
-            persistentState.setGeneratorContext(generatorContext);
+            persistentState.setGeneratorProperties(generatorProperties);
 
             // 校验数据
             String message = validGeneratorData(generatorProperties);
             if (StringUtils.isNotBlank(message)) {
-                Messages.showWarningDialog(project, message, "info");
+                MyMessages.showWarningDialog(project, message, "info");
                 return;
             }
 
             // 生成代码
             generatorService.doGenerator(project, generatorContext);
-            Messages.showWarningDialog(project, "代码生成成功", "info");
-
-            // 刷新文件
-            LocalFileSystem.getInstance().refreshAndFindFileByPath(project.getBasePath());
+            MyMessages.showInfoMessage(project, "生成代码执行完成", "info");
         });
         cancelBtn.addActionListener(e -> {
             GeneratorSettingUI.this.dispose();
@@ -528,11 +526,11 @@ public class GeneratorSettingUI extends DialogWrapper {
 
         // 公共配置
         CommonProperties commonProperties = new CommonProperties();
-        commonProperties.setAuthor(authorTf.getText());
-        commonProperties.setProjectPath(projectPathTf.getText());
+        commonProperties.setAuthor(StringUtils.trim(authorTf.getText()));
+        commonProperties.setProjectPath(StringUtils.trim(projectPathTf.getText()));
         commonProperties.setDatabases(databases);
         commonProperties.setDatabaseComboBoxValue(String.valueOf(databaseComboBox.getSelectedItem()));
-        commonProperties.setTableNameRegex(tableNameRegexTf.getText());
+        commonProperties.setTableNameRegex(StringUtils.trim(tableNameRegexTf.getText()));
         commonProperties.setFrameworkTypeComboBoxValues(FrameworkTypeEnum.getFrameworkNames());
         commonProperties.setFrameworkTypeComboBoxValue(String.valueOf(frameworkTypeComboBox.getSelectedItem()));
         generatorProperties.setCommonProperties(commonProperties);
@@ -540,9 +538,11 @@ public class GeneratorSettingUI extends DialogWrapper {
         // entity配置
         EntityProperties entityProperties = new EntityProperties();
         entityProperties.setSelectedGenerateCheckBox(entityGenerateCheckBox.isSelected());
-        entityProperties.setPath(entityPathTf.getText());
-        entityProperties.setPackageName(entityPackageTf.getText());
-        entityProperties.setNamePattern(StringUtils.isBlank(entityNamePatternTf.getText()) ? Constant.ENTITY_NAME_DEFAULT_FORMAT : entityNamePatternTf.getText());
+        entityProperties.setPath(StringUtils.trim(entityPathTf.getText()));
+        entityProperties.setPackageName(StringUtils.trim(entityPackageTf.getText()));
+        String entityNamePattern = StringUtils.trim(entityNamePatternTf.getText());
+        entityProperties.setNamePattern(StringUtils.isBlank(entityNamePattern) ? Constant.ENTITY_NAME_DEFAULT_FORMAT : entityNamePattern);
+        entityProperties.setSelectedGenerateEntityExampleCheckBox(entityExampleGenerateCheckBox.isSelected());
         entityProperties.setExampleNamePattern(Constant.ENTITY_EXAMPLE_NAME_DEFAULT_FORMAT);
         entityProperties.setSelectedSerializableCheckBox(serializableCheckBox.isSelected());
         entityProperties.setSelectedDataCheckBox(dataCheckBox.isSelected());
@@ -554,10 +554,11 @@ public class GeneratorSettingUI extends DialogWrapper {
         // mapper配置
         MapperProperties mapperProperties = new MapperProperties();
         mapperProperties.setSelectedGenerateCheckBox(mapperGenerateCheckBox.isSelected());
-        mapperProperties.setPath(mapperPathTf.getText());
-        mapperProperties.setPackageName(mapperPackageTf.getText());
-        mapperProperties.setNamePattern(StringUtils.isBlank(mapperNamePatternTf.getText()) ? Constant.MAPPER_NAME_DEFAULT_FORMAT : mapperNamePatternTf.getText());
-        mapperProperties.setSuperMapperClass(superMapperClassTf.getText());
+        mapperProperties.setPath(StringUtils.trim(mapperPathTf.getText()));
+        mapperProperties.setPackageName(StringUtils.trim(mapperPackageTf.getText()));
+        String mapperNamePattern = StringUtils.trim(mapperNamePatternTf.getText());
+        mapperProperties.setNamePattern(StringUtils.isBlank(mapperNamePattern) ? Constant.MAPPER_NAME_DEFAULT_FORMAT : mapperNamePattern);
+        mapperProperties.setSuperMapperClass(StringUtils.trim(superMapperClassTf.getText()));
         mapperProperties.setSelectedEnableInsertCheckBox(enableInsertCheckBox.isSelected());
         mapperProperties.setSelectedEnableSelectByPrimaryKeyCheckBox(enableSelectByPrimaryKeyCheckBox.isSelected());
         mapperProperties.setSelectedEnableSelectByExampleCheckBox(enableSelectByExampleCheckBox.isSelected());
@@ -571,35 +572,37 @@ public class GeneratorSettingUI extends DialogWrapper {
         // mapperXml配置
         MapperXmlProperties mapperXmlProperties = new MapperXmlProperties();
         mapperXmlProperties.setSelectedGenerateCheckBox(mapperXmlGenerateCheckBox.isSelected());
-        mapperXmlProperties.setPath(mapperXmlPathTf.getText());
-        mapperXmlProperties.setNamePattern(mapperXmlNamePatternTf.getText());
-        mapperXmlProperties.setPath(mapperXmlPathTf.getText());
+        mapperXmlProperties.setPath(StringUtils.trim(mapperXmlPathTf.getText()));
+        mapperXmlProperties.setNamePattern(StringUtils.trim(mapperXmlNamePatternTf.getText()));
         generatorProperties.setMapperXmlProperties(mapperXmlProperties);
 
         // service配置
         ServiceProperties serviceProperties = new ServiceProperties();
         serviceProperties.setSelectedGenerateCheckBox(serviceGenerateCheckBox.isSelected());
-        serviceProperties.setPath(serviceImplPathTf.getText());
-        serviceProperties.setPackageName(servicePackageTf.getText());
-        serviceProperties.setNamePattern(StringUtils.isBlank(serviceNamePatternTf.getText()) ? Constant.SERVICE_NAME_DEFAULT_FORMAT : serviceNamePatternTf.getText());
-        serviceProperties.setSuperServiceClass(superServiceImplClassTf.getText());
+        serviceProperties.setPath(StringUtils.trim(servicePathTf.getText()));
+        serviceProperties.setPackageName(StringUtils.trim(servicePackageTf.getText()));
+        String serviceNamePattern = StringUtils.trim(serviceNamePatternTf.getText());
+        serviceProperties.setNamePattern(StringUtils.isBlank(serviceNamePattern) ? Constant.SERVICE_NAME_DEFAULT_FORMAT : serviceNamePattern);
+        serviceProperties.setSuperServiceClass(StringUtils.trim(superServiceClassTf.getText()));
         generatorProperties.setServiceProperties(serviceProperties);
 
         // serviceImpl配置
         ServiceImplProperties serviceImplProperties = new ServiceImplProperties();
         serviceImplProperties.setSelectedGenerateCheckBox(serviceImplGenerateCheckBox.isSelected());
-        serviceImplProperties.setPath(servicePathTf.getText());
-        serviceImplProperties.setPackageName(serviceImplPackageTf.getText());
-        serviceImplProperties.setNamePattern(StringUtils.isBlank(serviceImplNamePatternTf.getText()) ? Constant.SERVICE_IMPL_NAME_DEFAULT_FORMAT : serviceImplNamePatternTf.getText());
-        serviceImplProperties.setSuperServiceImplClass(superServiceImplClassTf.getText());
+        serviceImplProperties.setPath(StringUtils.trim(serviceImplPathTf.getText()));
+        serviceImplProperties.setPackageName(StringUtils.trim(serviceImplPackageTf.getText()));
+        String serviceImplNamePattern = StringUtils.trim(serviceImplNamePatternTf.getText());
+        serviceImplProperties.setNamePattern(StringUtils.isBlank(serviceImplNamePattern) ? Constant.SERVICE_IMPL_NAME_DEFAULT_FORMAT : serviceImplNamePattern);
+        serviceImplProperties.setSuperServiceImplClass(StringUtils.trim(superServiceImplClassTf.getText()));
         generatorProperties.setServiceImplProperties(serviceImplProperties);
 
         // controller配置
         ControllerProperties controllerProperties = new ControllerProperties();
         controllerProperties.setSelectedGenerateCheckBox(controllerGenerateCheckBox.isSelected());
-        controllerProperties.setPath(controllerPathTf.getText());
-        controllerProperties.setPackageName(controllerPackageTf.getText());
-        controllerProperties.setNamePattern(StringUtils.isBlank(controllerNamePatternTf.getText()) ? Constant.CONTROLLER_NAME_DEFAULT_FORMAT : controllerNamePatternTf.getText());
+        controllerProperties.setPath(StringUtils.trim(controllerPathTf.getText()));
+        controllerProperties.setPackageName(StringUtils.trim(controllerPackageTf.getText()));
+        String controllerNamePattern = StringUtils.trim(controllerNamePatternTf.getText());
+        controllerProperties.setNamePattern(StringUtils.isBlank(controllerNamePattern) ? Constant.CONTROLLER_NAME_DEFAULT_FORMAT : controllerNamePattern);
         controllerProperties.setSelectedSwaggerCheckBox(controllerSwaggerCheckBox.isSelected());
         generatorProperties.setControllerProperties(controllerProperties);
 
@@ -621,16 +624,14 @@ public class GeneratorSettingUI extends DialogWrapper {
 
         // 实体校验
         EntityProperties entityProperties = generatorProperties.getEntityProperties();
-        if (entityProperties.isSelectedGenerateCheckBox()) {
-            if (StringUtils.isBlank(entityProperties.getPath())) {
-                return "请选择entity路径";
-            }
-            if (StringUtils.isBlank(entityProperties.getPackageName())) {
-                return "请填写entity包名";
-            }
-            if (!validNamePattern(entityProperties.getNamePattern())) {
-                return "entity命名格式需要包含%s";
-            }
+        if (StringUtils.isBlank(entityProperties.getPath())) {
+            return "请选择entity路径";
+        }
+//        if (StringUtils.isBlank(entityProperties.getPackageName())) {
+//            return "请填写entity包名";
+//        }
+        if (!validNamePattern(entityProperties.getNamePattern())) {
+            return "entity命名格式需要包含%s";
         }
 
         // mapper校验
@@ -639,9 +640,9 @@ public class GeneratorSettingUI extends DialogWrapper {
             if (StringUtils.isBlank(mapperProperties.getPath())) {
                 return "请选择mapper路径";
             }
-            if (StringUtils.isBlank(mapperProperties.getPackageName())) {
-                return "请填写mapper包名";
-            }
+//            if (StringUtils.isBlank(mapperProperties.getPackageName())) {
+//                return "请填写mapper包名";
+//            }
             if (!validNamePattern(mapperProperties.getNamePattern())) {
                 return "mapper命名格式需要包含%s";
             }
@@ -656,6 +657,14 @@ public class GeneratorSettingUI extends DialogWrapper {
             if (!validNamePattern(mapperXmlProperties.getNamePattern())) {
                 return "mapperXml命名格式需要包含%s";
             }
+
+//            // 生成mapperXml依赖的其他填写项
+//            if (StringUtils.isBlank(mapperProperties.getPackageName())) {
+//                return "生成mapperXml，请填写mapper包名";
+//            }
+            if (!validNamePattern(mapperProperties.getNamePattern())) {
+                return "生成mapperXml，mapper命名格式需要包含%s";
+            }
         }
 
         // service校验
@@ -664,9 +673,9 @@ public class GeneratorSettingUI extends DialogWrapper {
             if (StringUtils.isBlank(serviceProperties.getPath())) {
                 return "请选择service路径";
             }
-            if (StringUtils.isBlank(serviceProperties.getPackageName())) {
-                return "请填写service包名";
-            }
+//            if (StringUtils.isBlank(serviceProperties.getPackageName())) {
+//                return "请填写service包名";
+//            }
             if (!validNamePattern(serviceProperties.getNamePattern())) {
                 return "service命名格式需要包含%s";
             }
@@ -678,11 +687,27 @@ public class GeneratorSettingUI extends DialogWrapper {
             if (StringUtils.isBlank(serviceImplProperties.getPath())) {
                 return "请选择serviceImpl路径";
             }
-            if (StringUtils.isBlank(serviceImplProperties.getPackageName())) {
-                return "请填写serviceImpl包名";
-            }
+//            if (StringUtils.isBlank(serviceImplProperties.getPackageName())) {
+//                return "请填写serviceImpl包名";
+//            }
             if (!validNamePattern(serviceImplProperties.getNamePattern())) {
                 return "serviceImpl命名格式需要包含%s";
+            }
+
+            // 生成serviceImpl依赖的其他填写项
+//            if (StringUtils.isBlank(serviceProperties.getPackageName())) {
+//                return "生成serviceImpl，请填写service包名";
+//            }
+            if (!validNamePattern(serviceProperties.getNamePattern())) {
+                return "生成serviceImpl，service命名格式需要包含%s";
+            }
+            if (StringUtils.isNotBlank(serviceImplProperties.getSuperServiceImplClass())) {
+                if (StringUtils.isBlank(mapperProperties.getPackageName())) {
+                    return "生成serviceImpl，请填写mapper包名";
+                }
+                if (!validNamePattern(mapperProperties.getNamePattern())) {
+                    return "生成serviceImpl，，mapper命名格式需要包含%s";
+                }
             }
         }
 
@@ -692,9 +717,9 @@ public class GeneratorSettingUI extends DialogWrapper {
             if (StringUtils.isBlank(controllerProperties.getPath())) {
                 return "请选择controller路径";
             }
-            if (StringUtils.isBlank(controllerProperties.getPackageName())) {
-                return "请填写controller包名";
-            }
+//            if (StringUtils.isBlank(controllerProperties.getPackageName())) {
+//                return "请填写controller包名";
+//            }
             if (!validNamePattern(controllerProperties.getNamePattern())) {
                 return "controller命名格式需要包含%s";
             }
@@ -707,6 +732,7 @@ public class GeneratorSettingUI extends DialogWrapper {
 
         // 至少要生成一种文件
         if (!(entityProperties.isSelectedGenerateCheckBox()
+                || entityProperties.isSelectedGenerateEntityExampleCheckBox()
                 || mapperProperties.isSelectedGenerateCheckBox()
                 || mapperXmlProperties.isSelectedGenerateCheckBox()
                 || serviceProperties.isSelectedGenerateCheckBox()

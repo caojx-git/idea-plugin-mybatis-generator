@@ -1,7 +1,12 @@
+<#if entityExamplePackage?default("")?trim?length gt 1>
 package ${entityExamplePackage};
 
+</#if>
 import java.util.ArrayList;
 import java.util.List;
+<#if table.haveDateField>
+import java.util.Iterator;
+</#if>
 <#list entityImportPackages as import>
 import ${import};
 </#list>
@@ -114,66 +119,158 @@ public class ${entityExampleName} {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
+        <#if table.haveDateField>
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
+        }
+        </#if>
 <#list table.fields as field>
+    <#if !field.blobFlag>
+
         public Criteria and${field.name?cap_first}IsNull() {
-            addCriterion("${field.name} is null");
+            addCriterion("${field.columnName} is null");
             return (Criteria) this;
         }
 
         public Criteria and${field.name?cap_first}IsNotNull() {
-            addCriterion("${field.name} is not null");
+            addCriterion("${field.columnName} is not null");
             return (Criteria) this;
         }
 
         public Criteria and${field.name?cap_first}EqualTo(${field.typeSimpleName} value) {
-            addCriterion("${field.name} =", value, "${field.name}");
+<#--        <#if field.dateFlg>-->
+<#--            addCriterionForJDBCDate("${field.name} =", value, "${field.name}");-->
+<#--        <#else >-->
+<#--            addCriterion("${field.name} =", value, "${field.name}");-->
+<#--        </#if>-->
+            addCriterion("${field.columnName} =", value, "${field.name}");
             return (Criteria) this;
         }
 
         public Criteria and${field.name?cap_first}NotEqualTo(${field.typeSimpleName} value) {
-            addCriterion("${field.name} <>", value, "${field.name}");
+<#--        <#if field.dateFlg>-->
+<#--            addCriterionForJDBCDate("${field.name} <>", value, "${field.name}");-->
+<#--        <#else >-->
+<#--            addCriterion("${field.name} <>", value, "${field.name}");-->
+<#--        </#if>-->
+            addCriterion("${field.columnName} <>", value, "${field.name}");
             return (Criteria) this;
         }
 
         public Criteria and${field.name?cap_first}GreaterThan(${field.typeSimpleName} value) {
-            addCriterion("${field.name} >", value, "${field.name}");
+<#--        <#if field.dateFlg>-->
+<#--            addCriterionForJDBCDate("${field.name} >", value, "${field.name}");-->
+<#--        <#else >-->
+<#--            addCriterion("${field.name} >", value, "${field.name}");-->
+<#--        </#if>-->
+            addCriterion("${field.columnName} >", value, "${field.name}");
             return (Criteria) this;
         }
 
         public Criteria and${field.name?cap_first}GreaterThanOrEqualTo(${field.typeSimpleName} value) {
-            addCriterion("${field.name} >=", value, "${field.name}");
+<#--        <#if field.dateFlg>-->
+<#--            addCriterionForJDBCDate("${field.name} >=", value, "${field.name}");-->
+<#--        <#else >-->
+<#--            addCriterion("${field.name} >=", value, "${field.name}");-->
+<#--        </#if>-->
+            addCriterion("${field.columnName} >=", value, "${field.name}");
             return (Criteria) this;
         }
 
         public Criteria and${field.name?cap_first}LessThan(${field.typeSimpleName} value) {
-            addCriterion("${field.name} <", value, "${field.name}");
+<#--        <#if field.dateFlg>-->
+<#--            addCriterionForJDBCDate("${field.name} <", value, "${field.name}");-->
+<#--        <#else >-->
+<#--            addCriterion("${field.name} <", value, "${field.name}");-->
+<#--        </#if>-->
+            addCriterion("${field.columnName} <", value, "${field.name}");
             return (Criteria) this;
         }
 
         public Criteria and${field.name?cap_first}LessThanOrEqualTo(${field.typeSimpleName} value) {
-            addCriterion("${field.name} <=", value, "${field.name}");
+<#--        <#if field.dateFlg>-->
+<#--            addCriterionForJDBCDate("${field.name} <=", value, "${field.name}");-->
+<#--        <#else >-->
+<#--            addCriterion("${field.name} <=", value, "${field.name}");-->
+<#--        </#if>-->
+            addCriterion("${field.columnName} <=", value, "${field.name}");
+            return (Criteria) this;
+        }
+        <#if field.typeSimpleName == "String">
+
+        public Criteria and${field.name?cap_first}Like(${field.typeSimpleName} value) {
+            addCriterion("${field.columnName} like", value, "${field.name}");
             return (Criteria) this;
         }
 
+        public Criteria and${field.name?cap_first}NotLike(${field.typeSimpleName} value) {
+            addCriterion("${field.columnName} not like", value, "${field.name}");
+            return (Criteria) this;
+        }
+        </#if>
+
         public Criteria and${field.name?cap_first}In(List<${field.typeSimpleName}> values) {
-            addCriterion("${field.name} in", values, "${field.name}");
+<#--        <#if field.dateFlg>-->
+<#--            addCriterionForJDBCDate("${field.name} in", values, "${field.name}");-->
+<#--        <#else >-->
+<#--            addCriterion("${field.name} in", values, "${field.name}");-->
+<#--        </#if>-->
+            addCriterion("${field.columnName} in", values, "${field.name}");
             return (Criteria) this;
         }
 
         public Criteria and${field.name?cap_first}NotIn(List<${field.typeSimpleName}> values) {
-            addCriterion("${field.name} not in", values, "${field.name}");
+<#--        <#if field.dateFlg>-->
+<#--            addCriterionForJDBCDate("${field.name} not in", values, "${field.name}");-->
+<#--        <#else >-->
+<#--            addCriterion("${field.name} not in", values, "${field.name}");-->
+<#--        </#if>-->
+            addCriterion("${field.columnName} not in", values, "${field.name}");
             return (Criteria) this;
         }
 
         public Criteria and${field.name?cap_first}Between(${field.typeSimpleName} value1, ${field.typeSimpleName} value2) {
-            addCriterion("${field.name} between", value1, value2, "${field.name}");
+<#--        <#if field.dateFlg>-->
+<#--            addCriterionForJDBCDate("${field.name} between", value1, value2, "${field.name}");-->
+<#--        <#else >-->
+<#--            addCriterion("${field.name} between", value1, value2, "${field.name}");-->
+<#--        </#if>-->
+            addCriterion("${field.columnName} between", value1, value2, "${field.name}");
             return (Criteria) this;
         }
 
         public Criteria and${field.name?cap_first}NotBetween(${field.typeSimpleName} value1, ${field.typeSimpleName} value2) {
-            addCriterion("${field.name} not between", value1, value2, "${field.name}");
+<#--        <#if field.dateFlg>-->
+<#--            addCriterionForJDBCDate("${field.name} not between", value1, value2, "${field.name}");-->
+<#--        <#else >-->
+<#--            addCriterion("${field.name} not between", value1, value2, "${field.name}");-->
+<#--        </#if>-->
+            addCriterion("${field.columnName} not between", value1, value2, "${field.name}");
             return (Criteria) this;
         }
+    </#if>
 </#list>
 
     }

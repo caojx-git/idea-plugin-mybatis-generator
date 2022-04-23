@@ -1,4 +1,4 @@
-package com.caojx.idea.plugin.common.pojo.model;
+package com.caojx.idea.plugin.common.pojo;
 
 import java.util.List;
 

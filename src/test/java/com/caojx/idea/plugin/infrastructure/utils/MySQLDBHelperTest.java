@@ -1,15 +1,16 @@
 package com.caojx.idea.plugin.infrastructure.utils;
 
 import com.caojx.idea.plugin.common.utils.MySQLDBHelper;
-import com.caojx.idea.plugin.common.pojo.model.Database;
-import com.caojx.idea.plugin.common.pojo.model.TableInfo;
+import com.caojx.idea.plugin.common.pojo.Database;
+import com.caojx.idea.plugin.common.pojo.TableInfo;
+import org.junit.Test;
 
 import java.util.List;
 
 public class MySQLDBHelperTest {
 
-
-    public static void main(String[] args) {
+    @Test
+    public void testGetTableInfo(){
         Database database = new Database();
         database.setDatabaseType("mysql");
         database.setHost("127.0.0.1");
@@ -20,14 +21,14 @@ public class MySQLDBHelperTest {
 
         MySQLDBHelper mySQLDBHelper = new MySQLDBHelper(database);
 
-        TableInfo yeecode = mySQLDBHelper.getTableInfo("task");
-        System.out.println(yeecode);
+        TableInfo tableInfo = mySQLDBHelper.getTableInfo("task");
+        System.out.println(tableInfo);
 
         List<String> allTableName = mySQLDBHelper.getAllTableName(database.getDatabaseName());
         System.out.println(allTableName);
 
         String s = mySQLDBHelper.testDatabase();
         System.out.println(s);
-
     }
+
 }

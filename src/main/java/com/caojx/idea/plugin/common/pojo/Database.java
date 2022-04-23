@@ -1,4 +1,4 @@
-package com.caojx.idea.plugin.common.pojo.model;
+package com.caojx.idea.plugin.common.pojo;
 
 /**
  * 数据库

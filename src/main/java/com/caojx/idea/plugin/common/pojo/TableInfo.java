@@ -1,4 +1,4 @@
-package com.caojx.idea.plugin.common.pojo.model;
+package com.caojx.idea.plugin.common.pojo;
 
 import java.io.Serializable;
 import java.util.*;
@@ -43,6 +43,11 @@ public class TableInfo implements Serializable {
     private Class<?> primaryKeyType;
 
     /**
+     * 是否有Date属性
+     */
+    private boolean haveDateField;
+
+    /**
      * 是否有blob属性
      */
     private boolean haveBlobField;
@@ -78,9 +83,12 @@ public class TableInfo implements Serializable {
             this.primaryKeyType = primaryKeyField.getType();
         }
 
+        // 是否含有date属性
+        this.haveDateField = Optional.ofNullable(fields).orElse(new ArrayList<>()).stream().allMatch(TableField::isDataFlag);
+
         // 是否含有blob属性
         this.blobFields = Optional.ofNullable(fields).orElse(new ArrayList<>()).stream().filter(TableField::isBlobFlag).collect(Collectors.toList());
-        this.haveBlobField = this.blobFields.size() > 0;
+        this.haveBlobField = !this.blobFields.isEmpty();
     }
 
 
@@ -130,6 +138,14 @@ public class TableInfo implements Serializable {
 
     public void setPrimaryKeyType(Class<?> primaryKeyType) {
         this.primaryKeyType = primaryKeyType;
+    }
+
+    public boolean isHaveDateField() {
+        return haveDateField;
+    }
+
+    public void setHaveDateField(boolean haveDateField) {
+        this.haveDateField = haveDateField;
     }
 
     public boolean isHaveBlobField() {

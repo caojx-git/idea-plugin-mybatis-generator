@@ -14,6 +14,9 @@
         <em>2.支持定制化生成entity、mapper、mapperXml、service、serviceImpl、Controller</em>
     ]]></description>
 
+    <!--版本兼容从2019.3开始-->
+    <idea-version since-build="193"/>
+
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
@@ -21,7 +24,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <!--持久化-->
-        <projectService serviceImplementation="com.caojx.idea.plugin.generator.PersistentStateService"/>
+        <projectService serviceImplementation="com.caojx.idea.plugin.persistent.PersistentStateService"/>
 
         <!--工具栏-->
         <toolWindow id="MyBatisCodeGenerator" factoryClass="com.caojx.idea.plugin.ui.GeneratorWindowFactory" anchor="right"/>
@@ -29,7 +32,7 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="GeneratorActionId" class="com.caojx.idea.plugin.action.GeneratorAction" text="MyBatisCodeGenerator" description="生成代码">
+        <action id="MyBatisCodeGeneratorId" class="com.caojx.idea.plugin.action.GeneratorAction" text="MyBatisCodeGenerator" description="生成代码">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
         </action>
     </actions>

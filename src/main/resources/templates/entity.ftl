@@ -1,8 +1,10 @@
+<#if entityPackage?default("")?trim?length gt 1>
 package ${entityPackage};
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+</#if>
+<#if isSelectedSerializableCheckBox>
 import java.io.Serializable;
+</#if>
 <#list entityImportPackages as import>
 import ${import};
 </#list>

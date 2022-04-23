@@ -1,4 +1,4 @@
-package com.caojx.idea.plugin.common.pojo.model;
+package com.caojx.idea.plugin.common.pojo;
 
 import com.caojx.idea.plugin.common.utils.TypeHandler;
 import com.google.common.base.CaseFormat;
@@ -45,6 +45,11 @@ public class TableField implements Serializable {
     private  boolean primaryKeyFlag;
 
     /**
+     * 时间类型
+     */
+    private boolean dataFlag;
+
+    /**
      * 是否blob类型
      */
     private  boolean blobFlag;
@@ -70,6 +75,7 @@ public class TableField implements Serializable {
         this.type = TypeHandler.convertJavaType(sqlType);
         this.jdbcType = TypeHandler.convertJdbcType(sqlType);
         this.primaryKeyFlag = primaryKeyFlag;
+        this.dataFlag = TypeHandler.isDate(sqlType);
         this.blobFlag = TypeHandler.isBLOB(sqlType);
     }
 
@@ -119,6 +125,14 @@ public class TableField implements Serializable {
 
     public void setPrimaryKeyFlag(boolean primaryKeyFlag) {
         this.primaryKeyFlag = primaryKeyFlag;
+    }
+
+    public boolean isDataFlag() {
+        return dataFlag;
+    }
+
+    public void setDataFlag(boolean dataFlag) {
+        this.dataFlag = dataFlag;
     }
 
     public boolean isBlobFlag() {

@@ -1,7 +1,8 @@
-package com.caojx.idea.plugin.common.context;
+package com.caojx.idea.plugin.generator;
 
-import com.caojx.idea.plugin.common.pojo.model.TableInfo;
+import com.caojx.idea.plugin.common.pojo.TableInfo;
 import com.caojx.idea.plugin.common.properties.GeneratorProperties;
+import com.intellij.util.xmlb.annotations.Transient;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class GeneratorContext implements Serializable {
     /**
      * 生成的表
      */
+    @Transient
     private List<TableInfo> tables = new ArrayList<>();
 
     public GeneratorProperties getGeneratorProperties() {

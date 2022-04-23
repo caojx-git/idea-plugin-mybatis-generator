@@ -1,6 +1,6 @@
 package com.caojx.idea.plugin.common.properties;
 
-import com.caojx.idea.plugin.common.pojo.model.Database;
+import com.caojx.idea.plugin.common.pojo.Database;
 
 import java.io.Serializable;
 import java.util.ArrayList;

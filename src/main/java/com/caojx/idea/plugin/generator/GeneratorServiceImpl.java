@@ -1,7 +1,6 @@
 package com.caojx.idea.plugin.generator;
 
-import com.caojx.idea.plugin.common.context.GeneratorContext;
-import com.caojx.idea.plugin.common.pojo.model.TableInfo;
+import com.caojx.idea.plugin.common.pojo.TableInfo;
 
 import java.util.Map;
 

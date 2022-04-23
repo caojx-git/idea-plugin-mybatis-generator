@@ -1,19 +1,19 @@
 package com.caojx.idea.plugin.ui;
 
 import com.caojx.idea.plugin.common.enums.DataBaseTypeEnum;
-import com.caojx.idea.plugin.common.pojo.model.Database;
-import com.caojx.idea.plugin.common.pojo.persistent.PersistentState;
+import com.caojx.idea.plugin.common.pojo.Database;
 import com.caojx.idea.plugin.common.properties.CommonProperties;
+import com.caojx.idea.plugin.common.utils.MyMessages;
 import com.caojx.idea.plugin.common.utils.MySQLDBHelper;
-import com.caojx.idea.plugin.generator.PersistentStateService;
+import com.caojx.idea.plugin.persistent.PersistentState;
+import com.caojx.idea.plugin.persistent.PersistentStateService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,19 +35,14 @@ public class EditDatabaseSettingUI extends DialogWrapper {
     private JButton testBtn;
 
     /**
-     * 项目
-     */
-    private Project project;
-
-    /**
      * 数据源UI配置类
      */
-    private DataSourcesSettingUI dataSourcesSettingUI;
+    private final DataSourcesSettingUI dataSourcesSettingUI;
 
     /**
      * 编辑的数据库
      */
-    private Database editDatabase;
+    private final Database editDatabase;
 
     /**
      * 数据库列表
@@ -58,7 +53,6 @@ public class EditDatabaseSettingUI extends DialogWrapper {
         super(true);
         init();
 
-        this.project = project;
         this.editDatabase = editDatabase;
         this.dataSourcesSettingUI = dataSourcesSettingUI;
 
@@ -87,7 +81,7 @@ public class EditDatabaseSettingUI extends DialogWrapper {
     private void renderUIData(Project project) {
         // 数据库列表
         PersistentState persistentState = PersistentStateService.getInstance(project).getState();
-        CommonProperties commonProperties = persistentState.getGeneratorContext().getGeneratorProperties().getCommonProperties();
+        CommonProperties commonProperties = persistentState.getGeneratorProperties().getCommonProperties();
         databases = commonProperties.getDatabases();
 
         // 设置数据库类型下拉框
@@ -95,11 +89,11 @@ public class EditDatabaseSettingUI extends DialogWrapper {
 
         // 初始化数据
         if (Objects.nonNull(editDatabase)) {
-            databaseTypeComboBox.setSelectedItem(editDatabase.getDatabaseName());
-            hostTf.setText(editDatabase.getHost());
+            databaseTypeComboBox.setSelectedItem(StringUtils.trim(editDatabase.getDatabaseName()));
+            hostTf.setText(StringUtils.trim(editDatabase.getHost()));
             portTf.setText(String.valueOf(editDatabase.getPort()));
-            databaseNameTf.setText(editDatabase.getDatabaseName());
-            userNameTf.setText(editDatabase.getUserName());
+            databaseNameTf.setText(StringUtils.trim(editDatabase.getDatabaseName()));
+            userNameTf.setText(StringUtils.trim(editDatabase.getUserName()));
             passwordTf.setText(editDatabase.getPassword());
         }
     }
@@ -114,9 +108,9 @@ public class EditDatabaseSettingUI extends DialogWrapper {
         testBtn.addActionListener(e -> {
             Database formDatabase = getFormDatabase();
             if (!testConnectionDB(formDatabase)) {
-                Messages.showWarningDialog(project, "数据库连接错误,请检查配置.", "Warning");
+                MyMessages.showWarningDialog(project, "数据库连接错误，请检查配置.", "Warning");
             } else {
-                Messages.showInfoMessage(project, "Connection successful!", "Info");
+                MyMessages.showInfoMessage(project, "Connection successful!", "Info");
             }
         });
 
@@ -126,18 +120,12 @@ public class EditDatabaseSettingUI extends DialogWrapper {
 
             // 连接数据库测试
             if (!testConnectionDB(formDatabase)) {
-                Messages.showWarningDialog(project, "数据库连接错误,请检查配置.", "Warning");
+                MyMessages.showWarningDialog(project, "数据库连接错误，请检查配置.", "Warning");
                 return;
             }
 
             // 持久化
-            Iterator<Database> iterator = databases.iterator();
-            while (iterator.hasNext()) {
-                Database next = iterator.next();
-                if (next.getDatabaseName().equals(formDatabase.getDatabaseName())) {
-                    iterator.remove();
-                }
-            }
+            databases.removeIf(next -> next.getDatabaseName().equals(formDatabase.getDatabaseName()));
             databases.add(formDatabase);
 
             // 刷新列表
@@ -155,11 +143,11 @@ public class EditDatabaseSettingUI extends DialogWrapper {
      */
     private Database getFormDatabase() {
         Database database = new Database();
-        database.setDatabaseType(databaseTypeComboBox.getSelectedItem().toString());
-        database.setHost(hostTf.getText());
+        database.setDatabaseType(StringUtils.trim(databaseTypeComboBox.getSelectedItem().toString()));
+        database.setHost(StringUtils.trim(hostTf.getText()));
         database.setPort(Integer.valueOf(portTf.getText()));
-        database.setDatabaseName(databaseNameTf.getText());
-        database.setUserName(userNameTf.getText());
+        database.setDatabaseName(StringUtils.trim(databaseNameTf.getText()));
+        database.setUserName(StringUtils.trim(userNameTf.getText()));
         database.setPassword(passwordTf.getText());
         return database;
     }

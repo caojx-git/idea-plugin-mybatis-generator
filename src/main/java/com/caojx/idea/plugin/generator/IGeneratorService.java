@@ -1,6 +1,5 @@
 package com.caojx.idea.plugin.generator;
 
-import com.caojx.idea.plugin.common.context.GeneratorContext;
 import com.intellij.openapi.project.Project;
 
 /**
