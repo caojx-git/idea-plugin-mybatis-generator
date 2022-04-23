@@ -17,42 +17,47 @@ public class TableField implements Serializable {
     /**
      * 字段列名
      */
-    private  String columnName;
+    private String columnName;
 
     /**
      * 注释
      */
-    private  String comment;
+    private String comment;
 
     /**
      * 属性名
      */
-    private  String name;
+    private String name;
 
     /**
      * 类型
      */
-    private  Class<?> type;
+    private Class<?> type;
 
     /**
      * jdbcType
      */
-    private  String jdbcType;
+    private String jdbcTypeName;
 
     /**
      * 是否主键
      */
-    private  boolean primaryKeyFlag;
+    private boolean primaryKeyFlag;
 
     /**
-     * 时间类型
+     * 是否为JDBCDateColumn
      */
-    private boolean dataFlag;
+    private boolean jdbcDateFlag;
+
+    /**
+     * 是否为JDBCTimeColumn
+     */
+    private boolean jdbcTimeFlag;
 
     /**
      * 是否blob类型
      */
-    private  boolean blobFlag;
+    private boolean blobFlag;
 
     /**
      * 构造器
@@ -73,10 +78,11 @@ public class TableField implements Serializable {
         this.comment = comment;
         this.name = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, columnName);
         this.type = TypeHandler.convertJavaType(sqlType);
-        this.jdbcType = TypeHandler.convertJdbcType(sqlType);
+        this.jdbcTypeName = TypeHandler.convertJdbcType(sqlType);
         this.primaryKeyFlag = primaryKeyFlag;
-        this.dataFlag = TypeHandler.isDate(sqlType);
-        this.blobFlag = TypeHandler.isBLOB(sqlType);
+        this.jdbcDateFlag = TypeHandler.isJDBCDateColumn(sqlType);
+        this.jdbcTimeFlag = TypeHandler.isJDBCTimeColumn(sqlType);
+        this.blobFlag = TypeHandler.isBLOBColumn(sqlType);
     }
 
     public String getColumnName() {
@@ -111,12 +117,12 @@ public class TableField implements Serializable {
         this.type = type;
     }
 
-    public String getJdbcType() {
-        return jdbcType;
+    public String getJdbcTypeName() {
+        return jdbcTypeName;
     }
 
-    public void setJdbcType(String jdbcType) {
-        this.jdbcType = jdbcType;
+    public void setJdbcTypeName(String jdbcTypeName) {
+        this.jdbcTypeName = jdbcTypeName;
     }
 
     public boolean isPrimaryKeyFlag() {
@@ -127,12 +133,20 @@ public class TableField implements Serializable {
         this.primaryKeyFlag = primaryKeyFlag;
     }
 
-    public boolean isDataFlag() {
-        return dataFlag;
+    public boolean isJdbcDateFlag() {
+        return jdbcDateFlag;
     }
 
-    public void setDataFlag(boolean dataFlag) {
-        this.dataFlag = dataFlag;
+    public void setJdbcDateFlag(boolean jdbcDateFlag) {
+        this.jdbcDateFlag = jdbcDateFlag;
+    }
+
+    public boolean isJdbcTimeFlag() {
+        return jdbcTimeFlag;
+    }
+
+    public void setJdbcTimeFlag(boolean jdbcTimeFlag) {
+        this.jdbcTimeFlag = jdbcTimeFlag;
     }
 
     public boolean isBlobFlag() {
@@ -153,6 +167,6 @@ public class TableField implements Serializable {
 
     public boolean isImport() {
         String fullClassName = getFullClassName();
-        return !type.isPrimitive() && !"java.lang".equals(StringUtils.substringBeforeLast(fullClassName, "."));
+        return !type.isPrimitive() && !"java.lang".equals(StringUtils.substringBeforeLast(fullClassName, ".")) && !"byte[]".equals(type.getSimpleName());
     }
 }

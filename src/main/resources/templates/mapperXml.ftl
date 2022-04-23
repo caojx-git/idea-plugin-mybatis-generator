@@ -3,20 +3,18 @@
 <mapper namespace="${mapperFullClassName}">
 
   <resultMap id="BaseResultMap" type="${entityFullClassName}">
-    <#list table.fields as field>
+    <#list table.notBlobFields as field>
      <#if field.primaryKeyFlag>
-    <id column="${field.columnName}" jdbcType="${field.jdbcType}" property="${field.name}"/>
-     <#elseif !field.blobFlag>
-    <result column="${field.columnName}" jdbcType="${field.jdbcType}" property="${field.name}"/>
+    <id column="${field.columnName}" jdbcType="${field.jdbcTypeName}" property="${field.name}"/>
+     <#else>
+    <result column="${field.columnName}" jdbcType="${field.jdbcTypeName}" property="${field.name}"/>
      </#if>
     </#list>
   </resultMap>
   <#if table.haveBlobField>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="${entityFullClassName}">
-    <#list table.fields as field>
-      <#if field.blobFlag>
-    <result column="${field.columnName}" jdbcType="${field.jdbcType}" property="${field.name}"/>
-      </#if>
+    <#list table.blobFields as field>
+    <result column="${field.columnName}" jdbcType="${field.jdbcTypeName}" property="${field.name}"/>
     </#list>
   </resultMap>
   </#if>
@@ -81,11 +79,11 @@
   </sql>
   </#if>
   <sql id="Base_Column_List">
-    <#list table.fields as field><#if !field.blobFlag>${field.columnName}<#if field_has_next>, <#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#if></#list>
+    <#list table.notBlobFields as field>${field.columnName}<#if field_has_next>, <#assign newLine=(field_index+1)%7 == 0>${newLine?string("\n\t","")}</#if></#list>
   </sql>
   <#if table.haveBlobField>
   <sql id="Blob_Column_List">
-    <#list table.blobFields as field><#if field.blobFlag>${field.columnName}<#if field_has_next>, <#assign newLine=(field_index+1)%6 == 0>${newLine?string("\n\t","")}</#if></#if></#list>
+    <#list table.blobFields as field>${field.columnName}<#if field_has_next>, <#assign newLine=(field_index+1)%7 == 0>${newLine?string("\n\t","")}</#if></#list>
   </sql>
   </#if>
   <#if isSelectedEnableSelectByExampleCheckBox && table.haveBlobField>
@@ -132,7 +130,7 @@
     from ${table.name}
     <#list table.fields as field>
     <#if field.primaryKeyFlag>
-    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
+    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcTypeName}}
     </#if>
     </#list>
   </select>
@@ -147,7 +145,7 @@
     from ${table.name}
     <#list table.fields as field>
       <#if field.primaryKeyFlag>
-    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
+    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcTypeName}}
       </#if>
     </#list>
   </select>
@@ -158,7 +156,7 @@
     delete from ${table.name}
     <#list table.fields as field>
     <#if field.primaryKeyFlag>
-    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
+    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcTypeName}}
     </#if>
     </#list>
   </delete>
@@ -183,7 +181,7 @@
       </#if>
     </#list>
     insert into ${table.name}(<#list table.fields as field><#if !field.primaryKeyFlag>${field.columnName}<#if field_has_next>, <#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t ","")}</#if></#if></#list>)
-    values (<#list table.fields as field><#if !field.primaryKeyFlag><#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>, <#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t ","")}</#if></#if></#list>)
+    values (<#list table.fields as field><#if !field.primaryKeyFlag><#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcTypeName}}<#if field_has_next>, <#assign newLine=(field_index+1)%4 == 0>${newLine?string("\n\t ","")}</#if></#if></#list>)
   </insert>
 </#if>
   <#if isSelectedEnableInsertCheckBox>
@@ -210,7 +208,7 @@
      <#list table.fields as field>
        <#if !field.primaryKeyFlag>
       <if test="${field.name} != null">
-        <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}},
+        <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcTypeName}},
       </if>
       </#if>
       </#list>
@@ -233,7 +231,7 @@
     <set>
       <#list table.fields as field>
       <if test="record.${field.name} != null">
-       ${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcType}},
+       ${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcTypeName}},
       </if>
       </#list>
     </set>
@@ -246,7 +244,7 @@
 
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update ${table.name}
-    set<#list table.fields as field> ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#list>
+    set<#list table.fields as field> ${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcTypeName}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#list>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -256,7 +254,7 @@
 
   <update id="updateByExample" parameterType="map">
     update ${table.name}
-    set<#list table.fields as field> ${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#list>
+    set<#list table.notBlobFields as field> ${field.columnName} = <#noparse>#{</#noparse>record.${field.name},jdbcType=${field.jdbcTypeName}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#list>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -270,14 +268,14 @@
      <#list table.fields as field>
        <#if !field.primaryKeyFlag>
       <if test="${field.name} != null">
-        ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}},
+        ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcTypeName}},
       </if>
        </#if>
       </#list>
     </set>
     <#list table.fields as field>
     <#if field.primaryKeyFlag>
-    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
+    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcTypeName}}
     </#if>
     </#list>
   </update>
@@ -286,10 +284,10 @@
 
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="${entityFullClassName}">
     update ${table.name}
-    set<#list table.fields as field><#if !field.primaryKeyFlag> ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#if></#list>
+    set<#list table.fields as field><#if !field.primaryKeyFlag> ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcTypeName}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#if></#list>
     <#list table.fields as field>
       <#if field.primaryKeyFlag>
-    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
+    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcTypeName}}
       </#if>
     </#list>
   </update>
@@ -298,10 +296,10 @@
 
   <update id="updateByPrimaryKey" parameterType="${entityFullClassName}">
     update ${table.name}
-    set<#list table.fields as field><#if !field.primaryKeyFlag && !field.blobFlag> ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#if></#list>
+    set<#list table.notBlobFields as field><#if !field.primaryKeyFlag> ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcTypeName}}<#if field_has_next>,<#assign newLine=true>${newLine?string("\n\t ","")}</#if></#if></#list>
    <#list table.fields as field>
       <#if field.primaryKeyFlag>
-    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcType}}
+    where ${field.columnName} = <#noparse>#{</#noparse>${field.name},jdbcType=${field.jdbcTypeName}}
       </#if>
    </#list>
   </update>

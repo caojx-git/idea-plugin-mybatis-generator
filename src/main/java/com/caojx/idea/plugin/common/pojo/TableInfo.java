@@ -43,9 +43,14 @@ public class TableInfo implements Serializable {
     private Class<?> primaryKeyType;
 
     /**
-     * 是否有Date属性
+     * 是否有JdbcDate属性
      */
-    private boolean haveDateField;
+    private boolean haveJdbcDateField;
+
+    /**
+     * 是否有JdbcTime属性
+     */
+    private boolean haveJdbcTimeField;
 
     /**
      * 是否有blob属性
@@ -56,6 +61,11 @@ public class TableInfo implements Serializable {
      * blob属性列表
      */
     private List<TableField> blobFields;
+
+    /**
+     * 非blob属性列表
+     */
+    private List<TableField> notBlobFields;
 
     /**
      * 构造器
@@ -83,12 +93,16 @@ public class TableInfo implements Serializable {
             this.primaryKeyType = primaryKeyField.getType();
         }
 
-        // 是否含有date属性
-        this.haveDateField = Optional.ofNullable(fields).orElse(new ArrayList<>()).stream().allMatch(TableField::isDataFlag);
+        // 是否含有JdbcDate、JdbcTime属性
+        this.haveJdbcDateField = Optional.ofNullable(fields).orElse(new ArrayList<>()).stream().anyMatch(TableField::isJdbcDateFlag);
+        this.haveJdbcTimeField = Optional.ofNullable(fields).orElse(new ArrayList<>()).stream().anyMatch(TableField::isJdbcTimeFlag);
 
         // 是否含有blob属性
         this.blobFields = Optional.ofNullable(fields).orElse(new ArrayList<>()).stream().filter(TableField::isBlobFlag).collect(Collectors.toList());
         this.haveBlobField = !this.blobFields.isEmpty();
+
+        // 非blob属性列表
+        this.notBlobFields = Optional.ofNullable(fields).orElse(new ArrayList<>()).stream().filter(field -> !field.isBlobFlag()).collect(Collectors.toList());
     }
 
 
@@ -140,12 +154,20 @@ public class TableInfo implements Serializable {
         this.primaryKeyType = primaryKeyType;
     }
 
-    public boolean isHaveDateField() {
-        return haveDateField;
+    public boolean isHaveJdbcDateField() {
+        return haveJdbcDateField;
     }
 
-    public void setHaveDateField(boolean haveDateField) {
-        this.haveDateField = haveDateField;
+    public void setHaveJdbcDateField(boolean haveJdbcDateField) {
+        this.haveJdbcDateField = haveJdbcDateField;
+    }
+
+    public boolean isHaveJdbcTimeField() {
+        return haveJdbcTimeField;
+    }
+
+    public void setHaveJdbcTimeField(boolean haveJdbcTimeField) {
+        this.haveJdbcTimeField = haveJdbcTimeField;
     }
 
     public boolean isHaveBlobField() {
@@ -162,6 +184,14 @@ public class TableInfo implements Serializable {
 
     public void setBlobFields(List<TableField> blobFields) {
         this.blobFields = blobFields;
+    }
+
+    public List<TableField> getNotBlobFields() {
+        return notBlobFields;
+    }
+
+    public void setNotBlobFields(List<TableField> notBlobFields) {
+        this.notBlobFields = notBlobFields;
     }
 
     /**
