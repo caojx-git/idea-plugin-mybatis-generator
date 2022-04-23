@@ -12,7 +12,7 @@ import java.util.List;
 import ${entityFullClassName};
 <#if superMapperClass?? && superMapperClass !="">
 public ${superMapperClass};
-<#else >
+</#if>
 <#if isSelectedEnableSelectByExampleCheckBox || isSelectedEnableDeleteByExampleCheckBox || isSelectedEnableCountByExampleCheckBox || isSelectedEnableUpdateByExampleCheckBox>
 import ${entityExampleFullClassName};
 </#if>
