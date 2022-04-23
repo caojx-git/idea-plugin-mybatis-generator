@@ -4,7 +4,7 @@ package ${servicePackage};
 </#if>
 <#if superServiceClass?? && superServiceClass !="">
 import ${entityFullClassName};
-import ${superServiceClassPackage};
+import ${superServiceClass};
 </#if>
 
 /**
