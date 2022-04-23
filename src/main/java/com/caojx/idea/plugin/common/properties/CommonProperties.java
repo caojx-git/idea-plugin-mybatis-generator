@@ -36,11 +36,6 @@ public class CommonProperties implements Serializable {
     private String databaseComboBoxValue;
 
     /**
-     * 表格式
-     */
-    private String tableNameRegex;
-
-    /**
      * 框架类型列表
      */
     private List<String> frameworkTypeComboBoxValues;
@@ -81,14 +76,6 @@ public class CommonProperties implements Serializable {
 
     public void setDatabaseComboBoxValue(String databaseComboBoxValue) {
         this.databaseComboBoxValue = databaseComboBoxValue;
-    }
-
-    public String getTableNameRegex() {
-        return tableNameRegex;
-    }
-
-    public void setTableNameRegex(String tableNameRegex) {
-        this.tableNameRegex = tableNameRegex;
     }
 
     public List<String> getFrameworkTypeComboBoxValues() {

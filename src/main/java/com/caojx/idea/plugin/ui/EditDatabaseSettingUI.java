@@ -125,7 +125,7 @@ public class EditDatabaseSettingUI extends DialogWrapper {
             }
 
             // 持久化
-            databases.removeIf(next -> next.getDatabaseName().equals(formDatabase.getDatabaseName()));
+            databases.removeIf(next -> next.getShowDatabaseName().equals(formDatabase.getShowDatabaseName()));
             databases.add(formDatabase);
 
             // 刷新列表

@@ -4,14 +4,16 @@
     <vendor email="caojx_wy@163.com" url="">caojx</vendor>
 
     <description><![CDATA[
-        <em>Simple MyBatisCodeGenerator Plugin </em>
-        <em>1.It supports code generation in three styles: MyBatis, TkMyBatis and MybatisPlus</em>
-        <em>2.Support customized generation of entity, mapper, mapperXml, service, serviceImpl and controller</em>
+        MyBatis CodeGenerator Plugin<br>
+        <em>1.plugin Entry Tools->MyBatisCodeGenerator</em><br>
+        <em>2.Support: MyBatis, TkMyBatis and MybatisPlus</em><br>
+        <em>3.Support customized generation of entity, mapper, mapperXml, service, serviceImpl and controller</em><br>
 
         <br>
-        <em>MyBatis 代码生成插件</em>
-        <em>1.支持MyBatis、TkMyBatis、MyBatisPlus 三种风格代码生成</em>
-        <em>2.支持定制化生成entity、mapper、mapperXml、service、serviceImpl、Controller</em>
+        <em>MyBatis 代码生成插件</em><br>
+        <em>1.插件入口 Tools菜单->MyBatisCodeGenerator</em><br>
+        <em>2.支持MyBatis、TkMyBatis、MyBatisPlus 三种风格代码生成</em><br>
+        <em>3.支持定制化生成entity、mapper、mapperXml、service、serviceImpl、Controller</em><br>
     ]]></description>
 
     <!--版本兼容从2019.3开始-->
@@ -33,7 +35,7 @@
     <actions>
         <!-- Add your actions here -->
         <action id="MyBatisCodeGeneratorId" class="com.caojx.idea.plugin.action.GeneratorAction" text="MyBatisCodeGenerator" description="生成代码">
-            <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
     </actions>
 </idea-plugin>

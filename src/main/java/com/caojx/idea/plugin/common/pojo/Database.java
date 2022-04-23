@@ -1,5 +1,7 @@
 package com.caojx.idea.plugin.common.pojo;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 数据库
  *
@@ -38,6 +40,11 @@ public class Database {
      */
     private String password;
 
+    /**
+     * 显示的数据库名称
+     */
+    private String showDatabaseName;
+
     public Database() {
     }
 
@@ -48,6 +55,7 @@ public class Database {
         this.databaseName = databaseName;
         this.userName = userName;
         this.password = password;
+        this.showDatabaseName = databaseName + "@" + host + ":" + port + ":" + databaseType;
     }
 
     public String getDatabaseType() {
@@ -96,5 +104,16 @@ public class Database {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getShowDatabaseName() {
+        if (StringUtils.isBlank(showDatabaseName)) {
+            showDatabaseName = databaseName + "@" + host + ":" + port + ":" + databaseType;
+        }
+        return showDatabaseName;
+    }
+
+    public void setShowDatabaseName(String showDatabaseName) {
+        this.showDatabaseName = showDatabaseName;
     }
 }

@@ -131,6 +131,16 @@ public class GeneratorSettingUI extends DialogWrapper {
      */
     private IGeneratorService generatorService = new GeneratorServiceImpl();
 
+    /**
+     * 表头
+     */
+    public static String[] TABLE_COLUMN_NAME = {"", "表名"};
+
+    /**
+     * 表model
+     */
+    public static DefaultTableModel TABLE_MODEL = new DefaultTableModel(null, TABLE_COLUMN_NAME);
+
     public GeneratorSettingUI(Project project) {
         super(true);
         init();
@@ -200,26 +210,11 @@ public class GeneratorSettingUI extends DialogWrapper {
         // 项目路径
         projectPathTf.setText(project.getBasePath());
 
-        // 数据库
-        databases = commonProperties.getDatabases();
-        if (CollectionUtils.isNotEmpty(databases)) {
-            databases.forEach(database -> databaseComboBox.addItem(database.getDatabaseName()));
-
-            // 设置默认数据库
-            databaseComboBox.setSelectedItem(databases.get(0).getDatabaseName());
-            if (StringUtils.isNotBlank(commonProperties.getDatabaseComboBoxValue())) {
-                databaseComboBox.setSelectedItem(commonProperties.getDatabaseComboBoxValue());
-            }
-
-            for (Database database : databases) {
-                if (database.getDatabaseName().equals(databaseComboBox.getSelectedItem())) {
-                    selectedDatabase = database;
-                }
-            }
-        }
+        // 初始化数据库
+        initDatabaseComBox(commonProperties.getDatabases(), commonProperties.getDatabaseComboBoxValue());
 
         // 表名格式
-        tableNameRegexTf.setText(commonProperties.getTableNameRegex());
+        tableNameRegexTf.setText("");
 
         // entity 设置
         EntityProperties entityProperties = generatorProperties.getEntityProperties();
@@ -416,7 +411,10 @@ public class GeneratorSettingUI extends DialogWrapper {
         });
         databaseComboBox.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                selectedDatabase = databases.stream().filter(database -> database.getDatabaseName().equals(e.getItem())).findAny().get();
+                selectedDatabase = databases.stream().filter(database -> database.getShowDatabaseName().equals(e.getItem())).findAny().get();
+
+                // 重置表数据
+                restTableData();
             }
         });
         configDataBaseBtn.addActionListener(e -> {
@@ -431,15 +429,26 @@ public class GeneratorSettingUI extends DialogWrapper {
                 String tableNamePattern = StringUtils.isBlank(tableNameRegexTf.getText()) ? "%" : tableNameRegexTf.getText();
                 List<String> tableNames = dbHelper.getTableName(selectedDatabase.getDatabaseName(), tableNamePattern);
 
-                // 显示表名列表
-                String[] title = {"", "表名"};
-                // 行index,列index
-                Object[][] data = new Object[tableNames.size()][2];
+                // 重置表数据
+                restTableData();
+
+                // 追加行数据
+                table.setModel(TABLE_MODEL);
                 for (int i = 0; i < tableNames.size(); i++) {
-                    data[i][1] = tableNames.get(i);
+                    String[] row = new String[2];
+                    row[1] = tableNames.get(i);
+                    TABLE_MODEL.addRow(row);
                 }
 
-                table.setModel(new DefaultTableModel(data, title));
+//                // 显示表名列表
+//                String[] title = {"", "表名"};
+//                // 行index,列index
+//                Object[][] data = new Object[tableNames.size()][2];
+//                for (int i = 0; i < tableNames.size(); i++) {
+//                    data[i][1] = tableNames.get(i);
+//                }
+//
+//                table.setModel(new DefaultTableModel(data, title));
 
                 // 设置列为单选框
                 TableColumn tableColumn = table.getColumnModel().getColumn(0);
@@ -451,7 +460,6 @@ public class GeneratorSettingUI extends DialogWrapper {
                 MyMessages.showWarningDialog(project, "数据库连接错误,请检查配置.", "Warning");
             }
         });
-
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -530,7 +538,6 @@ public class GeneratorSettingUI extends DialogWrapper {
         commonProperties.setProjectPath(StringUtils.trim(projectPathTf.getText()));
         commonProperties.setDatabases(databases);
         commonProperties.setDatabaseComboBoxValue(String.valueOf(databaseComboBox.getSelectedItem()));
-        commonProperties.setTableNameRegex(StringUtils.trim(tableNameRegexTf.getText()));
         commonProperties.setFrameworkTypeComboBoxValues(FrameworkTypeEnum.getFrameworkNames());
         commonProperties.setFrameworkTypeComboBoxValue(String.valueOf(frameworkTypeComboBox.getSelectedItem()));
         generatorProperties.setCommonProperties(commonProperties);
@@ -773,18 +780,56 @@ public class GeneratorSettingUI extends DialogWrapper {
      * 刷新数据库下拉框
      */
     public void refreshDatabaseComBox(List<Database> databases) {
-        String[] databaseNames = new String[databases.size()];
-        for (int i = 0; i < databases.size(); i++) {
-            databaseNames[i] = databases.get(i).getDatabaseName();
-        }
+        initDatabaseComBox(databases, (String) databaseComboBox.getSelectedItem());
+    }
 
-        ComboBoxModel comboBoxModel = new DefaultComboBoxModel(databaseNames);
-        databaseComboBox.setModel(comboBoxModel);
+    /**
+     * 初始化数据库下拉框
+     *
+     * @param databases                数据库列表
+     * @param selectedShowDatabaseName 选中的数据库名
+     */
+    private void initDatabaseComBox(List<Database> databases, String selectedShowDatabaseName) {
+        // 数据库为空
+        selectedDatabase = null;
+        databaseComboBox.removeAllItems();
+        this.databases = CollectionUtils.isEmpty(databases) ? new ArrayList<>() : databases;
 
-        if (databases.size() == 1) {
+        // 初始化下拉列表，默认选中0号数据库
+        if (CollectionUtils.isNotEmpty(databases)) {
+            databases.forEach(database -> databaseComboBox.addItem(database.getShowDatabaseName()));
+            databaseComboBox.setSelectedItem(databases.get(0).getShowDatabaseName());
             selectedDatabase = databases.get(0);
         }
-        this.databases = databases;
+
+        // 设置为选中的数据库
+        boolean selectedDatabaseChange = true;
+        for (Database database : databases) {
+            if (StringUtils.equals(database.getShowDatabaseName(), selectedShowDatabaseName)) {
+                selectedDatabaseChange = false;
+                selectedDatabase = database;
+                databaseComboBox.setSelectedItem(selectedShowDatabaseName);
+            }
+        }
+
+        // 数据库选择有变化，重置表数据
+        if (selectedDatabaseChange) {
+            restTableData();
+        }
+    }
+
+    /**
+     * 重置表数据
+     */
+    private void restTableData() {
+        // 重置表数据
+        TABLE_MODEL.setDataVector(null, TABLE_COLUMN_NAME);
+        // 重置选择的表
+        if (Objects.isNull(selectedTableNames)) {
+            selectedTableNames = new ArrayList<>();
+        }
+        tableNameRegexTf.setText("");
+        selectedTableNames.clear();
     }
 
 }

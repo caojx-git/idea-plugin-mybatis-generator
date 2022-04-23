@@ -38,7 +38,7 @@ public interface Constant {
     /**
      * 实体默认文件名格式，注意 %s 会自动填充表原始实体名称
      */
-    String ENTITY_NAME_DEFAULT_FORMAT = "%sEntity";
+    String ENTITY_NAME_DEFAULT_FORMAT = "%s";
 
     /**
      * 实体默认文件名格式，注意 %s 会自动填充表原始实体名称
