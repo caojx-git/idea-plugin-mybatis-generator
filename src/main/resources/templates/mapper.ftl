@@ -10,6 +10,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 </#if>
 import ${entityFullClassName};
+<#if superMapperClass?? && superMapperClass !="">
+public ${superMapperClass};
+<#else >
 <#if isSelectedEnableSelectByExampleCheckBox || isSelectedEnableDeleteByExampleCheckBox || isSelectedEnableCountByExampleCheckBox || isSelectedEnableUpdateByExampleCheckBox>
 import ${entityExampleFullClassName};
 </#if>
@@ -21,7 +24,11 @@ import ${entityExampleFullClassName};
 * @date ${.now?string("yyyy-MM-dd HH:mm")}
 */
 @Mapper
+<#if superMapperClass?? && superMapperClass !="">
+public interface ${mapperName} extends ${superMapperClassName}<${entityName}> {
+<#else >
 public interface ${mapperName} {
+</#if>
 <#if isSelectedEnableSelectByExampleCheckBox && table.haveBlobField>
 
     /**
