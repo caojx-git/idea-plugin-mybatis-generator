@@ -828,7 +828,6 @@ public class GeneratorSettingUI extends DialogWrapper {
         if (Objects.isNull(selectedTableNames)) {
             selectedTableNames = new ArrayList<>();
         }
-        tableNameRegexTf.setText("");
         selectedTableNames.clear();
     }
 
