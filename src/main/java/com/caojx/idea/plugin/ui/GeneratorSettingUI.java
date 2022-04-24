@@ -709,11 +709,11 @@ public class GeneratorSettingUI extends DialogWrapper {
                 return "生成serviceImpl，service命名格式需要包含%s";
             }
             if (StringUtils.isNotBlank(serviceImplProperties.getSuperServiceImplClass())) {
-                if (StringUtils.isBlank(mapperProperties.getPackageName())) {
-                    return "生成serviceImpl，请填写mapper包名";
-                }
+//                if (StringUtils.isBlank(mapperProperties.getPackageName())) {
+//                    return "生成serviceImpl，请填写mapper包名";
+//                }
                 if (!validNamePattern(mapperProperties.getNamePattern())) {
-                    return "生成serviceImpl，，mapper命名格式需要包含%s";
+                    return "生成serviceImpl，mapper命名格式需要包含%s";
                 }
             }
         }
