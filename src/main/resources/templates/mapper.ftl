@@ -2,7 +2,9 @@
 package ${mapperPackage};
 
 </#if>
+<#if frameworkType != "TkMyBatis">
 import org.apache.ibatis.annotations.Mapper;
+</#if>
 <#if isSelectedEnableUpdateByExampleCheckBox>
 import org.apache.ibatis.annotations.Param;
 </#if>
@@ -23,7 +25,9 @@ import ${entityExampleFullClassName};
 * @author ${author!}
 * @date ${.now?string("yyyy-MM-dd HH:mm")}
 */
+<#if frameworkType != "TkMyBatis">
 @Mapper
+</#if>
 <#if superMapperClass?? && superMapperClass !="">
 public interface ${mapperName} extends ${superMapperClassName}<${entityName}> {
 <#else >
