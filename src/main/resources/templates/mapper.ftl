@@ -2,9 +2,7 @@
 package ${mapperPackage};
 
 </#if>
-<#if frameworkType != "TkMyBatis">
 import org.apache.ibatis.annotations.Mapper;
-</#if>
 <#if isSelectedEnableUpdateByExampleCheckBox>
 import org.apache.ibatis.annotations.Param;
 </#if>
@@ -12,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 </#if>
 import ${entityFullClassName};
-<#if superMapperClass?? && superMapperClass !="">
+<#if superMapperClass?? && superMapperClass !="" && superMapperClassName != "Mapper">
 import ${superMapperClass};
 </#if>
 <#if isSelectedEnableSelectByExampleCheckBox || isSelectedEnableDeleteByExampleCheckBox || isSelectedEnableCountByExampleCheckBox || isSelectedEnableUpdateByExampleCheckBox>
@@ -25,12 +23,12 @@ import ${entityExampleFullClassName};
 * @author ${author!}
 * @date ${.now?string("yyyy-MM-dd HH:mm")}
 */
-<#if frameworkType != "TkMyBatis">
 @Mapper
-</#if>
-<#if superMapperClass?? && superMapperClass !="">
+<#if superMapperClass?? && superMapperClass !="" && superMapperClassName == "Mapper">
+public interface ${mapperName} extends ${superMapperClass}<${entityName}> {
+<#elseif superMapperClass?? && superMapperClass !="" && superMapperClassName != "Mapper">
 public interface ${mapperName} extends ${superMapperClassName}<${entityName}> {
-<#else >
+<#else>
 public interface ${mapperName} {
 </#if>
 <#if isSelectedEnableSelectByExampleCheckBox && table.haveBlobField>
