@@ -25,6 +25,7 @@ import javax.persistence.*;
 </#if>
 <#if table.havePrimaryKey && frameworkType =="MyBatisPlus">
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.IdType;
 </#if>
 
 /**

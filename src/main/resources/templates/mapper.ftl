@@ -11,7 +11,7 @@ import java.util.List;
 </#if>
 import ${entityFullClassName};
 <#if superMapperClass?? && superMapperClass !="">
-public ${superMapperClass};
+import ${superMapperClass};
 </#if>
 <#if isSelectedEnableSelectByExampleCheckBox || isSelectedEnableDeleteByExampleCheckBox || isSelectedEnableCountByExampleCheckBox || isSelectedEnableUpdateByExampleCheckBox>
 import ${entityExampleFullClassName};
