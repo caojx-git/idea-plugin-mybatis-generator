@@ -3,7 +3,9 @@ package ${servicePackage};
 
 </#if>
 <#if superServiceClass?? && superServiceClass !="">
+<#if entityPackage?default("")?trim?length gt 1>
 import ${entityFullClassName};
+</#if>
 import ${superServiceClass};
 </#if>
 

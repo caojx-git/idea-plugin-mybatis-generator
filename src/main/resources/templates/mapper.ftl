@@ -9,11 +9,13 @@ import org.apache.ibatis.annotations.Param;
 <#if isSelectedEnableSelectByExampleCheckBox>
 import java.util.List;
 </#if>
+<#if entityPackage?default("")?trim?length gt 1>
 import ${entityFullClassName};
+</#if>
 <#if superMapperClass?? && superMapperClass !="" && superMapperClassName != "Mapper">
 import ${superMapperClass};
 </#if>
-<#if isSelectedEnableSelectByExampleCheckBox || isSelectedEnableDeleteByExampleCheckBox || isSelectedEnableCountByExampleCheckBox || isSelectedEnableUpdateByExampleCheckBox>
+<#if entityExamplePackage?default("")?trim?length gt 1 && (isSelectedEnableSelectByExampleCheckBox || isSelectedEnableDeleteByExampleCheckBox || isSelectedEnableCountByExampleCheckBox || isSelectedEnableUpdateByExampleCheckBox)>
 import ${entityExampleFullClassName};
 </#if>
 

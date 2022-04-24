@@ -2,10 +2,16 @@
 package ${serviceImplPackage};
 
 </#if>
+<#if servicePackage?default("")?trim?length gt 1>
 import ${serviceFullClassName};
+</#if>
 <#if superServiceImplClass?? && superServiceImplClass !="">
+<#if entityPackage?default("")?trim?length gt 1>
 import ${entityFullClassName};
+</#if>
+<#if mapperPackage?default("")?trim?length gt 1>
 import ${mapperFullClassName};
+</#if>
 import ${superServiceImplClass};
 </#if>
 import org.springframework.stereotype.Service;
