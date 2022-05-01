@@ -5,7 +5,10 @@
 
     <description><![CDATA[
         MyBatis CodeGenerator Plugin<br>
-        <em>github：https://github.com/caojx-git/idea-plugin-mybatis-generator</em><br>
+        <a href="https://github.com/caojx-git/idea-plugin-mybatis-generator">GitHub</a><br>
+
+        <br>
+        Features<br>
 
         <br>
         <em>1.plugin Entry Tools->MyBatisCodeGenerator</em><br>
@@ -17,6 +20,10 @@
         <em>1.插件入口 Tools菜单->MyBatisCodeGenerator</em><br>
         <em>2.支持MyBatis、TkMyBatis、MyBatisPlus 三种风格代码生成</em><br>
         <em>3.支持定制化生成entity、mapper、mapperXml、service、serviceImpl、Controller</em><br>
+
+       <br>
+       How to use<br>
+         view on <a href="https://github.com/caojx-git/idea-plugin-mybatis-generator">https://github.com/caojx-git/idea-plugin-mybatis-generator</a>
     ]]></description>
 
     <!--版本兼容从2019.3开始

@@ -3,7 +3,7 @@
 
 ## 插件效果图
 入口：idea顶部菜单->Tools->MyBatisCodeGenerator  
-![](https://github.com/caojx-git/idea-plugin-mybatis-generator/blob/master/mybatisgenerator.png)
+![插件效果图](mybatisgenerator.png)
 
 ## 插件功能说明
 
