@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>com.caojx.MyBatisCodeGenerator</id>
+    <id>idea-plugin-mybatis-generator</id>
     <name>MyBatisCodeGenerator</name>
     <vendor email="caojx_wy@163.com" url="">caojx</vendor>
 
@@ -16,7 +16,9 @@
         <em>3.支持定制化生成entity、mapper、mapperXml、service、serviceImpl、Controller</em><br>
     ]]></description>
 
-    <!--版本兼容从2019.3开始-->
+    <!--版本兼容从2019.3开始
+    see https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html?from=jetbrains.org
+    -->
     <idea-version since-build="193"/>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
@@ -25,15 +27,17 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <!--持久化-->
+        <!--持久化
+        see https://plugins.jetbrains.com/docs/intellij/persisting-state-of-components.html
+        -->
         <projectService serviceImplementation="com.caojx.idea.plugin.persistent.PersistentStateService"/>
 
-        <!--工具栏-->
-        <toolWindow id="MyBatisCodeGenerator" factoryClass="com.caojx.idea.plugin.ui.GeneratorWindowFactory" anchor="right"/>
+        <!--工具栏，暂时去掉侧边工具栏，生成代码是低频操作，没必要占用侧边工具栏-->
+<!--        <toolWindow id="MyBatisCodeGenerator" factoryClass="com.caojx.idea.plugin.ui.GeneratorWindowFactory" anchor="right"/>-->
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
+        <!-- Add your actions here  入口 Tools->MyBatisCodeGenerator -->
         <action id="MyBatisCodeGeneratorId" class="com.caojx.idea.plugin.action.GeneratorAction" text="MyBatisCodeGenerator" description="生成代码">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>

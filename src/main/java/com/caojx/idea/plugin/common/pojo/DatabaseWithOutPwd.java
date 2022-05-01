@@ -3,12 +3,12 @@ package com.caojx.idea.plugin.common.pojo;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 数据库
+ * 数据库信息不带密码
  *
  * @author caojx
  * @date 2022/4/10 4:00 PM
  */
-public class Database {
+public class DatabaseWithOutPwd {
 
     /**
      * 数据库类型
@@ -36,26 +36,20 @@ public class Database {
     private String userName;
 
     /**
-     * 密码
-     */
-    private String password;
-
-    /**
      * 显示的数据库名称
      */
-    private String showDatabaseName;
+    private String identifierName;
 
-    public Database() {
+    public DatabaseWithOutPwd() {
     }
 
-    public Database(String databaseType, String host, Integer port, String databaseName, String userName, String password) {
+    public DatabaseWithOutPwd(String databaseType, String host, Integer port, String databaseName, String userName) {
         this.databaseType = databaseType;
         this.host = host;
         this.port = port;
         this.databaseName = databaseName;
         this.userName = userName;
-        this.password = password;
-        this.showDatabaseName = databaseName + "@" + host + ":" + port + ":" + databaseType;
+        this.identifierName = databaseName + "@" + host + ":" + port + ":" + databaseType;
     }
 
     public String getDatabaseType() {
@@ -98,22 +92,14 @@ public class Database {
         this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getShowDatabaseName() {
-        if (StringUtils.isBlank(showDatabaseName)) {
-            showDatabaseName = databaseName + "@" + host + ":" + port + ":" + databaseType;
+    public String getIdentifierName() {
+        if (StringUtils.isBlank(identifierName)) {
+            identifierName = databaseName + "@" + host + ":" + port + ":" + databaseType;
         }
-        return showDatabaseName;
+        return identifierName;
     }
 
-    public void setShowDatabaseName(String showDatabaseName) {
-        this.showDatabaseName = showDatabaseName;
+    public void setIdentifierName(String identifierName) {
+        this.identifierName = identifierName;
     }
 }

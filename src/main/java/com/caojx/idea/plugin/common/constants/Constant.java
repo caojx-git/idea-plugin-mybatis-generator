@@ -11,6 +11,11 @@ import java.nio.charset.StandardCharsets;
 public interface Constant {
 
     /**
+     * 插件名称
+     */
+    String PLUGIN_NAME = "MyBatisCodeGenerator";
+
+    /**
      * java文件后缀
      */
     String JAVA_SUFFIX = ".java";
@@ -104,11 +109,6 @@ public interface Constant {
      * controller模板路径
      */
     String CONTROLLER_TEMPLATE_PATH = "/templates/controller.ftl";
-
-    /**
-     * mybatis plus BASE_MAPPER
-     */
-    String MYBATIS_PLUS_BASE_MAPPER = "com.baomidou.mybatisplus.core.mapper.BaseMapper";
 
     /**
      * tk mybatis 默认 superMapperClass

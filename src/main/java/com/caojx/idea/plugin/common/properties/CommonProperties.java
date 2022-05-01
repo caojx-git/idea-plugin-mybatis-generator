@@ -1,6 +1,6 @@
 package com.caojx.idea.plugin.common.properties;
 
-import com.caojx.idea.plugin.common.pojo.Database;
+import com.caojx.idea.plugin.common.pojo.DatabaseWithOutPwd;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class CommonProperties implements Serializable {
     /**
      * 数据库列表
      */
-    private List<Database> databases = new ArrayList<>();
+    private List<DatabaseWithOutPwd> databases = new ArrayList<>();
 
     /**
      * 选择的数据库
@@ -62,11 +62,11 @@ public class CommonProperties implements Serializable {
         this.projectPath = projectPath;
     }
 
-    public List<Database> getDatabases() {
+    public List<DatabaseWithOutPwd> getDatabases() {
         return databases;
     }
 
-    public void setDatabases(List<Database> databases) {
+    public void setDatabases(List<DatabaseWithOutPwd> databases) {
         this.databases = databases;
     }
 

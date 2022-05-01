@@ -1,6 +1,6 @@
 package com.caojx.idea.plugin.ui;
 
-import com.caojx.idea.plugin.common.pojo.Database;
+import com.caojx.idea.plugin.common.pojo.DatabaseWithOutPwd;
 import com.caojx.idea.plugin.common.properties.CommonProperties;
 import com.caojx.idea.plugin.common.utils.MyMessages;
 import com.caojx.idea.plugin.persistent.PersistentState;
@@ -29,6 +29,8 @@ public class DataSourcesSettingUI extends DialogWrapper {
     private JButton deleteBtn;
     private JButton editBtn;
 
+    private final Project project;
+
     /**
      * 代码生成配置UI
      */
@@ -37,7 +39,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
     /**
      * 数据库列表
      */
-    private List<Database> databases;
+    private List<DatabaseWithOutPwd> databases;
 
     /**
      * 表头
@@ -54,11 +56,15 @@ public class DataSourcesSettingUI extends DialogWrapper {
      */
     private int selectedRow = -1;
 
+    private final PersistentStateService persistentStateService;
+
     public DataSourcesSettingUI(@NotNull Project project, @NotNull GeneratorSettingUI generatorSettingUI) {
         super(true);
         init();
 
+        this.project = project;
         this.generatorSettingUI = generatorSettingUI;
+        this.persistentStateService = PersistentStateService.getInstance(project);
 
         // 初始化界面数据
         renderUIData(project);
@@ -84,7 +90,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
      */
     private void renderUIData(Project project) {
         // 数据库列表
-        PersistentState persistentState = PersistentStateService.getInstance(project).getState();
+        PersistentState persistentState = persistentStateService.getState();
         CommonProperties commonProperties = persistentState.getGeneratorProperties().getCommonProperties();
         databases = commonProperties.getDatabases();
 
@@ -113,6 +119,12 @@ public class DataSourcesSettingUI extends DialogWrapper {
                 MyMessages.showWarningDialog(project, "请选择需要删除的数据库", "Warning");
                 return;
             }
+
+            // 清除密码
+            DatabaseWithOutPwd deleteDatabase = databases.get(selectedRow);
+            persistentStateService.clearPassword(deleteDatabase.getIdentifierName());
+
+            // 从数组列表中移除
             databases.remove(selectedRow);
             selectedRow = -1;
 
@@ -128,7 +140,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
                 return;
             }
 
-            Database database = databases.get(selectedRow);
+            DatabaseWithOutPwd database = databases.get(selectedRow);
             EditDatabaseSettingUI editDatabaseSettingUI = new EditDatabaseSettingUI(project, database, this);
             editDatabaseSettingUI.show();
             selectedRow = -1;
@@ -146,7 +158,7 @@ public class DataSourcesSettingUI extends DialogWrapper {
      *
      * @param databases 数据库列表
      */
-    public void refreshDatabaseTable(List<Database> databases) {
+    public void refreshDatabaseTable(List<DatabaseWithOutPwd> databases) {
         // 刷新数据库表
         TABLE_MODEL.setDataVector(null, TABLE_COLUMN_NAME);
         databases.forEach(database -> {

@@ -2,9 +2,11 @@ package com.caojx.idea.plugin.ui;
 
 import com.caojx.idea.plugin.common.constants.Constant;
 import com.caojx.idea.plugin.common.enums.FrameworkTypeEnum;
-import com.caojx.idea.plugin.common.pojo.Database;
+import com.caojx.idea.plugin.common.pojo.DatabaseWithOutPwd;
+import com.caojx.idea.plugin.common.pojo.DatabaseWithPwd;
 import com.caojx.idea.plugin.common.pojo.TableInfo;
 import com.caojx.idea.plugin.common.properties.*;
+import com.caojx.idea.plugin.common.utils.DatabaseConvert;
 import com.caojx.idea.plugin.common.utils.MyMessages;
 import com.caojx.idea.plugin.common.utils.MySQLDBHelper;
 import com.caojx.idea.plugin.generator.GeneratorContext;
@@ -29,10 +31,8 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * 代码生成配置UI
@@ -81,12 +81,12 @@ public class GeneratorSettingUI extends DialogWrapper {
     private JTextField controllerPackageTf;
     private JTextField controllerNamePatternTf;
     private JCheckBox controllerSwaggerCheckBox;
-    private JComboBox databaseComboBox;
+    private JComboBox<String> databaseComboBox;
     private JTextField tableNameRegexTf;
     private JButton selectTableBtn;
     private JButton configDataBaseBtn;
     private JTable table;
-    private JComboBox frameworkTypeComboBox;
+    private JComboBox<String> frameworkTypeComboBox;
     private JButton serviceImplPathBtn;
     private JButton controllerPathBtn;
     private JPanel mainPanel;
@@ -105,7 +105,6 @@ public class GeneratorSettingUI extends DialogWrapper {
     private JButton generatorBtn;
     private JButton cancelBtn;
 
-
     /**
      * 项目
      */
@@ -114,17 +113,17 @@ public class GeneratorSettingUI extends DialogWrapper {
     /**
      * 数据库列表
      */
-    private List<Database> databases = new ArrayList<>();
+    private List<DatabaseWithOutPwd> databases = new ArrayList<>();
 
     /**
      * 选择的数据库
      */
-    private Database selectedDatabase;
+    private DatabaseWithOutPwd selectedDatabase;
 
     /**
      * 选中的表名列表
      */
-    private List<String> selectedTableNames = new ArrayList<>();
+    private Set<String> selectedTableNames = new HashSet<>();
 
     /**
      * 生成代码业务接口
@@ -141,10 +140,13 @@ public class GeneratorSettingUI extends DialogWrapper {
      */
     public static DefaultTableModel TABLE_MODEL = new DefaultTableModel(null, TABLE_COLUMN_NAME);
 
+    private final PersistentStateService persistentStateService;
+
     public GeneratorSettingUI(Project project) {
         super(true);
         init();
         this.project = project;
+        this.persistentStateService = PersistentStateService.getInstance(project);
 
         // 初始化界面数据
         renderUIData(project);
@@ -188,7 +190,7 @@ public class GeneratorSettingUI extends DialogWrapper {
      */
     private void renderUIData(Project project) {
         // 获取持久化数据
-        PersistentState persistentState = PersistentStateService.getInstance(project).getState();
+        PersistentState persistentState = persistentStateService.getState();
         GeneratorProperties generatorProperties = Optional.ofNullable(persistentState.getGeneratorProperties()).orElse(new GeneratorProperties());
 
         // 获取生成配置
@@ -411,7 +413,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         });
         databaseComboBox.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                selectedDatabase = databases.stream().filter(database -> database.getShowDatabaseName().equals(e.getItem())).findAny().get();
+                selectedDatabase = databases.stream().filter(database -> database.getIdentifierName().equals(e.getItem())).findAny().get();
 
                 // 重置表数据
                 restTableData();
@@ -423,7 +425,8 @@ public class GeneratorSettingUI extends DialogWrapper {
         });
         selectTableBtn.addActionListener(e -> {
             try {
-                MySQLDBHelper dbHelper = new MySQLDBHelper(selectedDatabase);
+                DatabaseWithPwd databaseWithPwd = convertDatabaseWithPwd(selectedDatabase);
+                MySQLDBHelper dbHelper = new MySQLDBHelper(databaseWithPwd);
 
                 // 获取表名列表
                 String tableNamePattern = StringUtils.isBlank(tableNameRegexTf.getText()) ? "%" : tableNameRegexTf.getText();
@@ -464,12 +467,18 @@ public class GeneratorSettingUI extends DialogWrapper {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
+                    int columnIdx = table.columnAtPoint(e.getPoint());
+                    if(columnIdx != 0){
+                        return;
+                    }
                     int rowIdx = table.rowAtPoint(e.getPoint());
                     Boolean flag = (Boolean) table.getValueAt(rowIdx, 0);
-                    if (Objects.nonNull(flag) && flag) {
-                        selectedTableNames.add(table.getValueAt(rowIdx, 1).toString());
-                    } else {
-                        selectedTableNames.remove(table.getValueAt(rowIdx, 1).toString());
+                    if (Objects.nonNull(flag)) {
+                        if (flag) {
+                            selectedTableNames.add(table.getValueAt(rowIdx, 1).toString());
+                        } else {
+                            selectedTableNames.remove(table.getValueAt(rowIdx, 1).toString());
+                        }
                     }
                 }
             }
@@ -485,7 +494,7 @@ public class GeneratorSettingUI extends DialogWrapper {
             GeneratorProperties generatorProperties = getGeneratorProperties();
 
             // 持久化
-            PersistentState persistentState = PersistentStateService.getInstance(project).getState();
+            PersistentState persistentState = persistentStateService.getState();
             persistentState.setGeneratorProperties(generatorProperties);
 
             MyMessages.showInfoMessage(project, "保存成功", "info");
@@ -499,13 +508,14 @@ public class GeneratorSettingUI extends DialogWrapper {
                 MyMessages.showWarningDialog(project, "请选择要生成的表", "info");
                 return;
             }
-            List<TableInfo> tables = getTables(selectedDatabase, selectedTableNames);
+            DatabaseWithPwd database = convertDatabaseWithPwd(selectedDatabase);
+            List<TableInfo> tables = getTables(database, selectedTableNames);
             GeneratorContext generatorContext = new GeneratorContext();
             generatorContext.setTables(tables);
             generatorContext.setGeneratorProperties(generatorProperties);
 
             // 持久化
-            PersistentState persistentState = PersistentStateService.getInstance(project).getState();
+            PersistentState persistentState = persistentStateService.getState();
             persistentState.setGeneratorProperties(generatorProperties);
 
             // 校验数据
@@ -767,7 +777,7 @@ public class GeneratorSettingUI extends DialogWrapper {
      * @param tableNames 表名列表
      * @return 表列表
      */
-    private List<TableInfo> getTables(Database database, List<String> tableNames) {
+    private List<TableInfo> getTables(DatabaseWithPwd database, Set<String> tableNames) {
         MySQLDBHelper mySQLDBHelper = new MySQLDBHelper(database);
         List<TableInfo> tables = new ArrayList<>();
         for (String tableName : tableNames) {
@@ -779,7 +789,7 @@ public class GeneratorSettingUI extends DialogWrapper {
     /**
      * 刷新数据库下拉框
      */
-    public void refreshDatabaseComBox(List<Database> databases) {
+    public void refreshDatabaseComBox(List<DatabaseWithOutPwd> databases) {
         initDatabaseComBox(databases, (String) databaseComboBox.getSelectedItem());
     }
 
@@ -789,7 +799,7 @@ public class GeneratorSettingUI extends DialogWrapper {
      * @param databases                数据库列表
      * @param selectedShowDatabaseName 选中的数据库名
      */
-    private void initDatabaseComBox(List<Database> databases, String selectedShowDatabaseName) {
+    private void initDatabaseComBox(List<DatabaseWithOutPwd> databases, String selectedShowDatabaseName) {
         // 数据库为空
         selectedDatabase = null;
         databaseComboBox.removeAllItems();
@@ -797,15 +807,15 @@ public class GeneratorSettingUI extends DialogWrapper {
 
         // 初始化下拉列表，默认选中0号数据库
         if (CollectionUtils.isNotEmpty(databases)) {
-            databases.forEach(database -> databaseComboBox.addItem(database.getShowDatabaseName()));
-            databaseComboBox.setSelectedItem(databases.get(0).getShowDatabaseName());
+            databases.forEach(database -> databaseComboBox.addItem(database.getIdentifierName()));
+            databaseComboBox.setSelectedItem(databases.get(0).getIdentifierName());
             selectedDatabase = databases.get(0);
         }
 
         // 设置为选中的数据库
         boolean selectedDatabaseChange = true;
-        for (Database database : databases) {
-            if (StringUtils.equals(database.getShowDatabaseName(), selectedShowDatabaseName)) {
+        for (DatabaseWithOutPwd database : databases) {
+            if (StringUtils.equals(database.getIdentifierName(), selectedShowDatabaseName)) {
                 selectedDatabaseChange = false;
                 selectedDatabase = database;
                 databaseComboBox.setSelectedItem(selectedShowDatabaseName);
@@ -826,9 +836,19 @@ public class GeneratorSettingUI extends DialogWrapper {
         TABLE_MODEL.setDataVector(null, TABLE_COLUMN_NAME);
         // 重置选择的表
         if (Objects.isNull(selectedTableNames)) {
-            selectedTableNames = new ArrayList<>();
+            selectedTableNames = new HashSet<>();
         }
         selectedTableNames.clear();
     }
 
+    /**
+     * 转换为带密码的数据库信息
+     *
+     * @param database 数据库信息
+     * @return 带密码的数据库信息
+     */
+    private DatabaseWithPwd convertDatabaseWithPwd(DatabaseWithOutPwd database) {
+        String password = persistentStateService.getPassword(database.getIdentifierName());
+        return DatabaseConvert.convertDatabaseWithPwd(database, password);
+    }
 }

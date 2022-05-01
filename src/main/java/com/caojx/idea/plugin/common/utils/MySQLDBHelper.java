@@ -1,6 +1,6 @@
 package com.caojx.idea.plugin.common.utils;
 
-import com.caojx.idea.plugin.common.pojo.Database;
+import com.caojx.idea.plugin.common.pojo.DatabaseWithPwd;
 import com.caojx.idea.plugin.common.pojo.TableField;
 import com.caojx.idea.plugin.common.pojo.TableInfo;
 
@@ -21,21 +21,20 @@ public class MySQLDBHelper {
     /**
      * 数据库
      */
-    private Database database;
+    private final DatabaseWithPwd databaseWithPwd;
 
     /**
      * 数据库连接属性
      */
-    private Properties properties;
-
+    private final Properties properties;
 
     /**
      * 构造器
      *
-     * @param database 数据库
+     * @param databaseWithPwd 数据库
      */
-    public MySQLDBHelper(Database database) {
-        this.database = database;
+    public MySQLDBHelper(DatabaseWithPwd databaseWithPwd) {
+        this.databaseWithPwd = databaseWithPwd;
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -43,8 +42,8 @@ public class MySQLDBHelper {
         }
 
         properties = new Properties();
-        properties.put("user", this.database.getUserName());
-        properties.put("password", this.database.getPassword());
+        properties.put("user", this.databaseWithPwd.getUserName());
+        properties.put("password", this.databaseWithPwd.getPassword());
         properties.setProperty("remarks", "true");
         properties.put("useInformationSchema", "true");
     }
@@ -57,7 +56,7 @@ public class MySQLDBHelper {
      */
     public Connection getConnection() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://" + this.database.getHost() + ":" + this.database.getPort() + "/?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false", properties);
+            return DriverManager.getConnection("jdbc:mysql://" + this.databaseWithPwd.getHost() + ":" + this.databaseWithPwd.getPort() + "/?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false", properties);
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -70,7 +69,7 @@ public class MySQLDBHelper {
      */
     private Connection getConnection(String database) {
         try {
-            return DriverManager.getConnection("jdbc:mysql://" + this.database.getHost() + ":" + this.database.getPort() + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false", properties);
+            return DriverManager.getConnection("jdbc:mysql://" + this.databaseWithPwd.getHost() + ":" + this.databaseWithPwd.getPort() + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false", properties);
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -134,7 +133,7 @@ public class MySQLDBHelper {
      * @return 表信息
      */
     public TableInfo getTableInfo(String tableName) {
-        Connection conn = getConnection(this.database.getDatabaseName());
+        Connection conn = getConnection(this.databaseWithPwd.getDatabaseName());
         try {
             DatabaseMetaData metaData = conn.getMetaData();
             ResultSet rs = metaData.getTables(null, "", tableName, new String[]{"TABLE"});
@@ -184,10 +183,7 @@ public class MySQLDBHelper {
                 int dataType = rs.getInt("DATA_TYPE");
 
                 // 是否为主键
-                boolean primaryKeyFlag = false;
-                if (Objects.nonNull(primaryKey) && columnName.equals(primaryKey)) {
-                    primaryKeyFlag = true;
-                }
+                boolean primaryKeyFlag = Objects.nonNull(primaryKey) && columnName.equals(primaryKey);
 
                 // 构建表属性
                 TableField tableField = new TableField(columnName, remarks, dataType, primaryKeyFlag);
@@ -208,11 +204,8 @@ public class MySQLDBHelper {
         Connection conn = getConnection();
         try {
             PreparedStatement preparedStatement = conn.prepareStatement("SELECT VERSION() AS MYSQL_VERSION");
-            ResultSet resultSet = null;
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                return resultSet.getString("MYSQL_VERSION");
-            }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.getString("MYSQL_VERSION");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
