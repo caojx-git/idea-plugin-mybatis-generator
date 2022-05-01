@@ -28,7 +28,7 @@ intellij {
 patchPluginXml {
     changeNotes = """
       V1.0<br>
-      <em>1.Only Support MySQL</em><br>
+      <em>1.Support MySQL</em><br>
       """
 }
 test {

@@ -1,10 +1,13 @@
 <idea-plugin>
     <id>idea-plugin-mybatis-generator</id>
     <name>MyBatisCodeGenerator</name>
-    <vendor email="caojx_wy@163.com" url="">caojx</vendor>
+    <vendor email="caojx_wy@163.com" url="https://github.com/caojx-git/idea-plugin-mybatis-generator">caojx</vendor>
 
     <description><![CDATA[
         MyBatis CodeGenerator Plugin<br>
+        <em>github：https://github.com/caojx-git/idea-plugin-mybatis-generator</em><br>
+
+        <br>
         <em>1.plugin Entry Tools->MyBatisCodeGenerator</em><br>
         <em>2.Support: MyBatis, TkMyBatis and MybatisPlus</em><br>
         <em>3.Support customized generation of entity, mapper, mapperXml, service, serviceImpl and controller</em><br>
