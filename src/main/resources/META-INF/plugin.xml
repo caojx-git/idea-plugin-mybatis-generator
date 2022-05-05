@@ -4,26 +4,33 @@
     <vendor email="caojx_wy@163.com" url="https://github.com/caojx-git/idea-plugin-mybatis-generator">caojx</vendor>
 
     <description><![CDATA[
-        MyBatis CodeGenerator Plugin<br>
+        MyBatis CodeGenerator <br>
         <a href="https://github.com/caojx-git/idea-plugin-mybatis-generator">GitHub</a><br>
 
         <br>
         Features<br>
 
         <br>
-        <em>1.plugin Entry Tools->MyBatisCodeGenerator</em><br>
-        <em>2.Support: MyBatis, TkMyBatis and MybatisPlus</em><br>
-        <em>3.Support customized generation of entity, mapper, mapperXml, service, serviceImpl and controller</em><br>
+        <em>1.Entry, see Tools->MyBatisCodeGenerator</em><br>
+        <em>2.Support MyBatis, TkMyBatis and MybatisPlus</em><br>
+        <em>3.Support customized entity, mapper, mapperXml, service, serviceImpl and controller</em><br>
 
         <br>
-        <em>MyBatis 代码生成插件</em><br>
-        <em>1.插件入口 Tools菜单->MyBatisCodeGenerator</em><br>
-        <em>2.支持MyBatis、TkMyBatis、MyBatisPlus 三种风格代码生成</em><br>
-        <em>3.支持定制化生成entity、mapper、mapperXml、service、serviceImpl、Controller</em><br>
+        <em>1.工具入口 Tools->MyBatisCodeGenerator</em><br>
+        <em>2.支持MyBatis、TkMyBatis、MyBatisPlus</em><br>
+        <em>3.支持自定义 entity、mapper、mapperXml、service、serviceImpl、Controller</em><br>
 
-       <br>
-       How to use<br>
-         view on <a href="https://github.com/caojx-git/idea-plugin-mybatis-generator">https://github.com/caojx-git/idea-plugin-mybatis-generator</a>
+        <br>
+        How to use<br>
+
+        <br>
+        <em>1.add your database</em><br>
+        <em>2.customized entity, mapper, mapperXml generation path and package</em><br>
+        <em>3.query database table and then select the generated table</em><br>
+        <em>4.click 生成代码 button, Enjoy it</em><br>
+
+        <br>
+        more information, you can see <a href="https://github.com/caojx-git/idea-plugin-mybatis-generator">https://github.com/caojx-git/idea-plugin-mybatis-generator</a>
     ]]></description>
 
     <!--版本兼容从2019.3开始
