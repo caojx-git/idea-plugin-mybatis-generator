@@ -1,5 +1,9 @@
 # idea-plugin-mybatis-generator
 
+## 开发环境
+- JDK 11
+- gradle-7.4.1
+- IntelliJ IDEA 2021.3.3 (Community Edition)
 
 ## 插件效果图
 入口：idea顶部菜单->Tools->MyBatisCodeGenerator  
