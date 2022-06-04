@@ -4,11 +4,16 @@ plugins {
 }
 
 group 'com.caojx'
-version '1.1'
+version '1.2'
 
 repositories {
     maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
     mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 dependencies {
@@ -23,10 +28,14 @@ dependencies {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version = '2021.3.2'
+    plugins = ['java']
     updateSinceUntilBuild = false
 }
 patchPluginXml {
     changeNotes = """
+      v1.2<br>
+      <em>1.package chooser optimization</em><br>
+      
       v1.0<br>
       <em>1.Support MySQL</em><br>
       """

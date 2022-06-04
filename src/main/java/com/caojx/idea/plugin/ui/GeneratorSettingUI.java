@@ -14,11 +14,15 @@ import com.caojx.idea.plugin.generator.GeneratorServiceImpl;
 import com.caojx.idea.plugin.generator.IGeneratorService;
 import com.caojx.idea.plugin.persistent.PersistentState;
 import com.caojx.idea.plugin.persistent.PersistentStateService;
+import com.intellij.application.options.ModulesComboBox;
+import com.intellij.execution.ui.ConfigurationModuleSelector;
+import com.intellij.ide.util.PackageChooserDialog;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiPackage;
 import com.intellij.ui.components.JBScrollPane;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -31,8 +35,8 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * 代码生成配置UI
@@ -99,6 +103,11 @@ public class GeneratorSettingUI extends DialogWrapper {
     private JTextField authorTf;
     private JCheckBox serializableCheckBox;
     private JCheckBox entityExampleGenerateCheckBox;
+    private JButton entityPackageBtn;
+    private JButton mapperPackageBtn;
+    private JButton servicePackageBtn;
+    private JButton serviceImplPackageBtn;
+    private JButton controllerPackageBtn;
 
     private JButton restConfigBtn;
     private JButton saveConfigBtn;
@@ -381,10 +390,26 @@ public class GeneratorSettingUI extends DialogWrapper {
                 entityPathTf.setText(virtualFile.getPath());
             }
         });
+        entityPackageBtn.addActionListener(e -> {
+            PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", project);
+            packageChooserDialog.show();
+            PsiPackage selectedPackage = packageChooserDialog.getSelectedPackage();
+            if (selectedPackage != null) {
+                entityPackageTf.setText(selectedPackage.getQualifiedName());
+            }
+        });
         mapperPathBtn.addActionListener(e -> {
             VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
             if (virtualFile != null) {
                 mapperPathTf.setText(virtualFile.getPath());
+            }
+        });
+        mapperPackageBtn.addActionListener(e -> {
+            PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", project);
+            packageChooserDialog.show();
+            PsiPackage selectedPackage = packageChooserDialog.getSelectedPackage();
+            if (selectedPackage != null) {
+                mapperPackageTf.setText(selectedPackage.getQualifiedName());
             }
         });
         mapperXmlPathBtn.addActionListener(e -> {
@@ -399,16 +424,40 @@ public class GeneratorSettingUI extends DialogWrapper {
                 servicePathTf.setText(virtualFile.getPath());
             }
         });
+        servicePackageBtn.addActionListener(e -> {
+            PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", project);
+            packageChooserDialog.show();
+            PsiPackage selectedPackage = packageChooserDialog.getSelectedPackage();
+            if (selectedPackage != null) {
+                servicePackageTf.setText(selectedPackage.getQualifiedName());
+            }
+        });
         serviceImplPathBtn.addActionListener(e -> {
             VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
             if (virtualFile != null) {
                 serviceImplPathTf.setText(virtualFile.getPath());
             }
         });
+        serviceImplPackageBtn.addActionListener(e -> {
+            PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", project);
+            packageChooserDialog.show();
+            PsiPackage selectedPackage = packageChooserDialog.getSelectedPackage();
+            if (selectedPackage != null) {
+                serviceImplPackageTf.setText(selectedPackage.getQualifiedName());
+            }
+        });
         controllerPathBtn.addActionListener(e -> {
             VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
             if (virtualFile != null) {
                 controllerPathTf.setText(virtualFile.getPath());
+            }
+        });
+        controllerPackageBtn.addActionListener(e -> {
+            PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", project);
+            packageChooserDialog.show();
+            PsiPackage selectedPackage = packageChooserDialog.getSelectedPackage();
+            if (selectedPackage != null) {
+                controllerPackageTf.setText(selectedPackage.getQualifiedName());
             }
         });
         databaseComboBox.addItemListener(e -> {
