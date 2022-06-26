@@ -175,7 +175,7 @@
   <insert id="insert" parameterType="${entityFullClassName}">
     <#list table.fields as field>
       <#if field.primaryKeyFlag>
-    <selectKey keyProperty="${field.columnName}" order="AFTER" resultType="${field.type.name}">
+    <selectKey keyProperty="${field.name}" order="AFTER" resultType="${field.type.name}">
       SELECT LAST_INSERT_ID()
     </selectKey>
       </#if>
@@ -189,7 +189,7 @@
   <insert id="insertSelective" parameterType="${entityFullClassName}">
     <#list table.fields as field>
      <#if field.primaryKeyFlag>
-    <selectKey keyProperty="${field.columnName}" order="AFTER" resultType="${field.type.name}">
+    <selectKey keyProperty="${field.name}" order="AFTER" resultType="${field.type.name}">
       SELECT LAST_INSERT_ID()
     </selectKey>
      </#if>
