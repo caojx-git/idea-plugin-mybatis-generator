@@ -14,13 +14,15 @@ import com.caojx.idea.plugin.generator.GeneratorServiceImpl;
 import com.caojx.idea.plugin.generator.IGeneratorService;
 import com.caojx.idea.plugin.persistent.PersistentState;
 import com.caojx.idea.plugin.persistent.PersistentStateService;
-import com.intellij.application.options.ModulesComboBox;
-import com.intellij.execution.ui.ConfigurationModuleSelector;
 import com.intellij.ide.util.PackageChooserDialog;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiPackage;
 import com.intellij.ui.components.JBScrollPane;
@@ -32,9 +34,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.io.File;
 import java.util.List;
 import java.util.*;
 
@@ -108,6 +109,9 @@ public class GeneratorSettingUI extends DialogWrapper {
     private JButton servicePackageBtn;
     private JButton serviceImplPackageBtn;
     private JButton controllerPackageBtn;
+    private JButton superMapperClassBtn;
+    private JButton superServiceClassBtn;
+    private JButton superServiceImplClassBtn;
 
     private JButton restConfigBtn;
     private JButton saveConfigBtn;
@@ -138,6 +142,13 @@ public class GeneratorSettingUI extends DialogWrapper {
      * 生成代码业务接口
      */
     private IGeneratorService generatorService = new GeneratorServiceImpl();
+
+    /**
+     * 父类名称
+     */
+    public static String[] SUPER_MAPPER_CLASS_NAMES = {"无", Constant.TK_MYBATIS_DEFAULT_SUPER_MAPPER_CLASS, Constant.MYBATIS_PLUS_DEFAULT_SUPER_MAPPER_CLASS};
+    public static String[] SUPER_SERVICE_CLASS_NAMES = {"无", Constant.MYBATIS_PLUS_DEFAULT_SUPER_SERVICE_CLASS};
+    public static String[] SUPER_SERVICE_IMPL_CLASS_NAMES = {"无", Constant.MYBATIS_PLUS_DEFAULT_SUPER_SERVICE_IMPL_CLASS};
 
     /**
      * 表头
@@ -384,82 +395,21 @@ public class GeneratorSettingUI extends DialogWrapper {
      * @param project 项目
      */
     private void initActionListener(Project project) {
-        entityPathBtn.addActionListener(e -> {
-            VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
-            if (virtualFile != null) {
-                entityPathTf.setText(virtualFile.getPath());
-            }
-        });
-        entityPackageBtn.addActionListener(e -> {
-            PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", project);
-            packageChooserDialog.show();
-            PsiPackage selectedPackage = packageChooserDialog.getSelectedPackage();
-            if (selectedPackage != null) {
-                entityPackageTf.setText(selectedPackage.getQualifiedName());
-            }
-        });
-        mapperPathBtn.addActionListener(e -> {
-            VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
-            if (virtualFile != null) {
-                mapperPathTf.setText(virtualFile.getPath());
-            }
-        });
-        mapperPackageBtn.addActionListener(e -> {
-            PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", project);
-            packageChooserDialog.show();
-            PsiPackage selectedPackage = packageChooserDialog.getSelectedPackage();
-            if (selectedPackage != null) {
-                mapperPackageTf.setText(selectedPackage.getQualifiedName());
-            }
-        });
-        mapperXmlPathBtn.addActionListener(e -> {
-            VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
-            if (virtualFile != null) {
-                mapperXmlPathTf.setText(virtualFile.getPath());
-            }
-        });
-        servicePathBtn.addActionListener(e -> {
-            VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
-            if (virtualFile != null) {
-                servicePathTf.setText(virtualFile.getPath());
-            }
-        });
-        servicePackageBtn.addActionListener(e -> {
-            PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", project);
-            packageChooserDialog.show();
-            PsiPackage selectedPackage = packageChooserDialog.getSelectedPackage();
-            if (selectedPackage != null) {
-                servicePackageTf.setText(selectedPackage.getQualifiedName());
-            }
-        });
-        serviceImplPathBtn.addActionListener(e -> {
-            VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
-            if (virtualFile != null) {
-                serviceImplPathTf.setText(virtualFile.getPath());
-            }
-        });
-        serviceImplPackageBtn.addActionListener(e -> {
-            PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", project);
-            packageChooserDialog.show();
-            PsiPackage selectedPackage = packageChooserDialog.getSelectedPackage();
-            if (selectedPackage != null) {
-                serviceImplPackageTf.setText(selectedPackage.getQualifiedName());
-            }
-        });
-        controllerPathBtn.addActionListener(e -> {
-            VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
-            if (virtualFile != null) {
-                controllerPathTf.setText(virtualFile.getPath());
-            }
-        });
-        controllerPackageBtn.addActionListener(e -> {
-            PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", project);
-            packageChooserDialog.show();
-            PsiPackage selectedPackage = packageChooserDialog.getSelectedPackage();
-            if (selectedPackage != null) {
-                controllerPackageTf.setText(selectedPackage.getQualifiedName());
-            }
-        });
+        entityPathBtn.addActionListener(e -> selectAndSetPath(project, entityPathTf));
+        entityPackageBtn.addActionListener(e -> selectPackageAndSetPackagePath(entityPackageTf, entityPathTf));
+        mapperPathBtn.addActionListener(e -> selectAndSetPath(project, mapperPathTf));
+        mapperPackageBtn.addActionListener(e -> selectPackageAndSetPackagePath(mapperPackageTf, mapperPathTf));
+        mapperXmlPathBtn.addActionListener(e -> selectAndSetPath(project, mapperXmlPathTf));
+        superMapperClassBtn.addActionListener(e -> selectAndSetSuperClass(SUPER_MAPPER_CLASS_NAMES, superMapperClassTf));
+        servicePathBtn.addActionListener(e -> selectAndSetPath(project, servicePathTf));
+        servicePackageBtn.addActionListener(e -> selectPackageAndSetPackagePath(servicePackageTf, servicePathTf));
+        superServiceClassBtn.addActionListener(e -> selectAndSetSuperClass(SUPER_SERVICE_CLASS_NAMES, superServiceClassTf));
+        serviceImplPathBtn.addActionListener(e -> selectAndSetPath(project, serviceImplPathTf));
+        serviceImplPackageBtn.addActionListener(e -> selectPackageAndSetPackagePath(serviceImplPackageTf, serviceImplPathTf));
+        superServiceImplClassBtn.addActionListener(e -> selectAndSetSuperClass(SUPER_SERVICE_IMPL_CLASS_NAMES, superServiceImplClassTf));
+        controllerPathBtn.addActionListener(e -> selectAndSetPath(project, controllerPathTf));
+        controllerPackageBtn.addActionListener(e -> selectPackageAndSetPackagePath(controllerPackageTf, controllerPathTf));
+
         databaseComboBox.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 selectedDatabase = databases.stream().filter(database -> database.getIdentifierName().equals(e.getItem())).findAny().get();
@@ -517,7 +467,7 @@ public class GeneratorSettingUI extends DialogWrapper {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
                     int columnIdx = table.columnAtPoint(e.getPoint());
-                    if(columnIdx != 0){
+                    if (columnIdx != 0) {
                         return;
                     }
                     int rowIdx = table.rowAtPoint(e.getPoint());
@@ -899,5 +849,105 @@ public class GeneratorSettingUI extends DialogWrapper {
     private DatabaseWithPwd convertDatabaseWithPwd(DatabaseWithOutPwd database) {
         String password = persistentStateService.getPassword(database.getIdentifierName());
         return DatabaseConvert.convertDatabaseWithPwd(database, password);
+    }
+
+    /**
+     * 选择并设置路径
+     */
+    private void selectAndSetPath(Project project, JTextField pathTf) {
+        VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
+        if (virtualFile != null) {
+            pathTf.setText(virtualFile.getPath());
+        }
+    }
+
+    /**
+     * 选择包并设置包路径
+     */
+    private void selectPackageAndSetPackagePath(JTextField packageTf, JTextField packagePathTf) {
+        Module selectedModule = selectModuleDialog(project);
+        if (selectedModule == null) {
+            return;
+        }
+        PsiPackage selectedPackage = selectPackageDialog(selectedModule);
+        if (selectedPackage != null) {
+            packageTf.setText(selectedPackage.getQualifiedName());
+            String packagePath = Optional.of(buildPackagePath(selectedModule, selectedPackage)).orElse("");
+            packagePathTf.setText(packagePath);
+        }
+    }
+
+    /**
+     * 构建包路径
+     */
+    private String buildPackagePath(Module module, PsiPackage psiPackage) {
+        if (module == null || psiPackage == null) {
+            return "";
+        }
+        String packagePath = new File(module.getModuleFilePath()).getParentFile() + "/src/main/java/" + psiPackage.getQualifiedName().replace(".", "/");
+        VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByPath(packagePath);
+        if (virtualFile != null) {
+            return virtualFile.getPath();
+        }
+        return "";
+    }
+
+
+    /**
+     * 选择项目模块
+     */
+    private Module selectModuleDialog(Project project) {
+        Module[] allModules = ModuleManager.getInstance(project).getModules();
+        if (allModules.length == 0) {
+            return null;
+        }
+
+        String[] allModuleNames = new String[allModules.length];
+        for (int i = 0; i < allModules.length; i++) {
+            allModuleNames[i] = allModules[i].getName();
+        }
+        String selectedModuleName = Messages.showEditableChooseDialog("Select a module", "", null, allModuleNames, allModuleNames[0], null);
+        if (selectedModuleName == null) {
+            return null;
+        }
+        for (Module module : allModules) {
+            if (module.getName().equals(selectedModuleName)) {
+                return module;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 选择包
+     */
+    private PsiPackage selectPackageDialog(Module module) {
+        PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", module);
+        packageChooserDialog.show();
+        return packageChooserDialog.getSelectedPackage();
+    }
+
+    /**
+     * 选择父类名称
+     */
+    private String selectSuperClass(String[] superClassNames) {
+        if (superClassNames == null || superClassNames.length == 0) {
+            return "";
+        }
+        String superClassName = Messages.showEditableChooseDialog("Select a superClass", "", null, superClassNames, superClassNames[0], null);
+        if (superClassName == null || superClassName.equals("无")) {
+            return "";
+        }
+        return superClassName;
+    }
+
+    /**
+     * 选择并设置父类名称
+     */
+    private void selectAndSetSuperClass(String[] superClassNames, JTextField superClassNameTf) {
+        String selectSuperClassName = Optional.of(selectSuperClass(superClassNames)).orElse("");
+        if (superClassNameTf != null) {
+            superClassNameTf.setText(selectSuperClassName);
+        }
     }
 }

@@ -37,7 +37,7 @@
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="entity路径*"/>
+              <text value="entity包名"/>
             </properties>
           </component>
           <component id="fa866" class="javax.swing.JLabel">
@@ -45,7 +45,7 @@
               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="entity包名"/>
+              <text value="entity路径*"/>
             </properties>
           </component>
           <component id="54a6" class="javax.swing.JLabel">
@@ -53,7 +53,7 @@
               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="mapper路径"/>
+              <text value="mapper包名"/>
             </properties>
           </component>
           <component id="5f2a8" class="javax.swing.JLabel">
@@ -61,7 +61,7 @@
               <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="mapper包名"/>
+              <text value="mapper路径"/>
             </properties>
           </component>
           <component id="3a0e1" class="javax.swing.JLabel">
@@ -80,37 +80,45 @@
             </constraints>
             <properties/>
           </component>
-          <component id="4d7bf" class="javax.swing.JTextField" binding="entityPathTf">
+          <component id="4d7bf" class="javax.swing.JTextField" binding="entityPackageTf">
             <constraints>
               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <text value=""/>
+            </properties>
           </component>
-          <component id="2c5aa" class="javax.swing.JTextField" binding="entityPackageTf">
+          <component id="2c5aa" class="javax.swing.JTextField" binding="entityPathTf">
             <constraints>
               <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <text value=""/>
+            </properties>
           </component>
-          <component id="70fc9" class="javax.swing.JTextField" binding="mapperPathTf">
+          <component id="70fc9" class="javax.swing.JTextField" binding="mapperPackageTf">
             <constraints>
               <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <text value=""/>
+            </properties>
           </component>
-          <component id="f0100" class="javax.swing.JTextField" binding="mapperPackageTf">
+          <component id="f0100" class="javax.swing.JTextField" binding="mapperPathTf">
             <constraints>
               <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <text value=""/>
+            </properties>
           </component>
           <component id="4a0b5" class="javax.swing.JTextField" binding="mapperXmlPathTf">
             <constraints>
@@ -122,7 +130,7 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="259bd" class="javax.swing.JButton" binding="entityPathBtn">
+          <component id="259bd" class="javax.swing.JButton" binding="entityPackageBtn">
             <constraints>
               <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -130,7 +138,7 @@
               <text value="..."/>
             </properties>
           </component>
-          <component id="87fe4" class="javax.swing.JButton" binding="mapperPathBtn">
+          <component id="87fe4" class="javax.swing.JButton" binding="mapperPackageBtn">
             <constraints>
               <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -168,7 +176,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="21095" class="javax.swing.JButton" binding="entityPackageBtn">
+          <component id="21095" class="javax.swing.JButton" binding="entityPathBtn">
             <constraints>
               <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -176,7 +184,7 @@
               <text value="..."/>
             </properties>
           </component>
-          <component id="bedd5" class="javax.swing.JButton" binding="mapperPackageBtn">
+          <component id="bedd5" class="javax.swing.JButton" binding="mapperPathBtn">
             <constraints>
               <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -348,16 +356,6 @@
                   <text value="superMapperClass"/>
                 </properties>
               </component>
-              <component id="bfd1e" class="javax.swing.JTextField" binding="superMapperClassTf">
-                <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <text value=""/>
-                </properties>
-              </component>
               <component id="ab3de" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -454,6 +452,22 @@
                   <text value="说明：%s为表名驼峰"/>
                 </properties>
               </component>
+              <component id="dcb04" class="javax.swing.JTextField" binding="superMapperClassTf">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="1e6a4" class="javax.swing.JButton" binding="superMapperClassBtn">
+                <constraints>
+                  <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="..."/>
+                </properties>
+              </component>
             </children>
           </grid>
           <grid id="f62dd" layout-manager="GridLayoutManager" row-count="3" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -532,7 +546,7 @@
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="service路径"/>
+                  <text value="service包名"/>
                 </properties>
               </component>
               <vspacer id="95fce">
@@ -540,23 +554,25 @@
                   <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
-              <component id="ace02" class="javax.swing.JTextField" binding="servicePathTf">
+              <component id="ace02" class="javax.swing.JTextField" binding="servicePackageTf">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value=""/>
+                </properties>
               </component>
               <component id="c8902" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="service包名"/>
+                  <text value="service路径"/>
                 </properties>
               </component>
-              <component id="4390a" class="javax.swing.JTextField" binding="servicePackageTf">
+              <component id="4390a" class="javax.swing.JTextField" binding="servicePathTf">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -588,15 +604,7 @@
                   <text value="superServiceClass"/>
                 </properties>
               </component>
-              <component id="24214" class="javax.swing.JTextField" binding="superServiceClassTf">
-                <constraints>
-                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="367dd" class="javax.swing.JButton" binding="servicePathBtn">
+              <component id="367dd" class="javax.swing.JButton" binding="servicePackageBtn">
                 <constraints>
                   <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -628,9 +636,25 @@
                   <text value="说明：%s为表名驼峰"/>
                 </properties>
               </component>
-              <component id="9d4f2" class="javax.swing.JButton" binding="servicePackageBtn">
+              <component id="9d4f2" class="javax.swing.JButton" binding="servicePathBtn">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="..."/>
+                </properties>
+              </component>
+              <component id="ae957" class="javax.swing.JTextField" binding="superServiceClassTf">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="6b58e" class="javax.swing.JButton" binding="superServiceClassBtn">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="..."/>
@@ -651,7 +675,7 @@
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="serviceImpl路径"/>
+                  <text value="serviceImpl包名"/>
                 </properties>
               </component>
               <vspacer id="163ad">
@@ -664,7 +688,7 @@
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="serviceImpl包名"/>
+                  <text value="serviceImpl路径"/>
                 </properties>
               </component>
               <component id="f61d1" class="javax.swing.JLabel">
@@ -683,15 +707,17 @@
                   <text value="superServiceImplClass"/>
                 </properties>
               </component>
-              <component id="be76f" class="javax.swing.JTextField" binding="serviceImplPathTf">
+              <component id="be76f" class="javax.swing.JTextField" binding="serviceImplPackageTf">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value=""/>
+                </properties>
               </component>
-              <component id="3432f" class="javax.swing.JTextField" binding="serviceImplPackageTf">
+              <component id="3432f" class="javax.swing.JTextField" binding="serviceImplPathTf">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -707,15 +733,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="9721" class="javax.swing.JTextField" binding="superServiceImplClassTf">
-                <constraints>
-                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="32ba" class="javax.swing.JButton" binding="serviceImplPathBtn">
+              <component id="32ba" class="javax.swing.JButton" binding="serviceImplPackageBtn">
                 <constraints>
                   <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -747,9 +765,25 @@
                   <text value="说明：%s为表名驼峰"/>
                 </properties>
               </component>
-              <component id="3cd2" class="javax.swing.JButton" binding="serviceImplPackageBtn">
+              <component id="3cd2" class="javax.swing.JButton" binding="serviceImplPathBtn">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="..."/>
+                </properties>
+              </component>
+              <component id="d29db" class="javax.swing.JTextField" binding="superServiceImplClassTf">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="34716" class="javax.swing.JButton" binding="superServiceImplClassBtn">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="..."/>
@@ -770,7 +804,7 @@
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="controller路径"/>
+                  <text value="controller包名"/>
                 </properties>
               </component>
               <vspacer id="be48d">
@@ -783,7 +817,7 @@
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="controller包名"/>
+                  <text value="controller路径"/>
                 </properties>
               </component>
               <component id="295b2" class="javax.swing.JLabel">
@@ -802,7 +836,7 @@
                   <text value="swagger注解"/>
                 </properties>
               </component>
-              <component id="82849" class="javax.swing.JTextField" binding="controllerPathTf">
+              <component id="82849" class="javax.swing.JTextField" binding="controllerPackageTf">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -810,13 +844,15 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="f3367" class="javax.swing.JTextField" binding="controllerPackageTf">
+              <component id="f3367" class="javax.swing.JTextField" binding="controllerPathTf">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value=""/>
+                </properties>
               </component>
               <component id="c05d5" class="javax.swing.JTextField" binding="controllerNamePatternTf">
                 <constraints>
@@ -834,7 +870,7 @@
                   <text value="生成swagger注解"/>
                 </properties>
               </component>
-              <component id="436bb" class="javax.swing.JButton" binding="controllerPathBtn">
+              <component id="436bb" class="javax.swing.JButton" binding="controllerPackageBtn">
                 <constraints>
                   <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -866,7 +902,7 @@
                   <text value="说明：%s为表名驼峰"/>
                 </properties>
               </component>
-              <component id="cdee9" class="javax.swing.JButton" binding="controllerPackageBtn">
+              <component id="cdee9" class="javax.swing.JButton" binding="controllerPathBtn">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>

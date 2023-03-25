@@ -1,6 +1,6 @@
 package com.caojx.idea.plugin.common.pojo;
 
-import com.caojx.idea.plugin.common.utils.TypeHandler;
+import com.caojx.idea.plugin.common.utils.JdbcAndJavaTypeMappingHandler;
 import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.StringUtils;
 
@@ -77,12 +77,12 @@ public class TableField implements Serializable {
         this.columnName = columnName;
         this.comment = comment;
         this.name = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, columnName);
-        this.type = TypeHandler.convertJavaType(sqlType);
-        this.jdbcTypeName = TypeHandler.convertJdbcType(sqlType);
+        this.type = JdbcAndJavaTypeMappingHandler.convertJavaType(sqlType);
+        this.jdbcTypeName = JdbcAndJavaTypeMappingHandler.convertJdbcType(sqlType);
         this.primaryKeyFlag = primaryKeyFlag;
-        this.jdbcDateFlag = TypeHandler.isJDBCDateColumn(sqlType);
-        this.jdbcTimeFlag = TypeHandler.isJDBCTimeColumn(sqlType);
-        this.blobFlag = TypeHandler.isBLOBColumn(sqlType);
+        this.jdbcDateFlag = JdbcAndJavaTypeMappingHandler.isJDBCDateColumn(sqlType);
+        this.jdbcTimeFlag = JdbcAndJavaTypeMappingHandler.isJDBCTimeColumn(sqlType);
+        this.blobFlag = JdbcAndJavaTypeMappingHandler.isBLOBColumn(sqlType);
     }
 
     public String getColumnName() {
