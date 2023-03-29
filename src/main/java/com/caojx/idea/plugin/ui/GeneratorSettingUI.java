@@ -5,7 +5,14 @@ import com.caojx.idea.plugin.common.enums.FrameworkTypeEnum;
 import com.caojx.idea.plugin.common.pojo.DatabaseWithOutPwd;
 import com.caojx.idea.plugin.common.pojo.DatabaseWithPwd;
 import com.caojx.idea.plugin.common.pojo.TableInfo;
-import com.caojx.idea.plugin.common.properties.*;
+import com.caojx.idea.plugin.common.properties.CommonProperties;
+import com.caojx.idea.plugin.common.properties.ControllerProperties;
+import com.caojx.idea.plugin.common.properties.EntityProperties;
+import com.caojx.idea.plugin.common.properties.GeneratorProperties;
+import com.caojx.idea.plugin.common.properties.MapperProperties;
+import com.caojx.idea.plugin.common.properties.MapperXmlProperties;
+import com.caojx.idea.plugin.common.properties.ServiceImplProperties;
+import com.caojx.idea.plugin.common.properties.ServiceProperties;
 import com.caojx.idea.plugin.common.utils.DatabaseConvert;
 import com.caojx.idea.plugin.common.utils.MyMessages;
 import com.caojx.idea.plugin.common.utils.MySQLDBHelper;
@@ -22,10 +29,13 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiPackage;
 import com.intellij.ui.components.JBScrollPane;
+import com.intellij.util.PathUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -34,10 +44,15 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
+import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * 代码生成配置UI
@@ -855,7 +870,15 @@ public class GeneratorSettingUI extends DialogWrapper {
      * 选择并设置路径
      */
     private void selectAndSetPath(Project project, JTextField pathTf) {
-        VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, project.getBaseDir());
+        VirtualFile path = project.getBaseDir();
+        if (StringUtils.isNotBlank(pathTf.getText()) && FileUtil.exists(pathTf.getText())) {
+            VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByPath(pathTf.getText());
+            if (virtualFile != null) {
+                path = virtualFile;
+            }
+        }
+
+        VirtualFile virtualFile = FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project, path);
         if (virtualFile != null) {
             pathTf.setText(virtualFile.getPath());
         }
@@ -884,7 +907,9 @@ public class GeneratorSettingUI extends DialogWrapper {
         if (module == null || psiPackage == null) {
             return "";
         }
-        String packagePath = new File(module.getModuleFilePath()).getParentFile() + "/src/main/java/" + psiPackage.getQualifiedName().replace(".", "/");
+
+        String modulePath = StringUtil.trimEnd(PathUtil.getParentPath(module.getModuleFilePath()), ".idea");
+        String packagePath = modulePath + "/src/main/java/" + psiPackage.getQualifiedName().replace(".", "/");
         VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByPath(packagePath);
         if (virtualFile != null) {
             return virtualFile.getPath();
@@ -932,22 +957,21 @@ public class GeneratorSettingUI extends DialogWrapper {
      */
     private String selectSuperClass(String[] superClassNames) {
         if (superClassNames == null || superClassNames.length == 0) {
-            return "";
+            return null;
         }
-        String superClassName = Messages.showEditableChooseDialog("Select a superClass", "", null, superClassNames, superClassNames[0], null);
-        if (superClassName == null || superClassName.equals("无")) {
-            return "";
-        }
-        return superClassName;
+        return Messages.showEditableChooseDialog("Select a superClass", "", null, superClassNames, superClassNames[0], null);
     }
 
     /**
      * 选择并设置父类名称
      */
     private void selectAndSetSuperClass(String[] superClassNames, JTextField superClassNameTf) {
-        String selectSuperClassName = Optional.of(selectSuperClass(superClassNames)).orElse("");
+        String selectSuperClassName = selectSuperClass(superClassNames);
+        if (StringUtils.isBlank(selectSuperClassName)) {
+            return;
+        }
         if (superClassNameTf != null) {
-            superClassNameTf.setText(selectSuperClassName);
+            superClassNameTf.setText(StringUtils.equals(selectSuperClassName, "无") ? "" : selectSuperClassName);
         }
     }
 }
