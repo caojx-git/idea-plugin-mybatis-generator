@@ -179,7 +179,7 @@ public class EditDatabaseSettingUI extends DialogWrapper {
     private boolean testConnectionDB(DatabaseWithPwd databaseWithPwd) {
         try {
             MySQLDBHelper dbHelper = new MySQLDBHelper(databaseWithPwd, new HashMap<>(4));
-            dbHelper.testDatabase();
+            dbHelper.testDatabase(databaseWithPwd.getDatabaseName());
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

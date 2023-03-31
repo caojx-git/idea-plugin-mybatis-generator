@@ -210,8 +210,8 @@ public class MySQLDBHelper {
      *
      * @return 连接结果
      */
-    public String testDatabase() {
-        Connection conn = getConnection();
+    public String testDatabase(String databaseName) {
+        Connection conn = getConnection(databaseName);
         try {
             PreparedStatement preparedStatement = conn.prepareStatement("SELECT VERSION() AS MYSQL_VERSION");
             ResultSet resultSet = preparedStatement.executeQuery();

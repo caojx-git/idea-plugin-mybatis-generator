@@ -16,7 +16,7 @@ public class MySQLDBHelperTest {
         database.setDatabaseType("mysql");
         database.setHost("127.0.0.1");
         database.setPort(3306);
-        database.setDatabaseName("yeecode");
+        database.setDatabaseName("sakila");
         database.setUserName("root");
         database.setPassword("root");
 
@@ -28,7 +28,7 @@ public class MySQLDBHelperTest {
         List<String> allTableName = mySQLDBHelper.getAllTableName(database.getDatabaseName());
         System.out.println(allTableName);
 
-        String s = mySQLDBHelper.testDatabase();
+        String s = mySQLDBHelper.testDatabase(database.getDatabaseName());
         System.out.println(s);
     }
 
