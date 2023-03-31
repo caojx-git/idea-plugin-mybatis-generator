@@ -47,9 +47,12 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.JDBCType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -127,6 +130,7 @@ public class GeneratorSettingUI extends DialogWrapper {
     private JButton superMapperClassBtn;
     private JButton superServiceClassBtn;
     private JButton superServiceImplClassBtn;
+    private JButton jdbcTypBtn;
 
     private JButton restConfigBtn;
     private JButton saveConfigBtn;
@@ -152,6 +156,11 @@ public class GeneratorSettingUI extends DialogWrapper {
      * 选中的表名列表
      */
     private Set<String> selectedTableNames = new HashSet<>();
+
+    /**
+     * 自定义jdbc映射
+     */
+    private Map<JDBCType, Class<?>> customerJdbcTypeMappingMap = new HashMap<>();
 
     /**
      * 生成代码业务接口
@@ -265,6 +274,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         builderCheckBox.setSelected(entityProperties.isSelectedBuilderCheckBox());
         noArgsConstructorCheckBox.setSelected(entityProperties.isSelectedNoArgsConstructorCheckBox());
         allArgsConstructorCheckBox.setSelected(entityProperties.isSelectedAllArgsConstructorCheckBox());
+        setCustomerJdbcTypeMappingMap(entityProperties.getCustomerJdbcTypeMappingMap());
 
         // mapper 设置
         MapperProperties mapperProperties = generatorProperties.getMapperProperties();
@@ -412,6 +422,8 @@ public class GeneratorSettingUI extends DialogWrapper {
     private void initActionListener(Project project) {
         entityPathBtn.addActionListener(e -> selectAndSetPath(project, entityPathTf));
         entityPackageBtn.addActionListener(e -> selectPackageAndSetPackagePath(entityPackageTf, entityPathTf));
+
+        jdbcTypBtn.addActionListener(e -> new CustomerJdbcTypeMappingTableDialog(project, this).show());
         mapperPathBtn.addActionListener(e -> selectAndSetPath(project, mapperPathTf));
         mapperPackageBtn.addActionListener(e -> selectPackageAndSetPackagePath(mapperPackageTf, mapperPathTf));
         mapperXmlPathBtn.addActionListener(e -> selectAndSetPath(project, mapperXmlPathTf));
@@ -440,7 +452,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         selectTableBtn.addActionListener(e -> {
             try {
                 DatabaseWithPwd databaseWithPwd = convertDatabaseWithPwd(selectedDatabase);
-                MySQLDBHelper dbHelper = new MySQLDBHelper(databaseWithPwd);
+                MySQLDBHelper dbHelper = new MySQLDBHelper(databaseWithPwd, new HashMap<>(4));
 
                 // 获取表名列表
                 String tableNamePattern = StringUtils.isBlank(tableNameRegexTf.getText()) ? "%" : tableNameRegexTf.getText();
@@ -580,6 +592,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         entityProperties.setSelectedBuilderCheckBox(builderCheckBox.isSelected());
         entityProperties.setSelectedNoArgsConstructorCheckBox(noArgsConstructorCheckBox.isSelected());
         entityProperties.setSelectedAllArgsConstructorCheckBox(allArgsConstructorCheckBox.isSelected());
+        entityProperties.setCustomerJdbcTypeMappingMap(customerJdbcTypeMappingMap);
         generatorProperties.setEntityProperties(entityProperties);
 
         // mapper配置
@@ -792,7 +805,7 @@ public class GeneratorSettingUI extends DialogWrapper {
      * @return 表列表
      */
     private List<TableInfo> getTables(DatabaseWithPwd database, Set<String> tableNames) {
-        MySQLDBHelper mySQLDBHelper = new MySQLDBHelper(database);
+        MySQLDBHelper mySQLDBHelper = new MySQLDBHelper(database, this.customerJdbcTypeMappingMap);
         List<TableInfo> tables = new ArrayList<>();
         for (String tableName : tableNames) {
             tables.add(mySQLDBHelper.getTableInfo(tableName));
@@ -864,6 +877,15 @@ public class GeneratorSettingUI extends DialogWrapper {
     private DatabaseWithPwd convertDatabaseWithPwd(DatabaseWithOutPwd database) {
         String password = persistentStateService.getPassword(database.getIdentifierName());
         return DatabaseConvert.convertDatabaseWithPwd(database, password);
+    }
+
+    /**
+     * 设置数据库映射关系
+     *
+     * @param customerJdbcTypeMappingMap
+     */
+    public void setCustomerJdbcTypeMappingMap(Map<JDBCType, Class<?>> customerJdbcTypeMappingMap) {
+        this.customerJdbcTypeMappingMap = customerJdbcTypeMappingMap;
     }
 
     /**

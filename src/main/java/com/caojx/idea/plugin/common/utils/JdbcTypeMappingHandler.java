@@ -6,6 +6,7 @@ import java.sql.Types;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -14,12 +15,18 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author caojx
  * @date 2022/4/10 12:20 PM
  */
-public class JdbcAndJavaTypeMappingHandler {
+public class JdbcTypeMappingHandler {
 
-//    private static final ConcurrentHashMap<Integer, Class<?>> JDBC_JAVA_TYPE_MAPPING = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<JDBCType, Class<?>> JDBC_TYPE_JAVA_TYPE_MAPPING = new ConcurrentHashMap<>();
 
-    static {
+    public JdbcTypeMappingHandler() {
+    }
+
+    public JdbcTypeMappingHandler(Map<JDBCType, Class<?>> customerJdbcTypeMappingMap) {
+        initJdbcTypeJavaTypeMapping(customerJdbcTypeMappingMap);
+    }
+
+    private void initJdbcTypeJavaTypeMapping(Map<JDBCType, Class<?>> customerJdbcTypeMappingMap) {
         // 参考：org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl
         JDBC_TYPE_JAVA_TYPE_MAPPING.put(JDBCType.ARRAY, Object.class);
         JDBC_TYPE_JAVA_TYPE_MAPPING.put(JDBCType.BIGINT, Long.class);
@@ -59,44 +66,10 @@ public class JdbcAndJavaTypeMappingHandler {
         JDBC_TYPE_JAVA_TYPE_MAPPING.put(JDBCType.TIME_WITH_TIMEZONE, OffsetTime.class);
         JDBC_TYPE_JAVA_TYPE_MAPPING.put(JDBCType.TIMESTAMP_WITH_TIMEZONE, OffsetDateTime.class);
 
-        // jdbc与java类型映射
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.ARRAY, Object.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.BIGINT, Long.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.BINARY, byte[].class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.BIT, Boolean.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.BLOB, byte[].class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.BOOLEAN, Boolean.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.CHAR, String.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.CLOB, String.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.DATALINK, Object.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.DATE, Date.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.DECIMAL, BigDecimal.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.DISTINCT, Object.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.DOUBLE, Double.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.FLOAT, Double.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.INTEGER, Integer.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.JAVA_OBJECT, Object.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.LONGNVARCHAR, String.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.LONGVARBINARY, byte[].class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.LONGVARCHAR, String.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.NCHAR, String.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.NCLOB, String.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.NVARCHAR, String.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.NULL, Object.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.NUMERIC, BigDecimal.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.REAL, Float.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.REF, Object.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.SMALLINT, Integer.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.STRUCT, Object.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.TIME, Date.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.TIMESTAMP, Date.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.TINYINT, Integer.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.VARBINARY, byte[].class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.VARCHAR, String.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.OTHER, byte[].class);
-//        // JDK 1.8 types
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.TIME_WITH_TIMEZONE, OffsetTime.class);
-//        JDBC_JAVA_TYPE_MAPPING.put(Types.TIMESTAMP_WITH_TIMEZONE, OffsetDateTime.class);
+        // 覆盖默认的配置
+        if (customerJdbcTypeMappingMap != null && customerJdbcTypeMappingMap.size() != 0) {
+            JDBC_TYPE_JAVA_TYPE_MAPPING.putAll(customerJdbcTypeMappingMap);
+        }
     }
 
     /**
@@ -105,12 +78,11 @@ public class JdbcAndJavaTypeMappingHandler {
      * @param sqlType
      * @return javaType
      */
-    public static Class<?> convertJavaType(int sqlType) {
+    public Class<?> convertJavaType(int sqlType) {
         JDBCType jdbcType = JDBCType.valueOf(sqlType);
         if (jdbcType == null) {
             return Object.class;
         }
-//        return JDBC_JAVA_TYPE_MAPPING.getOrDefault(sqlType, Object.class);
         return JDBC_TYPE_JAVA_TYPE_MAPPING.getOrDefault(jdbcType, Object.class);
     }
 
@@ -120,7 +92,7 @@ public class JdbcAndJavaTypeMappingHandler {
      * @param sqlType
      * @return jdbcType
      */
-    public static String convertJdbcType(int sqlType) {
+    public String convertJdbcType(int sqlType) {
         String name = JDBCType.valueOf(sqlType).name();
         if (JDBCType.OTHER.name().equals(name)) {
             return JDBCType.BINARY.name();
@@ -135,7 +107,7 @@ public class JdbcAndJavaTypeMappingHandler {
      * @param sqlType
      * @return true 是、false 不是
      */
-    public static boolean isJDBCDateColumn(int sqlType) {
+    public boolean isJDBCDateColumn(int sqlType) {
         return Date.class.equals(convertJavaType(sqlType)) && Types.DATE == sqlType;
     }
 
@@ -146,7 +118,7 @@ public class JdbcAndJavaTypeMappingHandler {
      * @param sqlType
      * @return true 是、false 不是
      */
-    public static boolean isJDBCTimeColumn(int sqlType) {
+    public boolean isJDBCTimeColumn(int sqlType) {
         return Date.class.equals(convertJavaType(sqlType)) && Types.TIME == sqlType;
     }
 
@@ -157,7 +129,7 @@ public class JdbcAndJavaTypeMappingHandler {
      * @param sqlType
      * @return true 是、false 不是
      */
-    public static boolean isBLOBColumn(int sqlType) {
+    public boolean isBLOBColumn(int sqlType) {
         return Types.BINARY == sqlType || Types.BLOB == sqlType
                 || Types.CLOB == sqlType || Types.LONGNVARCHAR == sqlType
                 || Types.LONGVARBINARY == sqlType || Types.LONGVARCHAR == sqlType

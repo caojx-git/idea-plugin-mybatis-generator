@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -177,7 +178,7 @@ public class EditDatabaseSettingUI extends DialogWrapper {
      */
     private boolean testConnectionDB(DatabaseWithPwd databaseWithPwd) {
         try {
-            MySQLDBHelper dbHelper = new MySQLDBHelper(databaseWithPwd);
+            MySQLDBHelper dbHelper = new MySQLDBHelper(databaseWithPwd, new HashMap<>(4));
             dbHelper.testDatabase();
             return true;
         } catch (Exception ex) {

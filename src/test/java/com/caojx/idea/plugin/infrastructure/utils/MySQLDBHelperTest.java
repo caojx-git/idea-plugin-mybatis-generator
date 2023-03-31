@@ -5,6 +5,7 @@ import com.caojx.idea.plugin.common.pojo.TableInfo;
 import com.caojx.idea.plugin.common.utils.MySQLDBHelper;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MySQLDBHelperTest {
@@ -19,7 +20,7 @@ public class MySQLDBHelperTest {
         database.setUserName("root");
         database.setPassword("root");
 
-        MySQLDBHelper mySQLDBHelper = new MySQLDBHelper(database);
+        MySQLDBHelper mySQLDBHelper = new MySQLDBHelper(database, new HashMap<>(4));
 
         TableInfo tableInfo = mySQLDBHelper.getTableInfo("task");
         System.out.println(tableInfo);

@@ -1,6 +1,9 @@
 package com.caojx.idea.plugin.common.properties;
 
 import java.io.Serializable;
+import java.sql.JDBCType;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 实体配置属性
@@ -64,6 +67,11 @@ public class EntityProperties implements Serializable {
      * 实体lombok @AllArgsConstructor注解
      */
     private boolean selectedAllArgsConstructorCheckBox;
+
+    /**
+     * 自定义jdbc类型映射
+     */
+    private Map<JDBCType, Class<?>> customerJdbcTypeMappingMap = new HashMap<>();
 
     public boolean isSelectedGenerateCheckBox() {
         return selectedGenerateCheckBox;
@@ -151,5 +159,13 @@ public class EntityProperties implements Serializable {
 
     public void setSelectedAllArgsConstructorCheckBox(boolean selectedAllArgsConstructorCheckBox) {
         this.selectedAllArgsConstructorCheckBox = selectedAllArgsConstructorCheckBox;
+    }
+
+    public Map<JDBCType, Class<?>> getCustomerJdbcTypeMappingMap() {
+        return customerJdbcTypeMappingMap;
+    }
+
+    public void setCustomerJdbcTypeMappingMap(Map<JDBCType, Class<?>> customerJdbcTypeMappingMap) {
+        this.customerJdbcTypeMappingMap = customerJdbcTypeMappingMap;
     }
 }

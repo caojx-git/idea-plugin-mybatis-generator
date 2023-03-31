@@ -1,10 +1,12 @@
 package com.caojx.idea.plugin.common.pojo;
 
-import com.caojx.idea.plugin.common.utils.JdbcAndJavaTypeMappingHandler;
+import com.caojx.idea.plugin.common.utils.JdbcTypeMappingHandler;
 import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.sql.JDBCType;
+import java.util.Map;
 
 /**
  * 表属性模型
@@ -60,6 +62,11 @@ public class TableField implements Serializable {
     private boolean blobFlag;
 
     /**
+     * 自定义jdbc映射类型
+     */
+    private Map<JDBCType, Class<?>> customerJdbcTypeMappingMap;
+
+    /**
      * 构造器
      */
     public TableField() {
@@ -73,16 +80,18 @@ public class TableField implements Serializable {
      * @param sqlType        类型
      * @param primaryKeyFlag 是否主键
      */
-    public TableField(String columnName, String comment, int sqlType, boolean primaryKeyFlag) {
+    public TableField(String columnName, String comment, int sqlType, boolean primaryKeyFlag, Map<JDBCType, Class<?>> customerJdbcTypeMappingMap) {
         this.columnName = columnName;
         this.comment = comment;
         this.name = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, columnName);
-        this.type = JdbcAndJavaTypeMappingHandler.convertJavaType(sqlType);
-        this.jdbcTypeName = JdbcAndJavaTypeMappingHandler.convertJdbcType(sqlType);
+
+        JdbcTypeMappingHandler jdbcTypeMappingHandler = new JdbcTypeMappingHandler(customerJdbcTypeMappingMap);
+        this.type = jdbcTypeMappingHandler.convertJavaType(sqlType);
+        this.jdbcTypeName = jdbcTypeMappingHandler.convertJdbcType(sqlType);
         this.primaryKeyFlag = primaryKeyFlag;
-        this.jdbcDateFlag = JdbcAndJavaTypeMappingHandler.isJDBCDateColumn(sqlType);
-        this.jdbcTimeFlag = JdbcAndJavaTypeMappingHandler.isJDBCTimeColumn(sqlType);
-        this.blobFlag = JdbcAndJavaTypeMappingHandler.isBLOBColumn(sqlType);
+        this.jdbcDateFlag = jdbcTypeMappingHandler.isJDBCDateColumn(sqlType);
+        this.jdbcTimeFlag = jdbcTypeMappingHandler.isJDBCTimeColumn(sqlType);
+        this.blobFlag = jdbcTypeMappingHandler.isBLOBColumn(sqlType);
     }
 
     public String getColumnName() {
@@ -163,6 +172,14 @@ public class TableField implements Serializable {
 
     public String getFullClassName() {
         return type.getName();
+    }
+
+    public Map<JDBCType, Class<?>> getCustomerJdbcTypeMappingMap() {
+        return customerJdbcTypeMappingMap;
+    }
+
+    public void setCustomerJdbcTypeMappingMap(Map<JDBCType, Class<?>> customerJdbcTypeMappingMap) {
+        this.customerJdbcTypeMappingMap = customerJdbcTypeMappingMap;
     }
 
     public boolean isImport() {

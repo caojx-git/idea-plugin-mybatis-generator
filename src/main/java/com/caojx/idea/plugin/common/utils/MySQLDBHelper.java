@@ -6,7 +6,9 @@ import com.caojx.idea.plugin.common.pojo.TableInfo;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -29,17 +31,25 @@ public class MySQLDBHelper {
     private final Properties properties;
 
     /**
+     * 自定义jdbc映射关系
+     */
+    private Map<JDBCType, Class<?>> customerJdbcTypeMappingMap = new HashMap<>(4);
+
+    /**
      * 构造器
      *
-     * @param databaseWithPwd 数据库
+     * @param databaseWithPwd            数据库
+     * @param customerJdbcTypeMappingMap jdbc映射关系
      */
-    public MySQLDBHelper(DatabaseWithPwd databaseWithPwd) {
+    public MySQLDBHelper(DatabaseWithPwd databaseWithPwd, Map<JDBCType, Class<?>> customerJdbcTypeMappingMap) {
         this.databaseWithPwd = databaseWithPwd;
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
+
+        this.customerJdbcTypeMappingMap = customerJdbcTypeMappingMap;
 
         properties = new Properties();
         properties.put("user", this.databaseWithPwd.getUserName());
@@ -186,7 +196,7 @@ public class MySQLDBHelper {
                 boolean primaryKeyFlag = Objects.nonNull(primaryKey) && columnName.equals(primaryKey);
 
                 // 构建表属性
-                TableField tableField = new TableField(columnName, remarks, dataType, primaryKeyFlag);
+                TableField tableField = new TableField(columnName, remarks, dataType, primaryKeyFlag, customerJdbcTypeMappingMap);
                 fields.add(tableField);
             }
             return fields;
