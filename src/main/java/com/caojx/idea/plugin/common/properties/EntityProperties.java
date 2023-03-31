@@ -71,7 +71,7 @@ public class EntityProperties implements Serializable {
     /**
      * 自定义jdbc类型映射
      */
-    private Map<JDBCType, Class<?>> customerJdbcTypeMappingMap = new HashMap<>();
+    private Map<String, String> customerJdbcTypeMappingMap = new HashMap<>();
 
     public boolean isSelectedGenerateCheckBox() {
         return selectedGenerateCheckBox;
@@ -161,11 +161,11 @@ public class EntityProperties implements Serializable {
         this.selectedAllArgsConstructorCheckBox = selectedAllArgsConstructorCheckBox;
     }
 
-    public Map<JDBCType, Class<?>> getCustomerJdbcTypeMappingMap() {
+    public Map<String, String> getCustomerJdbcTypeMappingMap() {
         return customerJdbcTypeMappingMap;
     }
 
-    public void setCustomerJdbcTypeMappingMap(Map<JDBCType, Class<?>> customerJdbcTypeMappingMap) {
+    public void setCustomerJdbcTypeMappingMap(Map<String, String> customerJdbcTypeMappingMap) {
         this.customerJdbcTypeMappingMap = customerJdbcTypeMappingMap;
     }
 }

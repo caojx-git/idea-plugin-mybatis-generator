@@ -4,7 +4,13 @@ import com.caojx.idea.plugin.common.pojo.DatabaseWithPwd;
 import com.caojx.idea.plugin.common.pojo.TableField;
 import com.caojx.idea.plugin.common.pojo.TableInfo;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.JDBCType;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

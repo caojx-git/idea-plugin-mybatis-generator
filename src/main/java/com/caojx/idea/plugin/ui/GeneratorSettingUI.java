@@ -13,6 +13,7 @@ import com.caojx.idea.plugin.common.properties.MapperProperties;
 import com.caojx.idea.plugin.common.properties.MapperXmlProperties;
 import com.caojx.idea.plugin.common.properties.ServiceImplProperties;
 import com.caojx.idea.plugin.common.properties.ServiceProperties;
+import com.caojx.idea.plugin.common.utils.ClassUtils;
 import com.caojx.idea.plugin.common.utils.DatabaseConvert;
 import com.caojx.idea.plugin.common.utils.MyMessages;
 import com.caojx.idea.plugin.common.utils.MySQLDBHelper;
@@ -37,6 +38,7 @@ import com.intellij.psi.PsiPackage;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.PathUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -160,7 +162,7 @@ public class GeneratorSettingUI extends DialogWrapper {
     /**
      * 自定义jdbc映射
      */
-    private Map<JDBCType, Class<?>> customerJdbcTypeMappingMap = new HashMap<>();
+    private Map<String, String> customerJdbcTypeMappingMap = new HashMap<>();
 
     /**
      * 生成代码业务接口
@@ -805,7 +807,19 @@ public class GeneratorSettingUI extends DialogWrapper {
      * @return 表列表
      */
     private List<TableInfo> getTables(DatabaseWithPwd database, Set<String> tableNames) {
-        MySQLDBHelper mySQLDBHelper = new MySQLDBHelper(database, this.customerJdbcTypeMappingMap);
+        // 转换为jdbcType, clazz
+        Map<JDBCType, Class<?>> newCustomerJdbcTypeMappingMap = new HashMap<>(4);
+        if (MapUtils.isNotEmpty(this.customerJdbcTypeMappingMap)) {
+            this.customerJdbcTypeMappingMap.forEach((jdbcTypeName, javaTypeName) -> {
+                try {
+                    newCustomerJdbcTypeMappingMap.put(JDBCType.valueOf(jdbcTypeName), ClassUtils.convertClazz(javaTypeName));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        MySQLDBHelper mySQLDBHelper = new MySQLDBHelper(database, newCustomerJdbcTypeMappingMap);
         List<TableInfo> tables = new ArrayList<>();
         for (String tableName : tableNames) {
             tables.add(mySQLDBHelper.getTableInfo(tableName));
@@ -884,7 +898,7 @@ public class GeneratorSettingUI extends DialogWrapper {
      *
      * @param customerJdbcTypeMappingMap
      */
-    public void setCustomerJdbcTypeMappingMap(Map<JDBCType, Class<?>> customerJdbcTypeMappingMap) {
+    public void setCustomerJdbcTypeMappingMap(Map<String, String> customerJdbcTypeMappingMap) {
         this.customerJdbcTypeMappingMap = customerJdbcTypeMappingMap;
     }
 

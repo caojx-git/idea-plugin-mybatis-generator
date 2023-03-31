@@ -2,10 +2,10 @@ package com.caojx.idea.plugin.ui;
 
 import com.caojx.idea.plugin.common.properties.EntityProperties;
 import com.caojx.idea.plugin.common.properties.GeneratorProperties;
+import com.caojx.idea.plugin.common.utils.ClassUtils;
 import com.caojx.idea.plugin.common.utils.MyMessages;
 import com.caojx.idea.plugin.persistent.PersistentState;
 import com.caojx.idea.plugin.persistent.PersistentStateService;
-import com.google.common.collect.Lists;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
@@ -44,7 +44,7 @@ public class CustomerJdbcTypeMappingTableDialog extends DialogWrapper {
     private int rowIndex = 1;
 
     private final Project project;
-    private final Map<JDBCType, Class<?>> customerJdbcTypeMappingMap;
+    private final Map<String, String> customerJdbcTypeMappingMap;
     private final GeneratorSettingUI generatorSettingUI;
     private final PersistentStateService persistentStateService;
 
@@ -79,7 +79,7 @@ public class CustomerJdbcTypeMappingTableDialog extends DialogWrapper {
             if (row != -1) {
                 // 删除映射关系
                 JDBCType jdbcType = JDBCType.valueOf(TABLE_MODEL.getValueAt(row, 1).toString());
-                customerJdbcTypeMappingMap.remove(jdbcType);
+                customerJdbcTypeMappingMap.remove(jdbcType.getName());
 
                 TABLE_MODEL.removeRow(row);
                 rowIndex--;
@@ -136,7 +136,7 @@ public class CustomerJdbcTypeMappingTableDialog extends DialogWrapper {
 
     @Override
     protected JComponent createSouthPanel() {
-        JTextArea jTextArea  = new JTextArea("1.基本类型直接写(如int) \n" +
+        JTextArea jTextArea = new JTextArea("1.基本类型直接写(如int) \n" +
                 "2.类类型需要Class.forName能识别(如java.time.LocalDateTime或[B) \n" +
                 "3.自定义配置会覆盖默认的配");
         jTextArea.setEnabled(false);
@@ -151,8 +151,8 @@ public class CustomerJdbcTypeMappingTableDialog extends DialogWrapper {
         TABLE_MODEL.addRow(rowData);
     }
 
-    private void addRow(JDBCType jdbcType, Class<?> clazz) {
-        Object[] rowData = {rowIndex++, jdbcType.getName(), clazz.getName()};
+    private void addRow(String jdbcTypeName, String javaTypeName) {
+        Object[] rowData = {rowIndex++, jdbcTypeName, javaTypeName};
         TABLE_MODEL.addRow(rowData);
     }
 
@@ -165,7 +165,7 @@ public class CustomerJdbcTypeMappingTableDialog extends DialogWrapper {
     /**
      * 刷新数据库表
      */
-    private void refreshTable(Map<JDBCType, Class<?>> customerJdbcTypeMappingMap) {
+    private void refreshTable(Map<String, String> customerJdbcTypeMappingMap) {
         // 刷新数据库表
         TABLE_MODEL.setDataVector(null, TABLE_COLUMN_NAME);
 
@@ -198,37 +198,13 @@ public class CustomerJdbcTypeMappingTableDialog extends DialogWrapper {
             return "java类型不能为空";
         }
         try {
-            Class<?> javaClazz = convertClazz(javaTypeName.trim());
-            this.customerJdbcTypeMappingMap.put(JDBCType.valueOf(jdbcTypeName.trim()), javaClazz);
+            JDBCType.valueOf(jdbcTypeName);
+            ClassUtils.convertClazz(javaTypeName.trim());
+            this.customerJdbcTypeMappingMap.put(jdbcTypeName.trim(), javaTypeName.trim());
         } catch (Exception e) {
             e.printStackTrace();
             return "无法识别的java类型";
         }
         return "";
     }
-
-
-    /**
-     * 转换clazz
-     *
-     * @param javaTypeName Java类型名
-     * @return clazz
-     */
-    private Class<?> convertClazz(String javaTypeName) throws ClassNotFoundException {
-        List<Class<?>> primitiveClassList = Lists.newArrayList(Boolean.TYPE,
-                Byte.TYPE,
-                Short.TYPE,
-                Integer.TYPE,
-                Long.TYPE,
-                Float.TYPE,
-                Double.TYPE,
-                Character.TYPE
-        );
-        Class<?> primitiveClazz = primitiveClassList.stream().filter(clazz -> clazz.getName().equals(javaTypeName.trim())).findFirst().orElse(null);
-        if (primitiveClazz != null) {
-            return primitiveClazz;
-        }
-        return Class.forName(javaTypeName);
-    }
-
 }
