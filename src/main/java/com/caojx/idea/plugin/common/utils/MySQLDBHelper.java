@@ -60,8 +60,13 @@ public class MySQLDBHelper {
         properties = new Properties();
         properties.put("user", this.databaseWithPwd.getUserName());
         properties.put("password", this.databaseWithPwd.getPassword());
+        // 返回注释
         properties.setProperty("remarks", "true");
+        // 将元数据返回给调用者，INFORMATION_SCHEMA 是 MySQL 中的一个特殊数据库，用于存储关于数据库和表的元数据信息，
+        // 例如表的清单，列的清单等。通过在连接字符串中添加 useInformationSchema=true 参数，
+        // 可以告诉 JDBC 驱动程序在返回 ResultSet 元数据时使用 INFORMATION_SCHEMA。
         properties.put("useInformationSchema", "true");
+        properties.put("connectTimeout", "5000"); // 5秒超时时间
     }
 
 
