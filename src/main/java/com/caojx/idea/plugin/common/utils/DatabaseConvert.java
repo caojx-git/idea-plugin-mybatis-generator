@@ -19,6 +19,7 @@ public class DatabaseConvert {
         database.setDatabaseName(databaseWithPwd.getDatabaseName());
         database.setUserName(databaseWithPwd.getUserName());
         database.setIdentifierName(databaseWithPwd.getIdentifierName());
+        database.setUrl(databaseWithPwd.getUrl());
         return database;
     }
 
@@ -31,6 +32,7 @@ public class DatabaseConvert {
         databaseWithPwd.setDatabaseName(databaseWithOutPwd.getDatabaseName());
         databaseWithPwd.setUserName(databaseWithOutPwd.getUserName());
         databaseWithPwd.setIdentifierName(databaseWithOutPwd.getIdentifierName());
+        databaseWithPwd.setUrl(databaseWithOutPwd.getUrl());
         return databaseWithPwd;
     }
 }

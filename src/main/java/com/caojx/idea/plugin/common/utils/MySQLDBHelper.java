@@ -61,26 +61,17 @@ public class MySQLDBHelper {
         properties.put("user", this.databaseWithPwd.getUserName());
         properties.put("password", this.databaseWithPwd.getPassword());
         // 返回注释
-        properties.setProperty("remarks", "true");
+        properties.putIfAbsent("remarks", "true");
         // 将元数据返回给调用者，INFORMATION_SCHEMA 是 MySQL 中的一个特殊数据库，用于存储关于数据库和表的元数据信息，
         // 例如表的清单，列的清单等。通过在连接字符串中添加 useInformationSchema=true 参数，
         // 可以告诉 JDBC 驱动程序在返回 ResultSet 元数据时使用 INFORMATION_SCHEMA。
-        properties.put("useInformationSchema", "true");
-        properties.put("connectTimeout", "5000"); // 5秒超时时间
-    }
+        properties.putIfAbsent("useInformationSchema", "true");
+        properties.putIfAbsent("connectTimeout", "3000"); // 3秒超时时间
 
-
-    /**
-     * 获取连接对象
-     *
-     * @return 连接对象
-     */
-    public Connection getConnection() {
-        try {
-            return DriverManager.getConnection("jdbc:mysql://" + this.databaseWithPwd.getHost() + ":" + this.databaseWithPwd.getPort() + "/?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false", properties);
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        properties.putIfAbsent("useUnicode", "true");
+        properties.putIfAbsent("characterEncoding", "UTF-8");
+        properties.putIfAbsent("zeroDateTimeBehavior", "convertToNull");
+        properties.putIfAbsent("useSSL", "false");
     }
 
     /**
@@ -88,9 +79,9 @@ public class MySQLDBHelper {
      *
      * @return 连接对象
      */
-    private Connection getConnection(String database) {
+    private Connection getConnection() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://" + this.databaseWithPwd.getHost() + ":" + this.databaseWithPwd.getPort() + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false", properties);
+            return DriverManager.getConnection(this.databaseWithPwd.getUrl(), properties);
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -113,22 +104,20 @@ public class MySQLDBHelper {
     /**
      * 获取数据库中所有的表名
      *
-     * @param databaseName 数据库名
      * @return 表名列表
      */
-    public List<String> getAllTableName(String databaseName) {
-        return getTableName(databaseName, "%");
+    public List<String> getAllTableName() {
+        return getTableName("%");
     }
 
     /**
      * 获取数据库表明
      *
-     * @param databaseName     数据库名
      * @param tableNamePattern 表明表达式
      * @return 表名列表
      */
-    public List<String> getTableName(String databaseName, String tableNamePattern) {
-        Connection connection = this.getConnection(databaseName);
+    public List<String> getTableName(String tableNamePattern) {
+        Connection connection = this.getConnection();
         try {
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet resultSet = metaData.getTables(null, null, tableNamePattern, new String[]{"TABLE"});
@@ -154,7 +143,7 @@ public class MySQLDBHelper {
      * @return 表信息
      */
     public TableInfo getTableInfo(String tableName) {
-        Connection conn = getConnection(this.databaseWithPwd.getDatabaseName());
+        Connection conn = getConnection();
         try {
             DatabaseMetaData metaData = conn.getMetaData();
             ResultSet rs = metaData.getTables(null, "", tableName, new String[]{"TABLE"});
@@ -221,8 +210,8 @@ public class MySQLDBHelper {
      *
      * @return 连接结果
      */
-    public String testDatabase(String databaseName) {
-        Connection conn = getConnection(databaseName);
+    public String testDatabase() {
+        Connection conn = getConnection();
         try {
             PreparedStatement preparedStatement = conn.prepareStatement("SELECT VERSION() AS MYSQL_VERSION");
             ResultSet resultSet = preparedStatement.executeQuery();

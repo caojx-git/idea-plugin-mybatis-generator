@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 数据库信息不带密码
+ * <p>
+ * 提示：保留了一些非url属性是为了兼容老版本
  *
  * @author caojx
  * @date 2022/4/10 4:00 PM
@@ -39,6 +41,12 @@ public class DatabaseWithOutPwd {
      * 显示的数据库名称
      */
     private String identifierName;
+
+    /**
+     * 数据库连接url
+     */
+    private String url;
+
 
     public DatabaseWithOutPwd() {
     }
@@ -101,5 +109,16 @@ public class DatabaseWithOutPwd {
 
     public void setIdentifierName(String identifierName) {
         this.identifierName = identifierName;
+    }
+
+    public String getUrl() {
+        if (StringUtils.isNotBlank(this.url)) {
+            return this.url;
+        }
+        return "jdbc:mysql://" + this.host + ":" + this.port + "/" + this.databaseName;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

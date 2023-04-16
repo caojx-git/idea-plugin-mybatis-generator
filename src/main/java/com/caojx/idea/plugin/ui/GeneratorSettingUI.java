@@ -458,7 +458,7 @@ public class GeneratorSettingUI extends DialogWrapper {
 
                 // 获取表名列表
                 String tableNamePattern = StringUtils.isBlank(tableNameRegexTf.getText()) ? "%" : tableNameRegexTf.getText();
-                List<String> tableNames = dbHelper.getTableName(selectedDatabase.getDatabaseName(), tableNamePattern);
+                List<String> tableNames = dbHelper.getTableName(tableNamePattern);
 
                 // 重置表数据
                 restTableData();

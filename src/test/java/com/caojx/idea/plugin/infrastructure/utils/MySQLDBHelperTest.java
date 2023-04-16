@@ -25,10 +25,10 @@ public class MySQLDBHelperTest {
         TableInfo tableInfo = mySQLDBHelper.getTableInfo("task");
         System.out.println(tableInfo);
 
-        List<String> allTableName = mySQLDBHelper.getAllTableName(database.getDatabaseName());
+        List<String> allTableName = mySQLDBHelper.getAllTableName();
         System.out.println(allTableName);
 
-        String s = mySQLDBHelper.testDatabase(database.getDatabaseName());
+        String s = mySQLDBHelper.testDatabase();
         System.out.println(s);
     }
 

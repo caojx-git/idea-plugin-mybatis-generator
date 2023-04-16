@@ -34,8 +34,8 @@ intellij {
 patchPluginXml {
     changeNotes = """
       v1.3.3<br>
-      <em>1.testConnectionDB connectTimeout optimization</em><br>
-      
+      <em>1.Optimize database configuration</em><br>
+            
       v1.3.2<br>
       <em>1.persistence fix</em><br>
       
