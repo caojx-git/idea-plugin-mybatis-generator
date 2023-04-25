@@ -928,7 +928,8 @@ public class GeneratorSettingUI extends DialogWrapper {
         if (selectedModule == null) {
             return;
         }
-        PsiPackage selectedPackage = selectPackageDialog(selectedModule);
+        String packageName = StringUtils.isNotBlank(packageTf.getText()) ? packageTf.getText().trim() : "";
+        PsiPackage selectedPackage = selectPackageDialog(selectedModule, packageName);
         if (selectedPackage != null) {
             packageTf.setText(selectedPackage.getQualifiedName());
             String packagePath = Optional.of(buildPackagePath(selectedModule, selectedPackage)).orElse("");
@@ -982,8 +983,11 @@ public class GeneratorSettingUI extends DialogWrapper {
     /**
      * 选择包
      */
-    private PsiPackage selectPackageDialog(Module module) {
+    private PsiPackage selectPackageDialog(Module module, String packageName) {
         PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Select a Package", module);
+        if (StringUtils.isNotBlank(packageName)) {
+            packageChooserDialog.selectPackage(packageName);
+        }
         packageChooserDialog.show();
         return packageChooserDialog.getSelectedPackage();
     }
