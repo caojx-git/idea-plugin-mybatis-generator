@@ -12,7 +12,7 @@ import ${import};
 </#list>
 
 /**
-* 注释${table.comment!} Example
+* ${table.comment!} Example
 *
 * @author ${author!}
 * @date ${.now?string("yyyy-MM-dd HH:mm")}

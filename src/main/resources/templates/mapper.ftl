@@ -20,7 +20,7 @@ import ${entityExampleFullClassName};
 </#if>
 
 /**
-* 注释${table.comment!} Mapper
+* ${table.comment!} Mapper
 *
 * @author ${author!}
 * @date ${.now?string("yyyy-MM-dd HH:mm")}

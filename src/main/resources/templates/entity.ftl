@@ -29,7 +29,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 </#if>
 
 /**
- * 注释${table.comment!}
+ * ${table.comment!}
  *
  * @author ${author!}
  * @date ${.now?string("yyyy-MM-dd HH:mm")}
