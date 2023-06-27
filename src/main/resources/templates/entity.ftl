@@ -23,9 +23,16 @@ import lombok.AllArgsConstructor;
 <#if table.havePrimaryKey && frameworkType =="TkMyBatis">
 import javax.persistence.*;
 </#if>
+<#if frameworkType == "MyBatisPlus">
+import com.baomidou.mybatisplus.annotation.TableName;
+</#if>
 <#if table.havePrimaryKey && frameworkType =="MyBatisPlus">
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
+</#if>
+<#if isSelectedEntitySwaggerCheckBox>
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 </#if>
 
 /**
@@ -46,6 +53,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 <#if isSelectedAllArgsConstructorCheckBox>
 @AllArgsConstructor
 </#if>
+<#if isSelectedEntitySwaggerCheckBox>
+@ApiModel("${table.comment!}")
+</#if>
+<#if frameworkType == "MyBatisPlus">
+@TableName("${table.name}")
+</#if>
 <#if isSelectedSerializableCheckBox>
 public class ${entityName} implements Serializable {
 
@@ -55,10 +68,13 @@ public class ${entityName} {
 </#if>
 <#list table.fields as field>
 
-    <#if field.comment?default("")?trim?length gt 1>
+    <#if field.comment?default("")?trim?length gt 1 && !isSelectedEntitySwaggerCheckBox>
     /**
      * ${field.comment}
      */
+   </#if>
+   <#if isSelectedEntitySwaggerCheckBox>
+    @ApiModelProperty("${field.comment}")
    </#if>
    <#if field.primaryKeyFlag && frameworkType == "TkMyBatis">
     @Id

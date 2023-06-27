@@ -92,6 +92,7 @@ public class GeneratorSettingUI extends DialogWrapper {
     private JCheckBox enableDeleteByPrimaryKeyCheckBox;
     private JCheckBox enableDeleteByExampleCheckBox;
     private JCheckBox enableCountByExampleCheckBox;
+    private JCheckBox entitySwaggerCheckBox;
     private JTextField mapperXmlNamePatternTf;
     private JTextField servicePathTf;
     private JTextField servicePackageTf;
@@ -276,6 +277,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         builderCheckBox.setSelected(entityProperties.isSelectedBuilderCheckBox());
         noArgsConstructorCheckBox.setSelected(entityProperties.isSelectedNoArgsConstructorCheckBox());
         allArgsConstructorCheckBox.setSelected(entityProperties.isSelectedAllArgsConstructorCheckBox());
+        entitySwaggerCheckBox.setSelected(entityProperties.isSelectedSwaggerCheckBox());
         setCustomerJdbcTypeMappingMap(entityProperties.getCustomerJdbcTypeMappingMap());
 
         // mapper 设置
@@ -354,12 +356,12 @@ public class GeneratorSettingUI extends DialogWrapper {
         entityPathTf.setText("");
         entityPackageTf.setText("");
         entityNamePatternTf.setText(Constant.ENTITY_NAME_DEFAULT_FORMAT);
-        entityGenerateCheckBox.setSelected(true);
         entityExampleGenerateCheckBox.setSelected(false);
         dataCheckBox.setSelected(true);
         builderCheckBox.setSelected(false);
         noArgsConstructorCheckBox.setSelected(false);
         allArgsConstructorCheckBox.setSelected(false);
+        entitySwaggerCheckBox.setSelected(false);
 
         // mapper 设置
         mapperGenerateCheckBox.setSelected(true);
@@ -594,6 +596,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         entityProperties.setSelectedBuilderCheckBox(builderCheckBox.isSelected());
         entityProperties.setSelectedNoArgsConstructorCheckBox(noArgsConstructorCheckBox.isSelected());
         entityProperties.setSelectedAllArgsConstructorCheckBox(allArgsConstructorCheckBox.isSelected());
+        entityProperties.setSelectedSwaggerCheckBox(entitySwaggerCheckBox.isSelected());
         entityProperties.setCustomerJdbcTypeMappingMap(customerJdbcTypeMappingMap);
         generatorProperties.setEntityProperties(entityProperties);
 

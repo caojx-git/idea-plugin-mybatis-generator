@@ -123,7 +123,7 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
         objectMap.put("isSelectedNoArgsConstructorCheckBox", entityProperties.isSelectedNoArgsConstructorCheckBox());
         objectMap.put("isSelectedAllArgsConstructorCheckBox", entityProperties.isSelectedAllArgsConstructorCheckBox());
         objectMap.put("isGenerateGetterSetter", isGenerateGetterSetter(entityProperties));
-
+        objectMap.put("isSelectedEntitySwaggerCheckBox", entityProperties.isSelectedSwaggerCheckBox());
 
         // entityExample
         String entityExampleName = String.format(entityProperties.getExampleNamePattern(), baseEntityName);
