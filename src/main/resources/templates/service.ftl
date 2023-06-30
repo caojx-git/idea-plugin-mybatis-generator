@@ -13,7 +13,7 @@ import ${superServiceClass};
  * ${table.comment!} 服务类接口
  *
  * @author ${author!}
- * @date ${.now?string("yyyy-MM-dd HH:mm")}
+ * @since ${.now?string("yyyy-MM-dd HH:mm")}
  */
 <#if superServiceClass?? && superServiceClass !="" >
 public interface ${serviceName} extends ${superServiceClassName}<${entityName}> {

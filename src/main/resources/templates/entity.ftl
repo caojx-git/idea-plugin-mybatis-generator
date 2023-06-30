@@ -39,7 +39,7 @@ import io.swagger.annotations.ApiModelProperty;
  * ${table.comment!}
  *
  * @author ${author!}
- * @date ${.now?string("yyyy-MM-dd HH:mm")}
+ * @since ${.now?string("yyyy-MM-dd HH:mm")}
  */
 <#if isSelectedDataCheckBox>
 @Data
@@ -87,20 +87,20 @@ public class ${entityName} {
 <#if isGenerateGetterSetter>
 <#list table.fields as field>
 
-    /**
-     * 获取${field.comment}值
-     *
-     * @return ${field.comment}
-     */
+<#--    /**-->
+<#--     * 获取${field.comment}值-->
+<#--     *-->
+<#--     * @return ${field.comment}-->
+<#--     */-->
     public ${field.typeSimpleName} get${field.name?cap_first}() {
         return ${field.name};
     }
 
-    /**
-     * 设置${field.comment}值
-     *
-     * @param ${field.name} ${field.comment}
-     */
+<#--    /**-->
+<#--     * 设置${field.comment}值-->
+<#--     *-->
+<#--     * @param ${field.name} ${field.comment}-->
+<#--     */-->
     public void set${field.name?cap_first}(${field.typeSimpleName} ${field.name}) {
         this.${field.name} = ${field.name};
     }

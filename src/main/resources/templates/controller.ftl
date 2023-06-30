@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * ${table.comment!} 前端控制器
  *
  * @author ${author!}
- * @date ${.now?string("yyyy-MM-dd HH:mm")}
+ * @since ${.now?string("yyyy-MM-dd HH:mm")}
  */
 <#if isSelectedSwaggerCheckBox>
 @Api(tags = "${table.comment!}前端控制器")

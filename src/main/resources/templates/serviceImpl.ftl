@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
  * ${table.comment!} 服务实现类
  *
  * @author ${author!}
- * @date ${.now?string("yyyy-MM-dd HH:mm")}
+ * @since ${.now?string("yyyy-MM-dd HH:mm")}
  */
 @Service
 <#if superServiceImplClass?? && superServiceImplClass !="">

@@ -15,7 +15,7 @@ import ${import};
 * ${table.comment!} Example
 *
 * @author ${author!}
-* @date ${.now?string("yyyy-MM-dd HH:mm")}
+* @since ${.now?string("yyyy-MM-dd HH:mm")}
 */
 public class ${entityExampleName} {
 

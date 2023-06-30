@@ -23,7 +23,7 @@ import ${entityExampleFullClassName};
 * ${table.comment!} Mapper
 *
 * @author ${author!}
-* @date ${.now?string("yyyy-MM-dd HH:mm")}
+* @since ${.now?string("yyyy-MM-dd HH:mm")}
 */
 @Mapper
 <#if superMapperClass?? && superMapperClass !="" && superMapperClassName == "Mapper">
