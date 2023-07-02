@@ -21,9 +21,29 @@ public class CommonProperties implements Serializable {
     private String author;
 
     /**
-     * 项目路径
+     * 模块名称
      */
-    private String projectPath;
+    private String moduleName;
+
+    /**
+     * 模块路径
+     */
+    private String modulePath;
+
+    /**
+     * 基础包
+     */
+    private String basePackage;
+
+    /**
+     * 基础路径
+     */
+    private String basePath;
+
+    /**
+     * entity 相对包
+     */
+    private String entityRelativePackage;
 
     /**
      * 数据库列表
@@ -54,12 +74,44 @@ public class CommonProperties implements Serializable {
         this.author = author;
     }
 
-    public String getProjectPath() {
-        return projectPath;
+    public String getModuleName() {
+        return moduleName;
     }
 
-    public void setProjectPath(String projectPath) {
-        this.projectPath = projectPath;
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    public String getModulePath() {
+        return modulePath;
+    }
+
+    public void setModulePath(String modulePath) {
+        this.modulePath = modulePath;
+    }
+
+    public String getBasePackage() {
+        return basePackage;
+    }
+
+    public void setBasePackage(String basePackage) {
+        this.basePackage = basePackage;
+    }
+
+    public String getBasePath() {
+        return basePath;
+    }
+
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
+    }
+
+    public String getEntityRelativePackage() {
+        return entityRelativePackage;
+    }
+
+    public void setEntityRelativePackage(String entityRelativePackage) {
+        this.entityRelativePackage = entityRelativePackage;
     }
 
     public List<DatabaseWithOutPwd> getDatabases() {

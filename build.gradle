@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.caojx'
-version '1.3.5'
+version '1.3.6'
 
 repositories {
     maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
@@ -33,6 +33,9 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
+      v1.3.6<br>
+      <em>1.support auto set generator package and path</em><br>
+      
       v1.3.5<br>
       <em>1.entity support swagger</em><br>
       

@@ -40,40 +40,64 @@ public interface Constant {
      */
     String UTF8 = StandardCharsets.UTF_8.name();
 
+    // 文件类型
+    String FILE_TYPE_ENTITY = "entity";
+    String FILE_TYPE_ENTITY_EXAMPLE = "entityExample";
+    String FILE_TYPE_MAPPER = "mapper";
+    String FILE_TYPE_MAPPER_XML = "mapperXml";
+    String FILE_TYPE_SERVICE = "service";
+    String FILE_TYPE_FILE_TYPE_SERVICE_IMPL = "serviceImpl";
+    String FILE_TYPE_CONTROLLER = "controller";
+
     /**
-     * 实体默认文件名格式，注意 %s 会自动填充表原始实体名称
+     * 相对包名
      */
-    String ENTITY_NAME_DEFAULT_FORMAT = "%s";
+    String RELATIVE_PACKAGE = "entity";
+
+    /**
+     * 默认路径
+     */
+    String DEFAULT_BASE_PATH = "src/main/java";
+
+    /**
+     * 默认资源路径
+     */
+    String DEFAULT_BASE_RESOURCES_PATH = "src/main/resources";
 
     /**
      * 实体默认文件名格式，注意 %s 会自动填充表原始实体名称
      */
-    String ENTITY_EXAMPLE_NAME_DEFAULT_FORMAT = "%sExample";
+    String DEFAULT_ENTITY_NAME_FORMAT = "%s";
+
+    /**
+     * 实体默认文件名格式，注意 %s 会自动填充表原始实体名称
+     */
+    String DEFAULT_ENTITY_EXAMPLE_NAME_FORMAT = "%sExample";
 
     /**
      * mapper默认文件名格式，注意 %s 会自动填充表原始实体名称
      */
-    String MAPPER_NAME_DEFAULT_FORMAT = "%sMapper";
+    String DEFAULT_MAPPER_NAME_FORMAT = "%sMapper";
 
     /**
      * mapper.xml默认文件名格式，注意 %s 会自动填充表原始实体名称
      */
-    String MAPPER_XML_NAME_DEFAULT_FORMAT = "%sMapper";
+    String DEFAULT_MAPPER_XML_NAME_FORMAT = "%sMapper";
 
     /**
      * service默认文件名格式，注意 %s 会自动填充表原始实体名称
      */
-    String SERVICE_NAME_DEFAULT_FORMAT = "I%sService";
+    String DEFAULT_SERVICE_NAME_FORMAT = "I%sService";
 
     /**
      * serviceImpl默认文件名格式，注意 %s 会自动填充表原始实体名称
      */
-    String SERVICE_IMPL_NAME_DEFAULT_FORMAT = "%sServiceImpl";
+    String DEFAULT_SERVICE_IMPL_NAME_FORMAT = "%sServiceImpl";
 
     /**
      * controller默认文件名格式，注意 %s 会自动填充表原始实体名称
      */
-    String CONTROLLER_NAME_DEFAULT_FORMAT = "%sController";
+    String DEFAULT_CONTROLLER_NAME_FORMAT = "%sController";
 
     /**
      * entity模板路径
@@ -113,21 +137,21 @@ public interface Constant {
     /**
      * tk mybatis 默认 superMapperClass
      */
-    String TK_MYBATIS_DEFAULT_SUPER_MAPPER_CLASS = "tk.mybatis.mapper.common.Mapper";
+    String DEFAULT_TK_MYBATIS_SUPER_MAPPER_CLASS = "tk.mybatis.mapper.common.Mapper";
 
     /**
      * mybatis plus 默认 superMapperClass
      */
-    String MYBATIS_PLUS_DEFAULT_SUPER_MAPPER_CLASS = "com.baomidou.mybatisplus.core.mapper.BaseMapper";
+    String DEFAULT_MYBATIS_PLUS_SUPER_MAPPER_CLASS = "com.baomidou.mybatisplus.core.mapper.BaseMapper";
 
     /**
      * mybatis plus 默认 superServiceClass
      */
-    String MYBATIS_PLUS_DEFAULT_SUPER_SERVICE_CLASS = "com.baomidou.mybatisplus.extension.service.IService";
+    String DEFAULT_MYBATIS_PLUS_SUPER_SERVICE_CLASS = "com.baomidou.mybatisplus.extension.service.IService";
 
     /**
      * mybatis plus 默认 superServiceImplClass
      */
-    String MYBATIS_PLUS_DEFAULT_SUPER_SERVICE_IMPL_CLASS = "com.baomidou.mybatisplus.extension.service.impl.ServiceImpl";
+    String DEFAULT_MYBATIS_PLUS_SUPER_SERVICE_IMPL_CLASS = "com.baomidou.mybatisplus.extension.service.impl.ServiceImpl";
 
 }
