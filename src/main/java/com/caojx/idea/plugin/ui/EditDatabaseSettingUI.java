@@ -3,11 +3,10 @@ package com.caojx.idea.plugin.ui;
 import com.caojx.idea.plugin.common.enums.DataBaseTypeEnum;
 import com.caojx.idea.plugin.common.pojo.DatabaseWithOutPwd;
 import com.caojx.idea.plugin.common.pojo.DatabaseWithPwd;
-import com.caojx.idea.plugin.common.properties.CommonProperties;
 import com.caojx.idea.plugin.common.utils.DatabaseConvert;
 import com.caojx.idea.plugin.common.utils.MyMessages;
 import com.caojx.idea.plugin.common.utils.MySQLDBHelper;
-import com.caojx.idea.plugin.persistent.PersistentState;
+import com.caojx.idea.plugin.persistent.PersistentExtConfig;
 import com.caojx.idea.plugin.persistent.PersistentStateService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
@@ -94,9 +93,10 @@ public class EditDatabaseSettingUI extends DialogWrapper {
      */
     private void renderUIData(Project project) {
         // 数据库列表
-        PersistentState persistentState = persistentStateService.getState();
-        CommonProperties commonProperties = persistentState.getGeneratorProperties().getCommonProperties();
-        databases = commonProperties.getDatabases();
+//        PersistentState persistentState = persistentStateService.getState();
+//        CommonProperties commonProperties = persistentState.getGeneratorProperties().getCommonProperties();
+//        databases = commonProperties.getDatabases();
+        databases = PersistentExtConfig.loadDatabase();
 
         // 设置数据库类型下拉框
         DataBaseTypeEnum.getDatabaseTypes().forEach(databaseType -> databaseTypeComboBox.addItem(databaseType));
@@ -282,6 +282,9 @@ public class EditDatabaseSettingUI extends DialogWrapper {
             // 添加到列表
             DatabaseWithOutPwd database = DatabaseConvert.convertDatabase(formDatabase);
             databases.add(database);
+
+            // 保存数据库配置
+            PersistentExtConfig.saveDatabases(databases);
 
             // 刷新列表
             dataSourcesSettingUI.refreshDatabaseTable(databases);

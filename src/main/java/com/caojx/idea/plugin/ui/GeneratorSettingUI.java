@@ -21,6 +21,7 @@ import com.caojx.idea.plugin.common.utils.UIUtils;
 import com.caojx.idea.plugin.generator.GeneratorContext;
 import com.caojx.idea.plugin.generator.GeneratorServiceImpl;
 import com.caojx.idea.plugin.generator.IGeneratorService;
+import com.caojx.idea.plugin.persistent.PersistentExtConfig;
 import com.caojx.idea.plugin.persistent.PersistentState;
 import com.caojx.idea.plugin.persistent.PersistentStateService;
 import com.intellij.openapi.module.Module;
@@ -273,7 +274,8 @@ public class GeneratorSettingUI extends DialogWrapper {
         entityRelativePackageTf.setText(StringUtils.isNotBlank(commonProperties.getEntityRelativePackage()) ? commonProperties.getEntityRelativePackage() : Constant.RELATIVE_PACKAGE);
 
         // 初始化数据库配置
-        initDatabaseComBox(commonProperties.getDatabases(), commonProperties.getDatabaseComboBoxValue());
+        List<DatabaseWithOutPwd> extDatabases = PersistentExtConfig.loadDatabase();
+        initDatabaseComBox(extDatabases, commonProperties.getDatabaseComboBoxValue());
         tableNameRegexTf.setText("");
 
         // entity 设置
@@ -644,7 +646,8 @@ public class GeneratorSettingUI extends DialogWrapper {
         commonProperties.setBasePackage(basePackageTf.getText());
         commonProperties.setBasePath(basePathTf.getText());
         commonProperties.setEntityRelativePackage(entityRelativePackageTf.getText());
-        commonProperties.setDatabases(databases);
+        // xml中 commonProperties databases 配置不再使用
+        commonProperties.setDatabases(new ArrayList<>());
         commonProperties.setDatabaseComboBoxValue(String.valueOf(databaseComboBox.getSelectedItem()));
         commonProperties.setFrameworkTypeComboBoxValues(FrameworkTypeEnum.getFrameworkNames());
         commonProperties.setFrameworkTypeComboBoxValue(String.valueOf(frameworkTypeComboBox.getSelectedItem()));

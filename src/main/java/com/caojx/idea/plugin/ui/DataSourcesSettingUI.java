@@ -1,9 +1,8 @@
 package com.caojx.idea.plugin.ui;
 
 import com.caojx.idea.plugin.common.pojo.DatabaseWithOutPwd;
-import com.caojx.idea.plugin.common.properties.CommonProperties;
 import com.caojx.idea.plugin.common.utils.MyMessages;
-import com.caojx.idea.plugin.persistent.PersistentState;
+import com.caojx.idea.plugin.persistent.PersistentExtConfig;
 import com.caojx.idea.plugin.persistent.PersistentStateService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
@@ -90,9 +89,10 @@ public class DataSourcesSettingUI extends DialogWrapper {
      */
     private void renderUIData(Project project) {
         // 数据库列表
-        PersistentState persistentState = persistentStateService.getState();
-        CommonProperties commonProperties = persistentState.getGeneratorProperties().getCommonProperties();
-        databases = commonProperties.getDatabases();
+//        PersistentState persistentState = persistentStateService.getState();
+//        CommonProperties commonProperties = persistentState.getGeneratorProperties().getCommonProperties();
+//        databases = commonProperties.getDatabases();
+        databases = PersistentExtConfig.loadDatabase();
 
         // 初始化表数据
         dataSourcesTable.setModel(TABLE_MODEL);
@@ -127,6 +127,9 @@ public class DataSourcesSettingUI extends DialogWrapper {
             // 从数组列表中移除
             databases.remove(selectedRow);
             selectedRow = -1;
+
+            // 更新数据库配置
+            PersistentExtConfig.saveDatabases(databases);
 
             // 刷新
             refreshDatabaseTable(databases);
