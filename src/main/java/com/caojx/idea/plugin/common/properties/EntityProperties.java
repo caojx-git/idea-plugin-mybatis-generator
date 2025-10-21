@@ -74,6 +74,11 @@ public class EntityProperties implements Serializable {
     private boolean selectedSwaggerCheckBox;
 
     /**
+     * entity swagger3注解
+     */
+    private boolean selectedSwagger3CheckBox;
+
+    /**
      * 自定义jdbc类型映射
      */
     private Map<String, String> customerJdbcTypeMappingMap = new HashMap<>();
@@ -172,6 +177,14 @@ public class EntityProperties implements Serializable {
 
     public void setSelectedSwaggerCheckBox(boolean selectedSwaggerCheckBox) {
         this.selectedSwaggerCheckBox = selectedSwaggerCheckBox;
+    }
+
+    public boolean isSelectedSwagger3CheckBox() {
+        return selectedSwagger3CheckBox;
+    }
+
+    public void setSelectedSwagger3CheckBox(boolean selectedSwagger3CheckBox) {
+        this.selectedSwagger3CheckBox = selectedSwagger3CheckBox;
     }
 
     public Map<String, String> getCustomerJdbcTypeMappingMap() {

@@ -6,6 +6,9 @@ package ${controllerPackage};
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 </#if>
+<#if isSelectedSwagger3CheckBox>
+import io.swagger.v3.oas.annotations.tags.Tag;
+</#if>
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 <#if isSelectedSwaggerCheckBox>
 @Api(tags = "${table.comment!}前端控制器")
+</#if>
+<#if isSelectedSwagger3CheckBox>
+@Tag(name = "${table.comment!}前端控制器")
 </#if>
 @RestController
 @RequestMapping("/${controllerMappingHyphen}")

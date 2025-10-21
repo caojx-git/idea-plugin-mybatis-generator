@@ -84,6 +84,7 @@ public class GeneratorSettingUI extends DialogWrapper {
     private JCheckBox enableDeleteByExampleCheckBox;
     private JCheckBox enableCountByExampleCheckBox;
     private JCheckBox entitySwaggerCheckBox;
+    private JCheckBox entitySwagger3CheckBox;
     private JTextField mapperXmlNamePatternTf;
     private JTextField servicePathTf;
     private JTextField servicePackageTf;
@@ -98,6 +99,7 @@ public class GeneratorSettingUI extends DialogWrapper {
     private JTextField controllerPackageTf;
     private JTextField controllerNamePatternTf;
     private JCheckBox controllerSwaggerCheckBox;
+    private JCheckBox controllerSwagger3CheckBox;
     private JComboBox<String> databaseComboBox;
     private JTextField tableNameRegexTf;
     private JButton queryTableBtn;
@@ -291,6 +293,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         noArgsConstructorCheckBox.setSelected(entityProperties.isSelectedNoArgsConstructorCheckBox());
         allArgsConstructorCheckBox.setSelected(entityProperties.isSelectedAllArgsConstructorCheckBox());
         entitySwaggerCheckBox.setSelected(entityProperties.isSelectedSwaggerCheckBox());
+        entitySwagger3CheckBox.setSelected(entityProperties.isSelectedSwagger3CheckBox());
         setCustomerJdbcTypeMappingMap(entityProperties.getCustomerJdbcTypeMappingMap());
 
         // mapper 设置
@@ -358,6 +361,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         controllerPackageTf.setText(controllerProperties.getPackageName());
         controllerNamePatternTf.setText(StringUtils.isBlank(controllerProperties.getNamePattern()) ? Constant.DEFAULT_CONTROLLER_NAME_FORMAT : controllerProperties.getNamePattern());
         controllerSwaggerCheckBox.setSelected(controllerProperties.isSelectedSwaggerCheckBox());
+        controllerSwagger3CheckBox.setSelected(controllerProperties.isSelectedSwagger3CheckBox());
     }
 
     /**
@@ -379,6 +383,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         noArgsConstructorCheckBox.setSelected(false);
         allArgsConstructorCheckBox.setSelected(false);
         entitySwaggerCheckBox.setSelected(false);
+        entitySwagger3CheckBox.setSelected(false);
 
         // mapper 设置
         mapperGenerateCheckBox.setSelected(true);
@@ -433,6 +438,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         controllerPackageTf.setText("");
         controllerNamePatternTf.setText(Constant.DEFAULT_CONTROLLER_NAME_FORMAT);
         controllerSwaggerCheckBox.setSelected(false);
+        controllerSwagger3CheckBox.setSelected(false);
     }
 
     /**
@@ -668,6 +674,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         entityProperties.setSelectedNoArgsConstructorCheckBox(noArgsConstructorCheckBox.isSelected());
         entityProperties.setSelectedAllArgsConstructorCheckBox(allArgsConstructorCheckBox.isSelected());
         entityProperties.setSelectedSwaggerCheckBox(entitySwaggerCheckBox.isSelected());
+        entityProperties.setSelectedSwagger3CheckBox(entitySwagger3CheckBox.isSelected());
         entityProperties.setCustomerJdbcTypeMappingMap(customerJdbcTypeMappingMap);
         generatorProperties.setEntityProperties(entityProperties);
 
@@ -724,6 +731,7 @@ public class GeneratorSettingUI extends DialogWrapper {
         String controllerNamePattern = StringUtils.trim(controllerNamePatternTf.getText());
         controllerProperties.setNamePattern(StringUtils.isBlank(controllerNamePattern) ? Constant.DEFAULT_CONTROLLER_NAME_FORMAT : controllerNamePattern);
         controllerProperties.setSelectedSwaggerCheckBox(controllerSwaggerCheckBox.isSelected());
+        controllerProperties.setSelectedSwagger3CheckBox(controllerSwagger3CheckBox.isSelected());
         generatorProperties.setControllerProperties(controllerProperties);
 
         return generatorProperties;

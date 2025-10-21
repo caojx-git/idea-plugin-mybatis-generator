@@ -34,6 +34,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 </#if>
+<#if isSelectedEntitySwagger3CheckBox>
+import io.swagger.v3.oas.annotations.media.Schema;
+</#if>
 
 /**
  * ${table.comment!}
@@ -56,6 +59,9 @@ import io.swagger.annotations.ApiModelProperty;
 <#if isSelectedEntitySwaggerCheckBox>
 @ApiModel("${table.comment!}")
 </#if>
+<#if isSelectedEntitySwagger3CheckBox>
+@Schema(description = "${table.comment!}")
+</#if>
 <#if frameworkType == "MyBatisPlus">
 @TableName("${table.name}")
 </#if>
@@ -68,13 +74,16 @@ public class ${entityName} {
 </#if>
 <#list table.fields as field>
 
-    <#if field.comment?default("")?trim?length gt 1 && !isSelectedEntitySwaggerCheckBox>
+    <#if field.comment?default("")?trim?length gt 1 && !isSelectedEntitySwaggerCheckBox && !isSelectedEntitySwagger3CheckBox>
     /**
      * ${field.comment}
      */
    </#if>
    <#if isSelectedEntitySwaggerCheckBox>
     @ApiModelProperty("${field.comment}")
+   </#if>
+   <#if isSelectedEntitySwagger3CheckBox>
+    @Schema(description = "${field.comment}")
    </#if>
    <#if field.primaryKeyFlag && frameworkType == "TkMyBatis">
     @Id

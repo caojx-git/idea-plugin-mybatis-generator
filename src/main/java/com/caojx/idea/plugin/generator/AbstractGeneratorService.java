@@ -124,6 +124,7 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
         objectMap.put("isSelectedAllArgsConstructorCheckBox", entityProperties.isSelectedAllArgsConstructorCheckBox());
         objectMap.put("isGenerateGetterSetter", isGenerateGetterSetter(entityProperties));
         objectMap.put("isSelectedEntitySwaggerCheckBox", entityProperties.isSelectedSwaggerCheckBox());
+        objectMap.put("isSelectedEntitySwagger3CheckBox", entityProperties.isSelectedSwagger3CheckBox());
 
         // entityExample
         String entityExampleName = String.format(entityProperties.getExampleNamePattern(), baseEntityName);
@@ -187,6 +188,7 @@ public abstract class AbstractGeneratorService implements IGeneratorService {
         objectMap.put("controllerName", controllerName);
         objectMap.put("controllerFullClassName", ClassUtils.getFullClassName(controllerProperties.getPackageName(), controllerName));
         objectMap.put("isSelectedSwaggerCheckBox", controllerProperties.isSelectedSwaggerCheckBox());
+        objectMap.put("isSelectedSwagger3CheckBox", controllerProperties.isSelectedSwagger3CheckBox());
         objectMap.put("controllerMappingHyphen", CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, tableInfo.getName()));
         return objectMap;
     }

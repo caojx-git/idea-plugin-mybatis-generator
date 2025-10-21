@@ -35,6 +35,11 @@ public class ControllerProperties implements Serializable {
      */
     private boolean selectedSwaggerCheckBox;
 
+    /**
+     * controller swagger3注解
+     */
+    private boolean selectedSwagger3CheckBox;
+
     public boolean isSelectedGenerateCheckBox() {
         return selectedGenerateCheckBox;
     }
@@ -73,5 +78,13 @@ public class ControllerProperties implements Serializable {
 
     public void setSelectedSwaggerCheckBox(boolean selectedSwaggerCheckBox) {
         this.selectedSwaggerCheckBox = selectedSwaggerCheckBox;
+    }
+
+    public boolean isSelectedSwagger3CheckBox() {
+        return selectedSwagger3CheckBox;
+    }
+
+    public void setSelectedSwagger3CheckBox(boolean selectedSwagger3CheckBox) {
+        this.selectedSwagger3CheckBox = selectedSwagger3CheckBox;
     }
 }
